@@ -1,0 +1,371 @@
+.register-page {
+  min-height: calc(100vh - 80px);
+
+  display: flex;
+  justify-content: center;
+
+  padding: 55px 20px 70px;
+
+  background: #faf8f4;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 430px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.register-card {
+  width: 100%;
+
+  padding: 34px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.05);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.register-card:hover {
+  transform: scale(1.01);
+
+  box-shadow:
+    0 0 20px #2c2927;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.register-heading {
+  margin-bottom: 28px;
+}
+
+.register-heading h1 {
+  margin: 0 0 8px;
+
+  color: #222222;
+
+  font-size: 28px;
+
+  letter-spacing: -0.7px;
+
+  text-align: center;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.register-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.register-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.register-field label {
+  color: #333333;
+
+  font-size: 15px;
+
+  font-weight: 650;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+.register-field input {
+  width: 100%;
+
+  height: 44px;
+
+  box-sizing: border-box;
+
+  padding: 0 13px;
+
+  border: 1px solid #d8d8d8;
+
+  border-radius: 7px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.register-field input::placeholder {
+  color: #aaaaaa;
+}
+
+.register-field input:focus {
+  border-color: #b45309;
+
+  box-shadow:
+    0 0 0 3px rgba(180, 83, 9, 0.08);
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+.register-password-input {
+  position: relative;
+}
+
+.register-password-input input {
+  padding-right: 45px;
+}
+
+.register-password-toggle {
+  position: absolute;
+
+  right: 12px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+
+  background: transparent;
+
+  color: #777777;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.register-password-toggle:hover {
+  transform: translateY(-50%) scale(1.08);
+
+  color: #b45309;
+}
+
+
+/* =========================
+   SUBMIT
+========================= */
+
+.register-submit-btn {
+  width: 100%;
+
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #b45309;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.register-submit-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+
+  background: #92400e;
+
+  box-shadow:
+    0 8px 20px rgba(180, 83, 9, 0.2);
+}
+
+.register-submit-btn:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================
+   DIVIDER
+========================= */
+
+.register-divider {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 25px 0;
+}
+
+.register-divider::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background: #eeeeee;
+}
+
+.register-divider span {
+  position: relative;
+
+  padding: 0 12px;
+
+  background: #ffffff;
+
+  color: #999999;
+
+  font-size: 14px;
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+.register-login {
+  margin-top: 5px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #777777;
+
+  font-size: 14px;
+}
+
+.register-login a {
+  color: #b45309;
+
+  font-weight: 650;
+
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.register-login a:hover {
+  color: #92400e;
+
+  transform: translateX(2px);
+}
+
+
+/* =========================
+   BOTTOM TEXT
+========================= */
+
+.register-bottom-text {
+  margin: 20px 15px 0;
+
+  color: #999999;
+
+  text-align: center;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.register-bottom-text a {
+  color: #777777;
+
+  text-decoration: none;
+}
+
+.register-bottom-text a:hover {
+  color: #b45309;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 500px) {
+
+  .register-page {
+    padding: 35px 15px 50px;
+  }
+
+  .register-card {
+    padding: 25px 20px;
+  }
+
+  .register-heading h1 {
+    font-size: 25px;
+  }
+
+}

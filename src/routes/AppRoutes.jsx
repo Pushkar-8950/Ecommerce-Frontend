@@ -7,6 +7,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ProductDetails from "../pages/ProductDetails";
 import NotFound from "../pages/NotFound";
+import Cart from "../pages/Cart";
+import Wishlist from "../pages/Wishlist";
 
 function AppRoutes() {
   return (
@@ -17,6 +19,8 @@ function AppRoutes() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
