@@ -1,0 +1,221 @@
+.footer {
+  margin-top: 50px;
+  color: #ffffff;
+}
+
+/* =========================
+   BACK TO TOP
+========================= */
+
+.footer-back-to-top{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+}
+
+.footer-back-to-top a {
+    margin-bottom: 15px;
+    color: black;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+
+/* =========================
+   MAIN FOOTER
+========================= */
+
+.footer-main {
+  background: linear-gradient(135deg, #e7d7c3, #c9a77b);
+}
+
+.footer-container {
+  max-width: 1250px;
+  margin: 0 auto;
+
+  padding: 55px 40px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: top;
+  justify-content: center;
+  gap: 200px;
+}
+
+
+/* =========================
+   FOOTER COLUMNS
+========================= */
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-column h3 {
+  margin: 0 0 16px;
+
+  color: black;
+
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.footer-column a {
+  margin-bottom: 10px;
+
+  color: black;
+
+  font-size: 15px;
+
+  text-decoration: none;
+
+  transition: color 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: black;
+  text-decoration: underline;
+}
+
+
+/* =========================
+   BRAND BAR
+========================= */
+
+.footer-brand-bar {
+  background: #faf8f4;
+}
+
+.footer-brand-container {
+  max-width: 1250px;
+  margin: 0 auto;
+
+  padding: 25px 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 40px;
+}
+
+
+/* Logo */
+
+.footer-logo {
+  color: black;
+
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.footer-logo span {
+  color: #b45309;
+}
+
+
+/* Country */
+
+.footer-country {
+  padding: 9px 16px;
+
+  border: 1px solid #65717e;
+  border-radius: 4px;
+
+  color: black;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   BOTTOM
+========================= */
+
+.footer-bottom {
+  background: #faf8f4;
+}
+
+.footer-bottom-container {
+  max-width: 1250px;
+  margin: 0 auto;
+
+  padding: 20px 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.footer-bottom p {
+  margin: 0;
+
+  color: black;
+
+  font-size: 12px;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-bottom-links a {
+  color: black;
+
+  font-size: 12px;
+
+  text-decoration: none;
+
+  transition: transform 0.4s ease;
+}
+
+.footer-bottom-links a:hover {
+  transform: scale(1.15);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 45px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .footer-container {
+    padding: 45px 25px;
+
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .footer-brand-container {
+    padding: 25px;
+
+    flex-direction: column;
+
+    gap: 18px;
+  }
+
+  .footer-bottom-container {
+    padding: 20px 25px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+}

@@ -1,0 +1,149 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+// Importing logos from lucide-react
+import {
+  Search,
+  User,
+  ShoppingCart,
+  ChevronDown,
+  Package,
+  Heart,
+  Settings,
+  LogOut,
+} from "lucide-react";
+
+import "./Navbar.css";
+
+
+function Navbar() {
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+
+  return (
+    <header className="navbar">
+      <div className="navbar-container">
+
+        {/* Logo */}
+        <Link to="/" className="navbar-logo">
+          Hunar<span>Bazaar</span>
+        </Link>
+
+        {/* Categories */}
+        <div
+          className="navbar-dropdown-wrapper"
+          onMouseEnter={() => setCategoriesOpen(true)}
+          onMouseLeave={() => setCategoriesOpen(false)}
+        >
+          <button className="navbar-dropdown-trigger">
+            Categories
+            <ChevronDown size={16} />
+          </button>
+
+          {categoriesOpen && (
+            <div className="categories-dropdown">
+              <div>
+                <h4>Textiles</h4>
+                <Link to="/explore?category=sarees">Sarees</Link>
+                <Link to="/explore?category=dupattas">Dupattas</Link>
+                <Link to="/explore?category=handloom">Handloom</Link>
+                <Link to="/explore?category=rugs">Rugs & Carpets</Link>
+              </div>
+
+              <div>
+                <h4>Handicrafts</h4>
+                <Link to="/explore?category=woodcraft">Woodcraft</Link>
+                <Link to="/explore?category=pottery">Pottery</Link>
+                <Link to="/explore?category=paintings">Paintings</Link>
+                <Link to="/explore?category=decor">Home Decor</Link>
+              </div>
+
+              <div>
+                <h4>Jewellery</h4>
+                <Link to="/explore?category=earrings">Earrings</Link>
+                <Link to="/explore?category=necklaces">Necklaces</Link>
+                <Link to="/explore?category=bangles">Bangles</Link>
+                <Link to="/explore?category=traditional">Traditional</Link>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Search */}
+        <div className="navbar-search">
+          <Search size={19} />
+
+          <input
+            type="text"
+            placeholder="Search handicrafts, textiles, jewellery..."
+          />
+        </div>
+
+        {/* Account */}
+        <div
+          className="navbar-dropdown-wrapper account-wrapper"
+          onMouseEnter={() => setAccountOpen(true)}
+          onMouseLeave={() => setAccountOpen(false)}
+        >
+          <button className="navbar-account">
+            <User size={19} />
+
+            <div>
+              <span className="account-small">Hello, Sign in</span>
+              <span className="account-main">
+                Account & Lists <ChevronDown size={14} />
+              </span>
+            </div>
+          </button>
+
+          {accountOpen && (
+            <div className="account-dropdown">
+
+              <div className="account-dropdown-header">
+                <Link to="/login" className="account-signin">
+                  Sign in
+                </Link>
+
+                <p>New customer?</p>
+                <Link to="/register">Create your account</Link>
+              </div>
+
+              <div className="account-dropdown-links">
+                <Link to="/orders">
+                  <Package size={17} />
+                  My Orders
+                </Link>
+
+                <Link to="/wishlist">
+                  <Heart size={17} />
+                  Wishlist
+                </Link>
+
+                <Link to="/settings">
+                  <Settings size={17} />
+                  Account Settings
+                </Link>
+
+                <button>
+                  <LogOut size={17} />
+                  Sign out
+                </button>
+              </div>
+
+            </div>
+          )}
+        </div>
+
+        {/* Cart */}
+        <Link to="/cart" className="navbar-cart">
+          <ShoppingCart size={25} />
+          <span>Cart</span>
+          <span className="cart-count">0</span>
+        </Link>
+
+      </div>
+    </header>
+  );
+}
+
+export default Navbar;

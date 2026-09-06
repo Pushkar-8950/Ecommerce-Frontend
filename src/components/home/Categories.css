@@ -1,0 +1,112 @@
+.categories {
+  padding: 15px 0;
+  background: #ffffff;
+}
+
+.categories-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Categories */
+
+.categories-list {
+  /* display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 50px; */
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.category-card {
+  min-height: 135px;
+  min-width: 120px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  
+  color: #333333;
+  text-decoration: none;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  border-color: #d6d3d1;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+.category-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #faf5ef;
+  color: #916646;
+}
+
+.category-card span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/*ChevronRight-icon CSS*/
+.category-container-explore-chevronIcon{
+    margin-left: 50px;
+
+    transition:
+    transform 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.category-container-explore-chevronIcon:hover{
+    transform: translateY(-3px);
+    background-color: #d6d3d1;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .categories-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .categories {
+    padding: 40px 0;
+  }
+
+  .categories-container {
+    padding: 0 20px;
+  }
+
+  .categories-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .categories-header h2 {
+    font-size: 24px;
+  }
+}

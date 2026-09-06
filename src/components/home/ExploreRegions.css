@@ -1,0 +1,186 @@
+.explore-regions {
+  padding: 70px 0;
+  background: #ffffff;
+}
+
+.explore-regions-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* Heading */
+
+.regions-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+
+  margin-bottom: 35px;
+}
+
+.regions-heading > div {
+  max-width: 600px;
+}
+
+.regions-heading span {
+  color: #916646;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.regions-heading h2 {
+  margin: 8px 0 10px;
+
+  color: #222222;
+  font-size: 32px;
+  letter-spacing: -1px;
+}
+
+.regions-heading p {
+  margin: 0;
+
+  color: #777777;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Explore all */
+
+.regions-view-all {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 10px 16px;
+
+  border: 1px solid #ddd;
+  border-radius: 7px;
+
+  color: #333333;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: 0.3s ease;
+}
+
+.regions-view-all:hover {
+  background: #916646;
+  border-color: #916646;
+  color: white;
+}
+
+/* Grid */
+
+.regions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* Card */
+
+.region-card {
+  position: relative;
+  height: 280px;
+
+  overflow: hidden;
+  border-radius: 12px;
+
+  text-decoration: none;
+}
+
+.region-card img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
+}
+
+.region-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Dark overlay */
+
+.region-card::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0.05)
+  );
+}
+
+/* Text */
+
+.region-overlay {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+
+  z-index: 1;
+
+  color: white;
+}
+
+.region-overlay span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.region-overlay h3 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 650;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .regions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .explore-regions {
+    padding: 50px 0;
+  }
+
+  .explore-regions-container {
+    padding: 0 20px;
+  }
+
+  .regions-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .regions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .regions-heading h2 {
+    font-size: 26px;
+  }
+}
