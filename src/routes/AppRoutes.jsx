@@ -9,6 +9,8 @@ import ProductDetails from "../pages/ProductDetails";
 import NotFound from "../pages/NotFound";
 import Cart from "../pages/Cart";
 import Wishlist from "../pages/Wishlist";
+import Account from "../pages/Account";
+import Orders from "../pages/Orders";
 
 function AppRoutes() {
   return (
@@ -21,6 +23,8 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/orders" element={<Orders />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
