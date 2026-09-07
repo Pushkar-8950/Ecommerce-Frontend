@@ -1,0 +1,255 @@
+.voice-guide {
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 18px 20px;
+
+  background: #fffaf4;
+
+  border: 1px solid #eadccc;
+  border-radius: 10px;
+
+  color: #333333;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.voice-guide:hover {
+  transform: translateY(-2px);
+
+  border-color: #d8c5ae;
+
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Icon */
+
+.voice-guide-icon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: black;
+
+  color: #e66700;
+}
+
+
+/* Content */
+
+.voice-guide-content {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.voice-guide-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #9a5b27;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.voice-guide-content p {
+  margin: 0;
+
+  color: #333333;
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+
+/* Actions */
+
+.voice-guide-actions {
+  margin-top: 0px;
+}
+
+.voice-guide-actions button {
+  padding: 5px;
+
+  border: none;
+  border-radius: 5px;
+
+  background: black;
+
+  color: #ff7300;
+
+  font-size: 11px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.voice-guide-actions button:hover {
+  transform: scale(1.04);
+}
+
+.voice-guide-actions button:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+  .voice-guide {
+    padding: 15px;
+  }
+
+  .voice-guide-content p {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   FLOWING VOICE GUIDE
+========================= */
+
+.voice-guide {
+  position: relative;
+  z-index: 1001;
+
+  width: 330px;
+
+  /* Keep your existing properties.
+     These only change its presentation/position. */
+
+  padding: 16px 18px;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 12px 30px rgba(50, 35, 20, 0.10);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+
+/* =========================
+   ACTIVE / SPEAKING
+========================= */
+
+.voice-guide.is-speaking {
+  transform:
+    scale(1.06);
+
+  border-color:
+    rgba(180, 83, 9, 0.45);
+
+  box-shadow:
+    0 0 0 5px rgba(180, 83, 9, 0.10),
+    0 20px 50px rgba(70, 40, 15, 0.22);
+
+  animation:
+    voiceGuideFocus 1.8s ease-in-out infinite;
+}
+
+
+@keyframes voiceGuideFocus {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 5px rgba(180, 83, 9, 0.10),
+      0 20px 50px rgba(70, 40, 15, 0.22);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 9px rgba(180, 83, 9, 0.14),
+      0 24px 55px rgba(70, 40, 15, 0.27);
+  }
+
+}
+
+
+/* =========================
+   ARROW TOWARDS ADD PRODUCT
+========================= */
+
+.voice-guide::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -22px;
+
+  width: 0;
+  height: 0;
+
+  transform:
+    translateX(-50%);
+
+  border-left:
+    13px solid transparent;
+
+  border-right:
+    13px solid transparent;
+
+  border-top:
+    22px solid #eadccc;
+
+  pointer-events: none;
+}
+
+
+/* Inner arrow makes it look cleaner */
+
+.voice-guide::before {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -19px;
+
+  width: 0;
+  height: 0;
+
+  transform:
+    translateX(-50%);
+
+  border-left:
+    11px solid transparent;
+
+  border-right:
+    11px solid transparent;
+
+  border-top:
+    19px solid #fffaf4;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
