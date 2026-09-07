@@ -4,7 +4,9 @@
 
 .artisan-home {
   min-height: 100vh;
+
   position: relative;
+
   overflow: hidden;
 
   background:
@@ -30,30 +32,40 @@
 
 .artisan-home-header {
   position: sticky;
+
   top: 0;
+
   z-index: 100;
 
-  background: rgba(255, 255, 255, 0.88);
+  background:
+    rgba(255, 255, 255, 0.88);
 
   border-bottom:
     1px solid rgba(120, 100, 80, 0.12);
 
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter:
+    blur(16px);
+
+  -webkit-backdrop-filter:
+    blur(16px);
 
   box-shadow:
     0 4px 20px rgba(50, 35, 20, 0.03);
 }
 
+
 .artisan-home-header-container {
   max-width: 1200px;
+
   height: 72px;
 
   margin: 0 auto;
+
   padding: 0 35px;
 
   display: flex;
   align-items: center;
+
   justify-content: space-between;
 }
 
@@ -68,7 +80,9 @@
   color: #25211d;
 
   font-size: 26px;
+
   font-weight: 800;
+
   letter-spacing: -0.7px;
 
   text-decoration: none;
@@ -77,9 +91,11 @@
     transform 0.25s ease;
 }
 
+
 .artisan-home-logo span {
   color: #b45309;
 }
+
 
 .artisan-home-logo::after {
   content: "";
@@ -87,9 +103,11 @@
   position: absolute;
 
   left: 0;
+
   bottom: -5px;
 
   width: 35%;
+
   height: 3px;
 
   border-radius: 20px;
@@ -105,9 +123,12 @@
     width 0.3s ease;
 }
 
+
 .artisan-home-logo:hover {
-  transform: translateY(-1px);
+  transform:
+    translateY(-1px);
 }
+
 
 .artisan-home-logo:hover::after {
   width: 100%;
@@ -120,7 +141,9 @@
 
 .artisan-home-nav {
   display: flex;
+
   align-items: center;
+
   gap: 13px;
 }
 
@@ -131,7 +154,9 @@
 
 .artisan-home-nav-links {
   display: flex;
+
   align-items: center;
+
   gap: 13px;
 }
 
@@ -142,10 +167,13 @@
 
 .artisan-home-nav-links a {
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   min-height: 40px;
+
   padding: 0 13px;
 
   border-radius: 10px;
@@ -153,6 +181,7 @@
   color: #615b55;
 
   font-size: 14px;
+
   font-weight: 650;
 
   text-decoration: none;
@@ -167,9 +196,11 @@
 .artisan-home-nav-links a:hover {
   color: #a34708;
 
-  background: rgba(180, 83, 9, 0.08);
+  background:
+    rgba(180, 83, 9, 0.08);
 
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
 }
 
 
@@ -179,12 +210,15 @@
 
 .artisan-home-nav > a {
   width: 40px;
+
   height: 40px;
 
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   padding: 0;
@@ -201,7 +235,8 @@
     );
 
   border:
-    1px solid rgba(180, 83, 9, 0.12);
+    1px solid
+    rgba(180, 83, 9, 0.12);
 
   text-decoration: none;
 
@@ -213,8 +248,6 @@
 }
 
 
-/* Profile hover */
-
 .artisan-home-nav > a:hover {
   background:
     linear-gradient(
@@ -225,11 +258,15 @@
 
   color: white;
 
-  transform: translateY(-2px);
+  transform:
+    translateY(-2px);
 
   box-shadow:
-    0 8px 20px rgba(180, 83, 9, 0.2);
+    0 8px 20px
+    rgba(180, 83, 9, 0.2);
 }
+
+
 /* =========================
    MAIN CONTENT
 ========================= */
@@ -241,8 +278,10 @@
     70px 20px 100px;
 }
 
+
 .artisan-home-container {
   width: 100%;
+
   max-width: 760px;
 
   margin: 0 auto;
@@ -264,12 +303,14 @@
     artisanFadeUp 0.7s ease;
 }
 
+
 .artisan-greeting h1 {
   margin: 0;
 
   color: #25211d;
 
   font-size: 38px;
+
   font-weight: 800;
 
   letter-spacing: -1.3px;
@@ -277,12 +318,14 @@
   line-height: 1.2;
 }
 
+
 .artisan-greeting h1::after {
   content: "";
 
   display: block;
 
   width: 55px;
+
   height: 4px;
 
   margin: 15px auto 0;
@@ -299,13 +342,56 @@
 
 
 /* =========================
+   GUIDANCE STAGE
+========================= */
+
+.artisan-guidance-stage {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+
+  padding-top: 175px;
+
+  margin-bottom: 28px;
+}
+
+
+/* =========================
+   VOICE GUIDE POSITION
+========================= */
+
+.artisan-guidance-stage .voice-guide {
+  position: absolute;
+
+  top: 0;
+
+  left: 50%;
+
+  z-index: 1002;
+
+  width: 330px;
+
+  transform:
+    translateX(-50%);
+}
+
+
+/* =========================
    ADD PRODUCT CARD
 ========================= */
 
 .artisan-add-product-card {
   position: relative;
 
+  z-index: 1;
+
+  width: 100%;
+
   display: flex;
+
   align-items: center;
 
   gap: 20px;
@@ -324,7 +410,8 @@
     );
 
   border:
-    1px solid rgba(180, 83, 9, 0.12);
+    1px solid
+    rgba(180, 83, 9, 0.12);
 
   border-radius: 18px;
 
@@ -343,7 +430,9 @@
 }
 
 
-/* Decorative glow */
+/* =========================
+   DECORATIVE GLOW
+========================= */
 
 .artisan-add-product-card::before {
   content: "";
@@ -351,9 +440,11 @@
   position: absolute;
 
   width: 220px;
+
   height: 220px;
 
   right: -100px;
+
   top: -100px;
 
   border-radius: 50%;
@@ -368,6 +459,7 @@
   pointer-events: none;
 }
 
+
 .artisan-add-product-card:hover {
   transform:
     translateY(-6px);
@@ -379,6 +471,7 @@
     0 20px 45px
     rgba(80, 45, 15, 0.12);
 }
+
 
 .artisan-add-product-card:active {
   transform:
@@ -392,12 +485,15 @@
 
 .artisan-add-icon {
   width: 64px;
+
   height: 64px;
 
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 18px;
@@ -420,6 +516,7 @@
     box-shadow 0.3s ease;
 }
 
+
 .artisan-add-product-card:hover
 .artisan-add-icon {
   transform:
@@ -438,10 +535,12 @@
 
 .artisan-add-content {
   position: relative;
+
   z-index: 1;
 
   flex: 1;
 }
+
 
 .artisan-add-content h2 {
   margin: 0;
@@ -449,6 +548,7 @@
   color: #29241f;
 
   font-size: 21px;
+
   font-weight: 750;
 
   letter-spacing: -0.3px;
@@ -461,9 +561,11 @@
 
 .artisan-card-arrow {
   position: relative;
+
   z-index: 1;
 
   width: 38px;
+
   height: 38px;
 
   padding: 9px;
@@ -480,6 +582,7 @@
     background 0.3s ease,
     color 0.3s ease;
 }
+
 
 .artisan-add-product-card:hover
 .artisan-card-arrow {
@@ -517,6 +620,7 @@
   position: relative;
 
   display: flex;
+
   align-items: center;
 
   gap: 15px;
@@ -531,7 +635,8 @@
     rgba(255, 255, 255, 0.9);
 
   border:
-    1px solid rgba(100, 80, 60, 0.1);
+    1px solid
+    rgba(100, 80, 60, 0.1);
 
   border-radius: 16px;
 
@@ -550,7 +655,9 @@
 }
 
 
-/* Top accent */
+/* =========================
+   TOP ACCENT
+========================= */
 
 .artisan-quick-card::before {
   content: "";
@@ -558,9 +665,11 @@
   position: absolute;
 
   left: 22px;
+
   top: 0;
 
   width: 45px;
+
   height: 3px;
 
   border-radius:
@@ -577,6 +686,7 @@
     width 0.3s ease;
 }
 
+
 .artisan-quick-card:hover {
   transform:
     translateY(-6px);
@@ -589,22 +699,28 @@
     rgba(50, 35, 20, 0.09);
 }
 
+
 .artisan-quick-card:hover::before {
   width: 80px;
 }
 
 
-/* Content */
+/* =========================
+   QUICK CARD CONTENT
+========================= */
 
 .artisan-quick-card > div:nth-child(2) {
   flex: 1;
 
   display: flex;
+
   flex-direction: column;
 
   position: relative;
+
   z-index: 1;
 }
+
 
 .artisan-quick-card span {
   margin-bottom: 7px;
@@ -612,13 +728,16 @@
   color: #766f68;
 
   font-size: 12px;
+
   font-weight: 600;
 }
+
 
 .artisan-quick-card strong {
   color: #29231d;
 
   font-size: 30px;
+
   font-weight: 800;
 
   line-height: 1;
@@ -626,12 +745,14 @@
   letter-spacing: -1px;
 }
 
+
 .artisan-quick-card small {
   margin-top: 7px;
 
   color: #a19a93;
 
   font-size: 10px;
+
   font-weight: 500;
 }
 
@@ -642,12 +763,15 @@
 
 .artisan-quick-icon {
   width: 48px;
+
   height: 48px;
 
   flex-shrink: 0;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 14px;
@@ -669,6 +793,7 @@
     transform 0.3s ease;
 }
 
+
 .artisan-quick-card:hover
 .artisan-quick-icon {
   transform:
@@ -677,7 +802,60 @@
 }
 
 
-/* Chevron inside quick cards */
+/* =========================
+   HEAR AGAIN BUTTON
+========================= */
+
+.artisan-hear-again-btn {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 48px;
+
+  height: 48px;
+  margin-top: 28px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(180, 83, 9, 0.08);
+
+  color: #b45309;
+
+  border:
+    1px solid
+    rgba(180, 83, 9, 0.15);
+
+  cursor: pointer;
+
+  transition:
+    all 0.25s ease;
+
+  z-index: 2;
+}
+
+
+.artisan-hear-again-btn:hover {
+  background:
+    rgba(180, 83, 9, 0.15);
+
+  transform:
+    scale(1.05);
+}
+
+
+.artisan-hear-again-btn:active {
+  transform:
+    scale(0.95);
+}
+
+
+/* =========================
+   QUICK CARD CHEVRON
+========================= */
 
 .artisan-quick-card > svg {
   color: #b7afa7;
@@ -686,6 +864,7 @@
     transform 0.25s ease,
     color 0.25s ease;
 }
+
 
 .artisan-quick-card:hover > svg {
   color: #b45309;
@@ -696,11 +875,69 @@
 
 
 /* =========================
+   PAGE DIMMING
+========================= */
+
+.artisan-home.voice-guidance-active::after {
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  background:
+    rgba(20, 16, 12, 0.58);
+
+  pointer-events: none;
+
+  animation:
+    artisanDimIn 0.3s ease;
+}
+
+
+@keyframes artisanDimIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================
+   VOICE GUIDE ABOVE DIM
+========================= */
+
+.artisan-home.voice-guidance-active
+.artisan-guidance-stage
+.voice-guide {
+  z-index: 1002;
+}
+
+
+/* =========================
+   TARGET CARD
+========================= */
+
+.artisan-home.voice-guidance-active
+.artisan-add-product-card {
+  z-index: 1;
+}
+
+
+/* =========================
    PROFILE
 ========================= */
 
 .artisan-profile-link {
   display: flex;
+
   align-items: center;
 
   gap: 13px;
@@ -724,6 +961,7 @@
     transform 0.25s ease,
     box-shadow 0.25s ease;
 }
+
 
 .artisan-profile-link:hover {
   transform:
@@ -802,6 +1040,45 @@
     min-height: 125px;
   }
 
+
+  /* =========================
+     MOBILE VOICE GUIDE
+  ========================= */
+
+  .artisan-guidance-stage {
+    padding-top: 175px;
+
+    margin-bottom: 24px;
+  }
+
+
+  .artisan-guidance-stage
+  .voice-guide {
+    position: absolute;
+
+    top: 0;
+
+    left: 50%;
+
+    right: auto;
+
+    width: calc(100vw - 36px);
+
+    max-width: 420px;
+
+    transform:
+      translateX(-50%);
+  }
+
+
+  .artisan-home.voice-guidance-active
+  .artisan-guidance-stage
+  .voice-guide.is-speaking {
+    transform:
+      translateX(-50%)
+      scale(1.025);
+  }
+
 }
 
 
@@ -822,9 +1099,11 @@
     display: none;
   }
 
+
   .artisan-greeting h1 {
     font-size: 27px;
   }
+
 
   .artisan-add-product-card {
     padding: 20px;
@@ -834,157 +1113,18 @@
     border-radius: 15px;
   }
 
+
   .artisan-add-icon {
     width: 55px;
+
     height: 55px;
 
     border-radius: 15px;
   }
 
-}
-
-/* =========================
-   GUIDANCE STAGE
-========================= */
-
-.artisan-guidance-stage {
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-
-  margin-bottom: 28px;
-}
-
-
-/* Move the voice box away from the page flow */
-
-.artisan-guidance-stage
-.voice-guide {
-  position: absolute;
-
-  top: -10px;
-
-  right: -355px;
-}
-
-
-/* =========================
-   PAGE DIMMING
-========================= */
-
-.artisan-home.voice-guidance-active::after {
-  content: "";
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 1000;
-
-  background:
-    rgba(20, 16, 12, 0.58);
-
-  pointer-events: none;
-
-  animation:
-    artisanDimIn 0.3s ease;
-}
-
-
-@keyframes artisanDimIn {
-
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-
-}
-
-
-/* Keep the voice box ABOVE the dim layer */
-
-.artisan-home.voice-guidance-active
-.voice-guide {
-  z-index: 1002;
-}
-
-
-/* Keep arrow above the dim layer as well */
-
-.artisan-home.voice-guidance-active
-.voice-guide::before,
-.artisan-home.voice-guidance-active
-.voice-guide::after {
-  z-index: 1003;
-}
-
-
-/* =========================
-   TARGET BUTTON
-========================= */
-
-.artisan-home.voice-guidance-active
-.artisan-add-product-card {
-  position: relative;
-  z-index: 999;
-
-  /* Slightly dimmed because the guide,
-     not the target, is the focus. */
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 1100px) {
 
   .artisan-guidance-stage {
-    margin-bottom: 24px;
-  }
-
-  .artisan-guidance-stage
-  .voice-guide {
-    position: relative;
-
-    top: auto;
-    right: auto;
-
-    width: 100%;
-  }
-
-  .voice-guide::after {
-    left: 50%;
-
-    bottom: -18px;
-
-    border-left-width: 10px;
-    border-right-width: 10px;
-    border-top-width: 18px;
-  }
-
-  .voice-guide::before {
-    left: 50%;
-
-    bottom: -15px;
-
-    border-left-width: 8px;
-    border-right-width: 8px;
-    border-top-width: 15px;
-  }
-
-}
-
-
-@media (max-width: 600px) {
-
-  .voice-guide.is-speaking {
-    transform:
-      scale(1.025);
+    padding-top: 190px;
   }
 
 }

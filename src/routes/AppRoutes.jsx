@@ -12,6 +12,7 @@ import Wishlist from "../pages/Wishlist";
 import Account from "../pages/Account";
 import Orders from "../pages/Orders";
 import ArtisanHome from "../components/artisan/ArtisanHome";
+import AddProduct from "../pages/artisan/AddProduct";
 
 function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ function AppRoutes() {
       {/* ================= ARTISAN SIDE ================= */}
 
       <Route path="/artisan" element={<ArtisanHome />} />
+      <Route path="/artisan/add-product" element={<AddProduct />} />
 
       {/* ================= ERROR 404 ================= */}
 

@@ -5,6 +5,7 @@ import {
   ShoppingBag,
   UserRound,
   ChevronRight,
+  RotateCcw,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
@@ -14,6 +15,7 @@ import "./ArtisanHome.css";
 
 function ArtisanHome() {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
+  const [speakTrigger, setSpeakTrigger] = useState(0);
 
   return (
     <main
@@ -21,8 +23,9 @@ function ArtisanHome() {
         isVoiceActive ? "voice-guidance-active" : ""
       }`}
     >
-
-      {/* ================= HEADER ================= */}
+      {/* =========================
+          HEADER
+      ========================= */}
 
       <header className="artisan-home-header">
 
@@ -50,6 +53,7 @@ function ArtisanHome() {
 
             </div>
 
+
             <Link to="/artisan/profile">
               <UserRound size={17} />
             </Link>
@@ -61,14 +65,18 @@ function ArtisanHome() {
       </header>
 
 
-      {/* ================= CONTENT ================= */}
+      {/* =========================
+          MAIN CONTENT
+      ========================= */}
 
       <section className="artisan-home-content">
 
         <div className="artisan-home-container">
 
 
-          {/* Greeting */}
+          {/* =========================
+              GREETING
+          ========================= */}
 
           <div className="artisan-greeting">
 
@@ -79,17 +87,22 @@ function ArtisanHome() {
           </div>
 
 
-          {/* ================= GUIDANCE + TARGET ================= */}
+          {/* =========================
+              GUIDANCE + TARGET
+          ========================= */}
 
           <div className="artisan-guidance-stage">
 
             <VoiceGuide
-              message="Namaste Meera. Welcome to Hoonar Bazaar. Here, You can sell products, see your product listings, check your orders, or view your profile. To sell something you have made, choose Add Product."
+              message="Namaste Meera. Welcome to Hunar Bazaar. Here, you can sell products, see your product listings, check your orders, or view your profile. To sell something you have made, choose Add Product."
               onSpeakingChange={setIsVoiceActive}
+              speakTrigger={speakTrigger}
             />
 
 
-            {/* ================= ADD PRODUCT ================= */}
+            {/* =========================
+                ADD PRODUCT
+            ========================= */}
 
             <Link
               to="/artisan/add-product"
@@ -115,10 +128,25 @@ function ArtisanHome() {
 
             </Link>
 
+            {!isVoiceActive && (
+                <button
+                  className="artisan-hear-again-btn"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setSpeakTrigger(prev => prev + 1);
+                  }}
+                  aria-label="Hear instruction again"
+                >
+                  <RotateCcw size={22} />
+                </button>
+              )}
+
           </div>
 
 
-          {/* ================= QUICK ACTIONS ================= */}
+          {/* =========================
+              QUICK ACTIONS
+          ========================= */}
 
           <div className="artisan-quick-actions">
 
@@ -130,6 +158,7 @@ function ArtisanHome() {
               <div className="artisan-quick-icon">
                 <Package size={21} />
               </div>
+
 
               <div>
 
@@ -147,6 +176,7 @@ function ArtisanHome() {
 
               </div>
 
+
               <ChevronRight size={18} />
 
             </Link>
@@ -160,6 +190,7 @@ function ArtisanHome() {
               <div className="artisan-quick-icon">
                 <ShoppingBag size={21} />
               </div>
+
 
               <div>
 
@@ -176,6 +207,7 @@ function ArtisanHome() {
                 </small>
 
               </div>
+
 
               <ChevronRight size={18} />
 

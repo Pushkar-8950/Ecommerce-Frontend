@@ -11,6 +11,7 @@ function VoiceGuide({
   message,
   autoSpeak = true,
   onSpeakingChange,
+  speakTrigger,
 }) {
   const [isSpeaking, setIsSpeaking] = useState(false);
 
@@ -34,9 +35,7 @@ function VoiceGuide({
     }
 
 
-    // Stop any speech currently playing.
     window.speechSynthesis.cancel();
-
 
     const utterance =
       new SpeechSynthesisUtterance(message);
@@ -68,33 +67,39 @@ function VoiceGuide({
 
   useEffect(() => {
 
-    if (autoSpeak) {
-
-      const timer = setTimeout(() => {
-        speakMessage();
-      }, 500);
-
-
-      return () => {
-
-        clearTimeout(timer);
-
-        window.speechSynthesis.cancel();
-
-        updateSpeakingState(false);
-      };
+    if (!autoSpeak) {
+      return;
     }
+
+    const timer = setTimeout(() => {
+      speakMessage();
+    }, 500);
+
+
+    return () => {
+      clearTimeout(timer);
+      window.speechSynthesis.cancel();
+      updateSpeakingState(false);
+    };
 
   }, [message, autoSpeak]);
 
 
+  useEffect(() => {
+    if (speakTrigger > 0) {
+      speakMessage();
+    }
+  }, [speakTrigger]);
+
+
   const stopSpeaking = () => {
-
     window.speechSynthesis.cancel();
-
     updateSpeakingState(false);
   };
 
+  if (!isSpeaking) {
+    return null;
+  }
 
   return (
     <div
@@ -102,6 +107,10 @@ function VoiceGuide({
         isSpeaking ? "is-speaking" : ""
       }`}
     >
+
+      {/* =========================
+          VOICE ICON
+      ========================= */}
 
       <div className="voice-guide-icon">
 
@@ -114,33 +123,25 @@ function VoiceGuide({
       </div>
 
 
+      {/* =========================
+          CONTENT
+      ========================= */}
+
       <div className="voice-guide-content">
 
-        <p>{message}</p>
+        <p>
+          {message}
+        </p>
 
 
         <div className="voice-guide-actions">
 
-          {isSpeaking ? (
-
-            <button
-              type="button"
-              onClick={stopSpeaking}
-            >
-              Stop
-            </button>
-
-          ) : (
-
-            <button
-              type="button"
-              onClick={speakMessage}
-              className="Speak-again-button"
-            >
-              <RotateCcw size={20} />
-            </button>
-
-          )}
+          <button
+            type="button"
+            onClick={stopSpeaking}
+          >
+            Stop
+          </button>
 
         </div>
 
