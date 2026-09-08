@@ -9,6 +9,8 @@ export interface JwtPayload {
   exp?: number;
 }
 
+export type AuthRequest = Request;
+
 // Extend Express Request type globally so req.user is recognized anywhere in Express handlers
 declare global {
   namespace Express {

@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Heart,
   ShoppingCart,
@@ -5,54 +7,60 @@ import {
   ArrowRight,
   Star,
 } from "lucide-react";
-
-import { Link } from "react-router-dom";
+import api from "../services/api";
 import "./Wishlist.css";
 
-const wishlistItems = [
-  {
-    id: 1,
-    name: "Handwoven Cotton Dupatta",
-    artisan: "Meera Handlooms",
-    category: "Textiles",
-    price: 899,
-    rating: 4.8,
-    reviews: 124,
-    image: "/src/assets/products/dupatta.jpg",
-  },
-  {
-    id: 2,
-    name: "Blue Pottery Vase",
-    artisan: "Jaipur Crafts",
-    category: "Pottery",
-    price: 1249,
-    rating: 4.7,
-    reviews: 86,
-    image: "/src/assets/products/vase.jpg",
-  },
-  {
-    id: 3,
-    name: "Handcrafted Wooden Elephant",
-    artisan: "Rajasthan Artisans",
-    category: "Woodcraft",
-    price: 749,
-    rating: 4.9,
-    reviews: 213,
-    image: "/src/assets/products/elephant.jpg",
-  },
-  {
-    id: 4,
-    name: "Traditional Brass Diya Set",
-    artisan: "Kashi Metalworks",
-    category: "Metal Crafts",
-    price: 599,
-    rating: 4.6,
-    reviews: 71,
-    image: "/src/assets/products/diya.jpg",
-  },
-];
-
 function Wishlist() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchWishlist = async () => {
+    try {
+      const res = await api.get("/wishlist");
+      if (res.data?.products) {
+        setItems(res.data.products);
+      } else {
+        setItems([]);
+      }
+    } catch (err) {
+      console.warn("Could not load wishlist from server:", err);
+      // Fallback empty or local
+      setItems([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
+
+  const handleRemove = async (item) => {
+    const targetId = item.id || item._id;
+    try {
+      const res = await api.delete(`/wishlist/${targetId}`);
+      if (res.data?.products) {
+        setItems(res.data.products);
+      } else {
+        setItems((prev) => prev.filter((i) => (i.id || i._id) !== targetId));
+      }
+    } catch (err) {
+      console.warn("Failed to remove item from wishlist:", err);
+      setItems((prev) => prev.filter((i) => (i.id || i._id) !== targetId));
+    }
+  };
+
+  const handleMoveToCart = async (item) => {
+    const targetId = item.id || item._id;
+    try {
+      await api.post("/cart", { productId: targetId, quantity: 1 });
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (err) {
+      console.warn("Error adding to cart from wishlist:", err);
+    }
+    await handleRemove(item);
+  };
+
   return (
     <main className="wishlist-page">
 
@@ -66,7 +74,7 @@ function Wishlist() {
             <div>
               <h1>My Wishlist</h1>
               <span>
-                {wishlistItems.length} saved items
+                {items.length} saved items
               </span>
             </div>
 
@@ -84,87 +92,105 @@ function Wishlist() {
 
           <div className="wishlist-items">
 
-            {wishlistItems.map((item) => (
-
-              <article
-                className="wishlist-item"
-                key={item.id}
-              >
-
-                {/* Image */}
-
-                <Link
-                  to={`/product/${item.id}`}
-                  className="wishlist-item-image"
-                >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                  />
+            {items.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "48px 16px", color: "#6b7280" }}>
+                <p style={{ fontSize: "16px", marginBottom: "16px" }}>Your wishlist is currently empty.</p>
+                <Link to="/explore" className="wishlist-explore-btn" style={{ display: "inline-flex" }}>
+                  Explore Crafts
+                  <ArrowRight size={17} />
                 </Link>
+              </div>
+            ) : (
+              items.map((item) => (
 
+                <article
+                  className="wishlist-item"
+                  key={item.id || item._id}
+                >
 
-                {/* Info */}
-
-                <div className="wishlist-item-info">
-
-                  <span className="wishlist-category">
-                    {item.category}
-                  </span>
+                  {/* Image */}
 
                   <Link
-                    to={`/product/${item.id}`}
-                    className="wishlist-item-name"
+                    to={`/product/${item.id || item._id}`}
+                    className="wishlist-item-image"
                   >
-                    {item.name}
+                    <img
+                      src={item.image || "/src/assets/products/dupatta.jpg"}
+                      alt={item.name}
+                    />
                   </Link>
 
-                  <span className="wishlist-artisan">
-                    by {item.artisan}
-                  </span>
 
-                  <div className="wishlist-rating">
+                  {/* Info */}
 
-                    <span className="wishlist-rating-box">
-                      {item.rating}
-                      <Star
-                        size={11}
-                        fill="currentColor"
-                      />
+                  <div className="wishlist-item-info">
+
+                    <span className="wishlist-category">
+                      {item.category || "Craft"}
                     </span>
 
-                    <span>
-                      ({item.reviews})
+                    <Link
+                      to={`/product/${item.id || item._id}`}
+                      className="wishlist-item-name"
+                    >
+                      {item.name}
+                    </Link>
+
+                    <span className="wishlist-artisan">
+                      by {item.artisan || "Master Artisan"}
                     </span>
+
+                    <div className="wishlist-rating">
+
+                      <span className="wishlist-rating-box">
+                        {item.rating || 4.8}
+                        <Star
+                          size={11}
+                          fill="currentColor"
+                        />
+                      </span>
+
+                      <span>
+                        ({item.reviews || 0})
+                      </span>
+
+                    </div>
+
+                    <strong className="wishlist-price">
+                      ₹{(Number(item.price) || 0).toLocaleString()}
+                    </strong>
 
                   </div>
 
-                  <strong className="wishlist-price">
-                    ₹{item.price.toLocaleString()}
-                  </strong>
 
-                </div>
+                  {/* Actions */}
 
+                  <div className="wishlist-item-actions">
 
-                {/* Actions */}
+                    <button
+                      type="button"
+                      className="wishlist-cart-btn"
+                      onClick={() => handleMoveToCart(item)}
+                    >
+                      <ShoppingCart size={17} />
+                      Move to Cart
+                    </button>
 
-                <div className="wishlist-item-actions">
+                    <button
+                      type="button"
+                      className="wishlist-remove-btn"
+                      onClick={() => handleRemove(item)}
+                    >
+                      <Trash2 size={16} />
+                      Remove
+                    </button>
 
-                  <button className="wishlist-cart-btn">
-                    <ShoppingCart size={17} />
-                    Add to Cart
-                  </button>
+                  </div>
 
-                  <button className="wishlist-remove-btn">
-                    <Trash2 size={16} />
-                    Remove
-                  </button>
+                </article>
 
-                </div>
-
-              </article>
-
-            ))}
+              ))
+            )}
 
           </div>
 
