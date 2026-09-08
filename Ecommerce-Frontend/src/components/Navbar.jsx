@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
 
 import {
   Search,
@@ -19,7 +20,37 @@ import "./Navbar.css";
 function Navbar() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const { user, isAuthenticated, logout } = useAuth();
+
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const res = await api.get("/cart");
+          if (res.data?.cart?.totalItems !== undefined) {
+            setCartCount(res.data.cart.totalItems);
+            return;
+          }
+        }
+      } catch (err) {
+        // Fallback to local storage if not logged in or offline
+      }
+      const localCart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const total = localCart.reduce(
+        (sum, item) => sum + (Number(item.quantity) || 1),
+        0
+      );
+      setCartCount(total);
+    };
+
+    fetchCartCount();
+    window.addEventListener("cartUpdated", fetchCartCount);
+    return () => {
+      window.removeEventListener("cartUpdated", fetchCartCount);
+    };
+  }, [isAuthenticated]);
 
   return (
     <header className="navbar">
@@ -195,7 +226,7 @@ function Navbar() {
         <Link to="/cart" className="navbar-cart">
           <ShoppingCart size={25} />
           <span>Cart</span>
-          <span className="cart-count">0</span>
+          <span className="cart-count">{cartCount}</span>
         </Link>
 
       </div>

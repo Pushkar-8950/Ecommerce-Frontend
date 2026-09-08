@@ -7,6 +7,9 @@ import userRoutes from './routes/userRoutes';
 import productRoutes from './routes/productRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import aiRoutes from './routes/aiRoutes';
+import cartRoutes from './routes/cartRoutes';
+import wishlistRoutes from './routes/wishlistRoutes';
+import orderRoutes from './routes/orderRoutes';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
 
 // 1. Load environment variables from .env file immediately
@@ -41,6 +44,9 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/artisan/products', productRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/ai', aiRoutes);
 

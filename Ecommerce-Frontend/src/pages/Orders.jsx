@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Package,
   Search,
@@ -6,50 +7,71 @@ import {
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
+import api from "../services/api";
 import "./Orders.css";
 
-const orders = [
-  {
-    id: "CC1024",
-    date: "24 Aug 2026",
-    status: "Delivered",
-    statusType: "delivered",
-    product: "Handwoven Cotton Dupatta",
-    artisan: "Meera Handlooms",
-    category: "Textiles",
-    price: 899,
-    quantity: 1,
-    image: "/src/assets/products/dupatta.jpg",
-  },
-
-  {
-    id: "CC1017",
-    date: "28 Aug 2026",
-    status: "In Transit",
-    statusType: "transit",
-    product: "Blue Pottery Vase",
-    artisan: "Jaipur Crafts",
-    category: "Pottery",
-    price: 1249,
-    quantity: 1,
-    image: "/src/assets/products/vase.jpg",
-  },
-
-  {
-    id: "CC1009",
-    date: "18 Aug 2026",
-    status: "Cancelled",
-    statusType: "cancelled",
-    product: "Traditional Brass Diya Set",
-    artisan: "Kashi Metalworks",
-    category: "Metal Crafts",
-    price: 599,
-    quantity: 1,
-    image: "/src/assets/products/diya.jpg",
-  },
-];
-
 function Orders() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("All Orders");
+
+  useEffect(() => {
+    let isMounted = true;
+    api.get("/orders")
+      .then((res) => {
+        if (isMounted) {
+          if (Array.isArray(res.data?.orders)) {
+            setOrders(res.data.orders);
+          } else {
+            setOrders([]);
+          }
+        }
+      })
+      .catch((err) => {
+        console.warn("Could not fetch real orders:", err);
+        setOrders([]);
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const getStatusType = (status) => {
+    const s = (status || "").toLowerCase();
+    if (s.includes("deliver")) return "delivered";
+    if (s.includes("transit")) return "transit";
+    if (s.includes("cancel")) return "cancelled";
+    return "transit";
+  };
+
+  const filteredOrders = orders.filter((order) => {
+    // Status Filter
+    if (filterStatus !== "All Orders") {
+      const match = (order.status || "").toLowerCase() === filterStatus.toLowerCase();
+      if (!match) return false;
+    }
+
+    // Search Term
+    if (searchTerm.trim()) {
+      const q = searchTerm.toLowerCase();
+      const orderMatch =
+        (order.orderNumber || "").toLowerCase().includes(q) ||
+        (order.id || "").toLowerCase().includes(q) ||
+        (order.status || "").toLowerCase().includes(q);
+      const itemsMatch = order.items?.some((i) =>
+        (i.name || "").toLowerCase().includes(q)
+      );
+      return orderMatch || itemsMatch;
+    }
+
+    return true;
+  });
+
   return (
     <main className="orders-page">
 
@@ -91,16 +113,23 @@ function Orders() {
             <input
               type="text"
               placeholder="Search by order or product"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
 
           </div>
 
 
-          <select className="orders-filter">
+          <select
+            className="orders-filter"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
 
             <option>All Orders</option>
-            <option>Delivered</option>
+            <option>Pending</option>
             <option>In Transit</option>
+            <option>Delivered</option>
             <option>Cancelled</option>
 
           </select>
@@ -112,154 +141,198 @@ function Orders() {
 
         <section className="orders-list">
 
-          {orders.map((order) => (
+          {filteredOrders.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "48px 16px", color: "#6b7280" }}>
+              <Package size={44} style={{ margin: "0 auto 12px", color: "#9ca3af" }} />
+              <p style={{ fontSize: "16px", marginBottom: "8px" }}>No orders found.</p>
+              <span style={{ fontSize: "14px" }}>
+                {orders.length === 0
+                  ? "You haven't placed any orders yet."
+                  : "No orders match your filter criteria."}
+              </span>
+            </div>
+          ) : (
+            filteredOrders.map((order) => {
+              const statusType = getStatusType(order.status);
+              const orderNumber =
+                order.orderNumber ||
+                `ORD-${(order.id || order._id || "").slice(-6).toUpperCase()}`;
+              const orderDate =
+                order.date ||
+                (order.createdAt
+                  ? new Date(order.createdAt).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                  : "Recent");
 
-            <article
-              className="order-card"
-              key={order.id}
-            >
+              const totalAmount =
+                order.totalAmount !== undefined
+                  ? order.totalAmount
+                  : order.total || 0;
 
-              {/* Order Header */}
-
-              <div className="order-card-header">
-
-                <div>
-
-                  <span className="order-label">
-                    ORDER
-                  </span>
-
-                  <strong>
-                    #{order.id}
-                  </strong>
-
-                  <span className="order-date">
-                    Placed on {order.date}
-                  </span>
-
-                </div>
-
-
-                <span
-                  className={`order-status ${order.statusType}`}
-                >
-                  {order.status}
-                </span>
-
-              </div>
-
-
-              {/* Product */}
-
-              <div className="order-product">
-
-                <Link
-                  to="/product/1"
-                  className="order-product-image"
+              return (
+                <article
+                  className="order-card"
+                  key={order.id || order._id}
                 >
 
-                  <img
-                    src={order.image}
-                    alt={order.product}
-                  />
+                  {/* Order Header */}
 
-                </Link>
+                  <div className="order-card-header">
 
+                    <div>
 
-                <div className="order-product-info">
+                      <span className="order-label">
+                        ORDER
+                      </span>
 
-                  <span className="order-category">
-                    {order.category}
-                  </span>
+                      <strong>
+                        #{orderNumber}
+                      </strong>
 
-                  <Link
-                    to="/product/1"
-                    className="order-product-name"
-                  >
-                    {order.product}
-                  </Link>
+                      <span className="order-date">
+                        Placed on {orderDate}
+                      </span>
 
-                  <span className="order-artisan">
-                    by {order.artisan}
-                  </span>
-
-                  <span className="order-quantity">
-                    Quantity: {order.quantity}
-                  </span>
-
-                </div>
+                    </div>
 
 
-                <div className="order-product-price">
+                    <span
+                      className={`order-status ${statusType}`}
+                    >
+                      {order.status}
+                    </span>
 
-                  <span>Total</span>
-
-                  <strong>
-                    ₹{order.price.toLocaleString()}
-                  </strong>
-
-                </div>
-
-              </div>
+                  </div>
 
 
-              {/* Actions */}
+                  {/* Products in this order */}
 
-              <div className="order-card-footer">
+                  {order.items && order.items.length > 0 ? (
+                    order.items.map((item, idx) => (
+                      <div className="order-product" key={idx}>
 
-                <div className="order-status-message">
+                        <Link
+                          to={`/product/${item.productId || ""}`}
+                          className="order-product-image"
+                        >
+                          <img
+                            src={item.image || "/src/assets/products/dupatta.jpg"}
+                            alt={item.name}
+                          />
+                        </Link>
 
-                  {order.statusType === "delivered" && (
-                    <>
-                      <span className="status-dot delivered-dot" />
-                      Delivered successfully
-                    </>
+
+                        <div className="order-product-info">
+
+                          <span className="order-category">
+                            Artisan Craft
+                          </span>
+
+                          <Link
+                            to={`/product/${item.productId || ""}`}
+                            className="order-product-name"
+                          >
+                            {item.name}
+                          </Link>
+
+                          <span className="order-quantity">
+                            Quantity: {item.quantity}
+                          </span>
+
+                        </div>
+
+
+                        <div className="order-product-price">
+
+                          <span>Item Price</span>
+
+                          <strong>
+                            ₹{(Number(item.price) || 0).toLocaleString()}
+                          </strong>
+
+                        </div>
+
+                      </div>
+                    ))
+                  ) : (
+                    <div className="order-product">
+                      <div className="order-product-info">
+                        <span className="order-product-name">{order.product || "Artisan Craft"}</span>
+                        <span className="order-quantity">Quantity: {order.quantity || 1}</span>
+                      </div>
+                      <div className="order-product-price">
+                        <strong>₹{(Number(order.price) || 0).toLocaleString()}</strong>
+                      </div>
+                    </div>
                   )}
 
-                  {order.statusType === "transit" && (
-                    <>
-                      <span className="status-dot transit-dot" />
-                      Your order is on its way
-                    </>
-                  )}
+                  {/* Order Total Row */}
+                  <div style={{ padding: "10px 16px", borderTop: "1px solid #f3f4f6", display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "10px" }}>
+                    <span style={{ fontSize: "13px", color: "#6b7280" }}>Order Total:</span>
+                    <strong style={{ fontSize: "16px", color: "#111827" }}>₹{Number(totalAmount).toLocaleString()}</strong>
+                  </div>
 
-                  {order.statusType === "cancelled" && (
-                    <>
-                      <span className="status-dot cancelled-dot" />
-                      This order was cancelled
-                    </>
-                  )}
+                  {/* Actions */}
 
-                </div>
+                  <div className="order-card-footer">
+
+                    <div className="order-status-message">
+
+                      {statusType === "delivered" && (
+                        <>
+                          <span className="status-dot delivered-dot" />
+                          Delivered successfully
+                        </>
+                      )}
+
+                      {statusType === "transit" && (
+                        <>
+                          <span className="status-dot transit-dot" />
+                          Your order is on its way
+                        </>
+                      )}
+
+                      {statusType === "cancelled" && (
+                        <>
+                          <span className="status-dot cancelled-dot" />
+                          This order was cancelled
+                        </>
+                      )}
+
+                    </div>
 
 
-                <div className="order-actions">
+                    <div className="order-actions">
 
-                  {order.statusType === "delivered" && (
-                    <button className="order-action-btn">
-                      <RotateCcw size={15} />
-                      Buy Again
-                    </button>
-                  )}
+                      {statusType === "delivered" && (
+                        <button className="order-action-btn">
+                          <RotateCcw size={15} />
+                          Buy Again
+                        </button>
+                      )}
 
-                  {order.statusType === "transit" && (
-                    <button className="order-action-btn primary">
-                      Track Order
-                    </button>
-                  )}
+                      {statusType === "transit" && (
+                        <button className="order-action-btn primary">
+                          Track Order
+                        </button>
+                      )}
 
-                  <button className="order-action-btn">
-                    View Details
-                    <ChevronRight size={15} />
-                  </button>
+                      <button className="order-action-btn">
+                        View Details
+                        <ChevronRight size={15} />
+                      </button>
 
-                </div>
+                    </div>
 
-              </div>
+                  </div>
 
-            </article>
-
-          ))}
+                </article>
+              );
+            })
+          )}
 
         </section>
 

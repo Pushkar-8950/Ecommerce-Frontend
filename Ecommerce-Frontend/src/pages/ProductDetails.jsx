@@ -63,12 +63,25 @@ function ProductDetails() {
       api.get(`/products/${id}`)
         .then((res) => {
           if (isMounted) {
-            setProduct(res.data.product || res.data);
+            const prodData = res.data.product || res.data;
+            setProduct(prodData);
           }
         })
         .catch((err) => {
           console.warn("Could not fetch product detail:", err);
         });
+
+      // Check if product is in user's wishlist
+      api.get("/wishlist")
+        .then((res) => {
+          if (isMounted && res.data?.products) {
+            const exists = res.data.products.some(
+              (p) => String(p.id) === String(id) || String(p._id) === String(id)
+            );
+            if (exists) setIsWishlisted(true);
+          }
+        })
+        .catch(() => {});
     }
     return () => {
       isMounted = false;
@@ -83,42 +96,69 @@ function ProductDetails() {
     setQuantity((prev) => Math.max(prev - 1, 1));
   };
 
-  const handleAddToCart = () => {
-    const currentCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const itemToAdd = {
-      id: product?.id || id || "1",
-      name: product?.name || "Handwoven Cotton Dupatta",
-      artisan: product?.artisan || "Meera Handlooms",
-      category: product?.category || "Textiles",
-      price: product?.price || 899,
-      quantity: quantity,
-      image: product?.image || "/src/assets/products/dupatta.jpg",
-    };
+  const handleAddToCart = async () => {
+    const prodId = product?.id || product?._id || id;
+    try {
+      await api.post("/cart", { productId: prodId, quantity });
+      setIsAddedToCart(true);
+      window.dispatchEvent(new Event("cartUpdated"));
+      setTimeout(() => {
+        setIsAddedToCart(false);
+      }, 1800);
+    } catch (err) {
+      console.warn("Cart API failed, falling back to local storage:", err);
+      const currentCart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const itemToAdd = {
+        id: prodId || "1",
+        name: product?.name || "Handwoven Cotton Dupatta",
+        artisan: product?.artisan || "Meera Handlooms",
+        category: product?.category || "Textiles",
+        price: product?.price || 899,
+        quantity: quantity,
+        image: product?.image || "/src/assets/products/dupatta.jpg",
+      };
 
-    const existingIndex = currentCart.findIndex(
-      (item) => String(item.id) === String(itemToAdd.id)
-    );
+      const existingIndex = currentCart.findIndex(
+        (item) => String(item.id) === String(itemToAdd.id)
+      );
 
-    if (existingIndex > -1) {
-      currentCart[existingIndex].quantity += quantity;
-    } else {
-      currentCart.push(itemToAdd);
+      if (existingIndex > -1) {
+        currentCart[existingIndex].quantity += quantity;
+      } else {
+        currentCart.push(itemToAdd);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(currentCart));
+      setIsAddedToCart(true);
+      window.dispatchEvent(new Event("cartUpdated"));
+      setTimeout(() => {
+        setIsAddedToCart(false);
+      }, 1800);
     }
-
-    localStorage.setItem("cart", JSON.stringify(currentCart));
-    setIsAddedToCart(true);
-
-    setTimeout(() => {
-      setIsAddedToCart(false);
-    }, 1800);
   };
 
-  const handleBuyNow = () => {
-    setBuyMessage("Proceeding to checkout...");
+  const handleToggleWishlist = async () => {
+    const prodId = product?.id || product?._id || id;
+    try {
+      if (isWishlisted) {
+        await api.delete(`/wishlist/${prodId}`);
+        setIsWishlisted(false);
+      } else {
+        await api.post("/wishlist", { productId: prodId });
+        setIsWishlisted(true);
+      }
+    } catch (err) {
+      console.warn("Wishlist toggle API error:", err);
+      setIsWishlisted((prev) => !prev);
+    }
+  };
 
+  const handleBuyNow = async () => {
+    setBuyMessage("Proceeding to checkout...");
+    await handleAddToCart();
     setTimeout(() => {
-      setBuyMessage("");
-    }, 2000);
+      window.location.href = "/cart";
+    }, 600);
   };
 
   return (
@@ -132,7 +172,7 @@ function ProductDetails() {
           <ChevronRight size={15} />
           <Link to="/explore">Explore</Link>
           <ChevronRight size={15} />
-          <span>Handwoven Cotton Dupatta</span>
+          <span>{product?.name || "Handwoven Cotton Dupatta"}</span>
         </div>
       </div>
 
@@ -147,17 +187,15 @@ function ProductDetails() {
 
             <div className="product-main-image">
               <img
-                src={productImages[selectedImage]}
-                alt="Handwoven Cotton Dupatta"
+                src={product?.image || productImages[selectedImage]}
+                alt={product?.name || "Handwoven Cotton Dupatta"}
               />
 
               <button
                 className={`product-details-wishlist ${
                   isWishlisted ? "active" : ""
                 }`}
-                onClick={() =>
-                  setIsWishlisted((prev) => !prev)
-                }
+                onClick={handleToggleWishlist}
                 aria-label="Toggle wishlist"
               >
                 <Heart
@@ -179,7 +217,7 @@ function ProductDetails() {
                   onClick={() => setSelectedImage(index)}
                 >
                   <img
-                    src={image}
+                    src={product?.image && index === 0 ? product.image : image}
                     alt={`Product view ${index + 1}`}
                   />
                 </button>
@@ -193,28 +231,28 @@ function ProductDetails() {
           <div className="product-main-info">
 
             <span className="product-details-category">
-              TEXTILES
+              {product?.category?.toUpperCase() || "TEXTILES"}
             </span>
 
-            <h1>Handwoven Cotton Dupatta</h1>
+            <h1>{product?.name || "Handwoven Cotton Dupatta"}</h1>
 
             {/* Rating */}
 
             <div className="product-details-rating">
               <span className="product-details-rating-box">
-                4.8
+                {product?.rating || 4.8}
                 <Star size={13} fill="currentColor" />
               </span>
 
               <span className="product-rating-text">
-                124 Ratings
+                {product?.reviews || 124} Ratings
               </span>
             </div>
 
             {/* Price */}
 
             <div className="product-details-price">
-              ₹899
+              ₹{product?.price !== undefined ? Number(product.price).toLocaleString() : "899"}
             </div>
 
             <div className="product-price-note">
@@ -224,10 +262,7 @@ function ProductDetails() {
             {/* Description */}
 
             <p className="product-short-description">
-              A beautifully handwoven cotton dupatta created
-              using traditional weaving techniques by skilled
-              artisans. Lightweight, elegant, and perfect for
-              everyday wear or special occasions.
+              {product?.description || "A beautifully handwoven cotton dupatta created using traditional weaving techniques by skilled artisans. Lightweight, elegant, and perfect for everyday wear or special occasions."}
             </p>
 
             <div className="product-divider" />

@@ -8,44 +8,162 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./Cart.css";
 
-const defaultCartItems = [
-  {
-    id: 1,
-    name: "Handwoven Cotton Dupatta",
-    artisan: "Meera Handlooms",
-    category: "Textiles",
-    price: 899,
-    quantity: 1,
-    image: "/src/assets/products/dupatta.jpg",
-  },
-  {
-    id: 2,
-    name: "Blue Pottery Vase",
-    artisan: "Jaipur Crafts",
-    category: "Pottery",
-    price: 1249,
-    quantity: 1,
-    image: "/src/assets/products/vase.jpg",
-  },
-];
-
-
 function Cart() {
-  const [items, setItems] = useState(() => {
-    const saved = localStorage.getItem("cart");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      } catch (e) {
-        console.error(e);
+  const navigate = useNavigate();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  const fetchCart = async () => {
+    try {
+      const res = await api.get("/cart");
+      if (res.data?.cart?.items) {
+        setItems(res.data.cart.items);
+      } else {
+        setItems([]);
       }
+    } catch (err) {
+      console.warn("Could not fetch cart from server:", err);
+      const saved = localStorage.getItem("cart");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) setItems(parsed);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    } finally {
+      setLoading(false);
     }
-    return defaultCartItems;
-  });
+  };
+
+  useEffect(() => {
+    fetchCart();
+    window.addEventListener("cartUpdated", fetchCart);
+    return () => window.removeEventListener("cartUpdated", fetchCart);
+  }, []);
+
+  const handleUpdateQuantity = async (item, delta) => {
+    const targetId = item.itemId || item._id || item.productId || item.id;
+    const newQty = item.quantity + delta;
+
+    if (newQty <= 0) {
+      await handleRemoveItem(item);
+      return;
+    }
+
+    try {
+      const res = await api.put(`/cart/${targetId}`, { quantity: newQty });
+      if (res.data?.cart?.items) {
+        setItems(res.data.cart.items);
+      } else {
+        setItems((prev) =>
+          prev.map((i) =>
+            (i.itemId === targetId || i.id === targetId)
+              ? { ...i, quantity: newQty }
+              : i
+          )
+        );
+      }
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (err) {
+      console.warn("Failed to update cart item on server:", err);
+      setItems((prev) => {
+        const updated = prev.map((i) =>
+          (i.itemId === targetId || i.id === targetId)
+            ? { ...i, quantity: newQty }
+            : i
+        );
+        localStorage.setItem("cart", JSON.stringify(updated));
+        return updated;
+      });
+      window.dispatchEvent(new Event("cartUpdated"));
+    }
+  };
+
+  const handleRemoveItem = async (item) => {
+    const targetId = item.itemId || item._id || item.productId || item.id;
+    try {
+      const res = await api.delete(`/cart/${targetId}`);
+      if (res.data?.cart?.items) {
+        setItems(res.data.cart.items);
+      } else {
+        setItems((prev) =>
+          prev.filter((i) => i.itemId !== targetId && i.id !== targetId && i.productId !== targetId)
+        );
+      }
+      window.dispatchEvent(new Event("cartUpdated"));
+    } catch (err) {
+      console.warn("Failed to remove item on server:", err);
+      setItems((prev) => {
+        const updated = prev.filter(
+          (i) => i.itemId !== targetId && i.id !== targetId && i.productId !== targetId
+        );
+        localStorage.setItem("cart", JSON.stringify(updated));
+        return updated;
+      });
+      window.dispatchEvent(new Event("cartUpdated"));
+    }
+  };
+
+  const handleMoveToWishlist = async (item) => {
+    const prodId = item.productId || item.id;
+    try {
+      await api.post("/wishlist", { productId: prodId });
+    } catch (err) {
+      console.warn("Move to wishlist error:", err);
+    }
+    await handleRemoveItem(item);
+  };
+
+  const handleCheckout = async () => {
+    if (items.length === 0 || isCheckingOut) return;
+    setIsCheckingOut(true);
+
+    try {
+      await api.post("/orders", {
+        items: items.map((i) => ({
+          productId: i.productId || i.id,
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity,
+          image: i.image,
+        })),
+        totalAmount: subtotal,
+        shippingAddress: {
+          street: "123 Artisan Heritage Marg",
+          city: "Jaipur",
+          state: "Rajasthan",
+          pincode: "302001",
+        },
+        paymentMethod: "Cash on Delivery",
+      });
+
+      localStorage.removeItem("cart");
+      window.dispatchEvent(new Event("cartUpdated"));
+      navigate("/orders");
+    } catch (err) {
+      console.error("Checkout failed:", err);
+      if (err.response?.status === 401) {
+        alert("Please log in to complete your order.");
+        navigate("/login");
+      } else {
+        alert(err.response?.data?.message || "Failed to complete checkout.");
+      }
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
+  const subtotal = items.reduce(
+    (sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1),
+    0
+  );
 
   return (
     <main className="cart-page">
@@ -82,84 +200,110 @@ function Cart() {
 
           <div className="cart-items-list">
 
-            {items.map((item) => (
+            {items.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "48px 16px", color: "#6b7280" }}>
+                <p style={{ fontSize: "16px", marginBottom: "16px" }}>Your shopping cart is currently empty.</p>
+                <Link to="/explore" className="continue-shopping" style={{ display: "inline-flex", marginTop: "8px" }}>
+                  <ArrowRight size={16} />
+                  Discover Artisan Crafts
+                </Link>
+              </div>
+            ) : (
+              items.map((item) => (
 
-              <div
-                className="cart-item"
-                key={item.id}
-              >
+                <div
+                  className="cart-item"
+                  key={item.itemId || item.id || item._id}
+                >
 
-                {/* Image */}
+                  {/* Image */}
 
-                <div className="cart-item-image">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                  />
-                </div>
-
-
-                {/* Info */}
-
-                <div className="cart-item-info">
-
-                  <span className="cart-item-category">
-                    {item.category}
-                  </span>
-
-                  <Link
-                    to={`/product/${item.id}`}
-                    className="cart-item-name"
-                  >
-                    {item.name}
-                  </Link>
-
-                  <span className="cart-item-artisan">
-                    by {item.artisan}
-                  </span>
-
-                  <span className="cart-item-price">
-                    ₹{item.price.toLocaleString()}
-                  </span>
+                  <div className="cart-item-image">
+                    <img
+                      src={item.image || "/src/assets/products/dupatta.jpg"}
+                      alt={item.name}
+                    />
+                  </div>
 
 
-                  {/* Actions */}
+                  {/* Info */}
 
-                  <div className="cart-item-actions">
+                  <div className="cart-item-info">
 
-                    <div className="cart-quantity">
+                    <span className="cart-item-category">
+                      {item.category || "Handicraft"}
+                    </span>
 
-                      <button>
-                        <Minus size={14} />
+                    <Link
+                      to={`/product/${item.productId || item.id}`}
+                      className="cart-item-name"
+                    >
+                      {item.name}
+                    </Link>
+
+                    <span className="cart-item-artisan">
+                      by {item.artisan || "Master Artisan"}
+                    </span>
+
+                    <span className="cart-item-price">
+                      ₹{(Number(item.price) || 0).toLocaleString()}
+                    </span>
+
+
+                    {/* Actions */}
+
+                    <div className="cart-item-actions">
+
+                      <div className="cart-quantity">
+
+                        <button
+                          type="button"
+                          onClick={() => handleUpdateQuantity(item, -1)}
+                          aria-label="Decrease quantity"
+                        >
+                          <Minus size={14} />
+                        </button>
+
+                        <span>{item.quantity}</span>
+
+                        <button
+                          type="button"
+                          onClick={() => handleUpdateQuantity(item, 1)}
+                          aria-label="Increase quantity"
+                        >
+                          <Plus size={14} />
+                        </button>
+
+                      </div>
+
+
+                      <button
+                        type="button"
+                        className="cart-action-button"
+                        onClick={() => handleMoveToWishlist(item)}
+                      >
+                        <Heart size={15} />
+                        Move to Wishlist
                       </button>
 
-                      <span>{item.quantity}</span>
 
-                      <button>
-                        <Plus size={14} />
+                      <button
+                        type="button"
+                        className="cart-action-button delete"
+                        onClick={() => handleRemoveItem(item)}
+                      >
+                        <Trash2 size={15} />
+                        Remove
                       </button>
 
                     </div>
-
-
-                    <button className="cart-action-button">
-                      <Heart size={15} />
-                      Move to Wishlist
-                    </button>
-
-
-                    <button className="cart-action-button delete">
-                      <Trash2 size={15} />
-                      Remove
-                    </button>
 
                   </div>
 
                 </div>
 
-              </div>
-
-            ))}
+              ))
+            )}
 
           </div>
 
@@ -186,7 +330,7 @@ function Cart() {
 
           <div className="summary-row">
             <span>Subtotal</span>
-            <strong>₹2,148</strong>
+            <strong>₹{subtotal.toLocaleString()}</strong>
           </div>
 
 
@@ -209,12 +353,17 @@ function Cart() {
 
           <div className="summary-total">
             <span>Total</span>
-            <strong>₹2,148</strong>
+            <strong>₹{subtotal.toLocaleString()}</strong>
           </div>
 
 
-          <button className="checkout-button">
-            Proceed to Checkout
+          <button
+            type="button"
+            className="checkout-button"
+            onClick={handleCheckout}
+            disabled={items.length === 0 || isCheckingOut}
+          >
+            {isCheckingOut ? "Placing Order..." : "Proceed to Checkout"}
             <ArrowRight size={18} />
           </button>
 
