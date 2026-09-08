@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 // Importing logos from lucide-react
 import {
@@ -15,10 +16,10 @@ import {
 
 import "./Navbar.css";
 
-
 function Navbar() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   return (
     <header className="navbar">
@@ -89,7 +90,9 @@ function Navbar() {
             <User size={19} />
 
             <div>
-              <span className="account-small">Hello, Sign in</span>
+              <span className="account-small">
+                {isAuthenticated ? `Hello, ${user?.name?.split(' ')[0] || 'Member'}` : 'Hello, Sign in'}
+              </span>
               <span className="account-main">
                 Account & Lists <ChevronDown size={14} />
               </span>
@@ -98,14 +101,23 @@ function Navbar() {
 
           {accountOpen && (
             <div className="account-dropdown">
-
               <div className="account-dropdown-header">
-                <Link to="/login" className="account-signin">
-                  Sign in
-                </Link>
-
-                <p>New customer?</p>
-                <Link to="/register">Create your account</Link>
+                {isAuthenticated ? (
+                  <div style={{ padding: "4px 0" }}>
+                    <p style={{ fontWeight: 600, fontSize: "14px", color: "#111827", margin: 0 }}>
+                      {user?.name}
+                    </p>
+                    <span style={{ fontSize: "12px", color: "#6b7280" }}>{user?.email}</span>
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/login" className="account-signin">
+                      Sign in
+                    </Link>
+                    <p>New customer?</p>
+                    <Link to="/register">Create your account</Link>
+                  </>
+                )}
               </div>
 
               <div className="account-dropdown-links">
@@ -124,12 +136,13 @@ function Navbar() {
                   Account Settings
                 </Link>
 
-                <button>
-                  <LogOut size={17} />
-                  Sign out
-                </button>
+                {isAuthenticated && (
+                  <button type="button" onClick={logout} style={{ width: "100%", textAlign: "left" }}>
+                    <LogOut size={17} />
+                    Sign out
+                  </button>
+                )}
               </div>
-
             </div>
           )}
         </div>

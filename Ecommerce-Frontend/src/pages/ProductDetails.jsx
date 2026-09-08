@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import api from "../services/api";
 import {
   Star,
   Heart,
@@ -10,8 +12,6 @@ import {
   ChevronRight,
   Check,
 } from "lucide-react";
-
-import { Link } from "react-router-dom";
 import "./ProductDetails.css";
 
 const productImages = [
@@ -49,11 +49,31 @@ const relatedProducts = [
 ];
 
 function ProductDetails() {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
   const [buyMessage, setBuyMessage] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+    if (id) {
+      api.get(`/products/${id}`)
+        .then((res) => {
+          if (isMounted) {
+            setProduct(res.data.product || res.data);
+          }
+        })
+        .catch((err) => {
+          console.warn("Could not fetch product detail:", err);
+        });
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
 
   const increaseQuantity = () => {
     setQuantity((prev) => Math.min(prev + 1, 10));
@@ -64,6 +84,28 @@ function ProductDetails() {
   };
 
   const handleAddToCart = () => {
+    const currentCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const itemToAdd = {
+      id: product?.id || id || "1",
+      name: product?.name || "Handwoven Cotton Dupatta",
+      artisan: product?.artisan || "Meera Handlooms",
+      category: product?.category || "Textiles",
+      price: product?.price || 899,
+      quantity: quantity,
+      image: product?.image || "/src/assets/products/dupatta.jpg",
+    };
+
+    const existingIndex = currentCart.findIndex(
+      (item) => String(item.id) === String(itemToAdd.id)
+    );
+
+    if (existingIndex > -1) {
+      currentCart[existingIndex].quantity += quantity;
+    } else {
+      currentCart.push(itemToAdd);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(currentCart));
     setIsAddedToCart(true);
 
     setTimeout(() => {

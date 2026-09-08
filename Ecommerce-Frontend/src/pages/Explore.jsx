@@ -1,81 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   SlidersHorizontal,
-  ChevronDown,
   Star,
   Heart,
+  Loader2,
+  AlertCircle,
+  RotateCcw,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import api from "../services/api";
 import "./Explore.css";
-
-const products = [
-  {
-    id: 1,
-    name: "Handwoven Cotton Dupatta",
-    artisan: "Meera Handlooms",
-    category: "Textiles",
-    region: "Haryana",
-    price: 899,
-    rating: 4.8,
-    reviews: 124,
-    image: "/src/assets/products/dupatta.jpg",
-  },
-  {
-    id: 2,
-    name: "Blue Pottery Vase",
-    artisan: "Jaipur Crafts",
-    category: "Pottery",
-    region: "Rajasthan",
-    price: 1249,
-    rating: 4.7,
-    reviews: 86,
-    image: "/src/assets/products/vase.jpg",
-  },
-  {
-    id: 3,
-    name: "Handcrafted Wooden Elephant",
-    artisan: "Rajasthan Artisans",
-    category: "Woodcraft",
-    region: "Rajasthan",
-    price: 749,
-    rating: 4.9,
-    reviews: 213,
-    image: "/src/assets/products/elephant.jpg",
-  },
-  {
-    id: 4,
-    name: "Traditional Brass Diya Set",
-    artisan: "Kashi Metalworks",
-    category: "Metal Crafts",
-    region: "Uttar Pradesh",
-    price: 599,
-    rating: 4.6,
-    reviews: 71,
-    image: "/src/assets/products/diya.jpg",
-  },
-  {
-    id: 5,
-    name: "Handmade Silk Cushion Cover",
-    artisan: "Banaras Weaves",
-    category: "Home Decor",
-    region: "Uttar Pradesh",
-    price: 699,
-    rating: 4.8,
-    reviews: 95,
-    image: "/src/assets/products/cushion.jpg",
-  },
-  {
-    id: 6,
-    name: "Traditional Silver Earrings",
-    artisan: "Desert Jewellery",
-    category: "Jewellery",
-    region: "Rajasthan",
-    price: 1499,
-    rating: 4.7,
-    reviews: 142,
-    image: "/src/assets/products/earrings.jpg",
-  },
-];
 
 const categories = [
   "Textiles",
@@ -98,10 +32,65 @@ const regions = [
 ];
 
 function Explore() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [sortBy, setSortBy] = useState("");
+
+  /**
+   * Fetch products dynamically from backend GET /api/products
+   * Re-runs whenever categories, regions, or sort criteria change
+   */
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Construct query parameters matching backend specification
+        const params = {};
+        if (selectedCategories.length > 0) {
+          params.category = selectedCategories.join(",");
+        }
+        if (selectedRegions.length > 0) {
+          params.region = selectedRegions.join(",");
+        }
+        if (sortBy) {
+          params.sort = sortBy;
+        }
+
+        const response = await api.get("/products", { params });
+
+        if (isMounted) {
+          const items = response.data.products || response.data.data || response.data;
+          setProducts(Array.isArray(items) ? items : []);
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error("Error fetching products:", err);
+          setError(
+            err.response?.data?.message ||
+              "Unable to load products. Please check your connection and try again."
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [selectedCategories, selectedRegions, sortBy]);
 
   // Toggle buttons for selecting categories and regions
   const toggleCategory = (category) => {
@@ -120,270 +109,234 @@ function Explore() {
     );
   };
 
-  // Filter products based on selected categories and regions
-  let filteredProducts = products.filter((product) => {
-    const categoryMatch =
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(product.category);
-
-    const regionMatch =
-      selectedRegions.length === 0 ||
-      selectedRegions.includes(product.region);
-
-    return categoryMatch && regionMatch;
-  });
-
-  // Sort products based on selected sorting option
-  if (sortBy === "low-high") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => a.price - b.price
-    );
-  }
-
-  if (sortBy === "high-low") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => b.price - a.price
-    );
-  }
-
-  if (sortBy === "rating") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => b.rating - a.rating
-    );
-  }
+  const clearFilters = () => {
+    setSelectedCategories([]);
+    setSelectedRegions([]);
+    setSortBy("");
+  };
 
   return (
     <main className="explore-page">
-
       {/* Heading */}
-
       <div className="explore-header">
         <div>
           <h1>Explore Crafts</h1>
-
           <p>
-            Discover authentic handcrafted products
-            from artisans across India.
+            Discover authentic handcrafted products from artisans across India.
           </p>
         </div>
       </div>
 
-
       {/* Content */}
-
       <div className="explore-container">
-
         {/* Sidebar */}
-
         <aside className="filter-sidebar">
-
           <div className="filter-title">
             <SlidersHorizontal size={18} />
             <h3>Filters</h3>
+            {(selectedCategories.length > 0 || selectedRegions.length > 0 || sortBy) && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                style={{
+                  marginLeft: "auto",
+                  background: "none",
+                  border: "none",
+                  color: "#d97706",
+                  cursor: "pointer",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                }}
+              >
+                Reset
+              </button>
+            )}
           </div>
 
-
           {/* Categories */}
-
           <div className="filter-section">
-
             <h4>Categories</h4>
-
             {categories.map((category) => (
-              <label
-                key={category}
-                className="filter-option"
-              >
+              <label key={category} className="filter-option">
                 <input
                   type="checkbox"
                   checked={selectedCategories.includes(category)}
-                  onChange={() =>
-                    toggleCategory(category)
-                  }
+                  onChange={() => toggleCategory(category)}
                 />
-
                 <span>{category}</span>
-
               </label>
             ))}
-
           </div>
 
-
           {/* Region */}
-
           <div className="filter-section">
-
             <h4>Region</h4>
-
             {regions.map((region) => (
-              <label
-                key={region}
-                className="filter-option"
-              >
+              <label key={region} className="filter-option">
                 <input
                   type="checkbox"
                   checked={selectedRegions.includes(region)}
-                  onChange={() =>
-                    toggleRegion(region)
-                  }
+                  onChange={() => toggleRegion(region)}
                 />
-
                 <span>{region}</span>
-
               </label>
             ))}
-
           </div>
-
         </aside>
 
-
-        {/* Products */}
-
+        {/* Products Section */}
         <section className="explore-products">
-
           <div className="explore-products-top">
-
             <p>
-              Showing{" "}
-              <strong>
-                {filteredProducts.length}
-              </strong>{" "}
-              products
+              Showing <strong>{products.length}</strong> products
             </p>
 
             <div className="sort-container">
-
               <span>Sort by:</span>
-
               <select
                 value={sortBy}
-                onChange={(e) =>
-                  setSortBy(e.target.value)
-                }
+                onChange={(e) => setSortBy(e.target.value)}
               >
-                <option value="">
-                  Recommended
-                </option>
-
-                <option value="low-high">
-                  Price: Low to High
-                </option>
-
-                <option value="high-low">
-                  Price: High to Low
-                </option>
-
-                <option value="rating">
-                  Top Rated
-                </option>
-
+                <option value="">Recommended</option>
+                <option value="low-high">Price: Low to High</option>
+                <option value="high-low">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
               </select>
-
             </div>
-
           </div>
 
-
-          {/* Product Grid */}
-
-          <div className="explore-products-grid">
-
-            {filteredProducts.map((product) => (
-
-              <div
-                className="explore-product-card"
-                key={product.id}
-              >
-
-                <div className="explore-product-image">
-
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                  />
-
-                  <button className="explore-wishlist">
-                    <Heart size={18} />
-                  </button>
-
-                </div>
-
-
-                <div className="explore-product-info">
-
-                  <span className="explore-category">
-                    {product.category}
-                  </span>
-
-                  <Link
-                    to={`/product/${product.id}`}
-                    className="explore-product-name"
-                  >
-                    {product.name}
-                  </Link>
-
-                  <span className="explore-artisan">
-                    by {product.artisan}
-                  </span>
-
-
-                  <div className="explore-rating">
-
-                    <span className="explore-rating-box">
-
-                      {product.rating}
-
-                      <Star
-                        size={11}
-                        fill="currentColor"
-                      />
-
-                    </span>
-
-                    <span>
-                      ({product.reviews})
-                    </span>
-
-                  </div>
-
-
-                  <strong className="explore-price">
-                    ₹{product.price.toLocaleString()}
-                  </strong>
-
-                </div>
-
-              </div>
-
-            ))}
-
-          </div>
-
-
-          {/* Empty State */}
-
-          {filteredProducts.length === 0 && (
-
-            <div className="no-products">
-
-              <h3>
-                No products found
-              </h3>
-
-              <p>
-                Try changing your filters.
-              </p>
-
+          {/* Loading State */}
+          {loading && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "60px 20px",
+                color: "#6b7280",
+                gap: "12px",
+              }}
+            >
+              <Loader2 size={36} className="spin-animation" style={{ animation: "spin 1s linear infinite" }} />
+              <p style={{ fontSize: "16px", fontWeight: 500 }}>Loading artisanal catalog...</p>
             </div>
-
           )}
 
+          {/* Error State */}
+          {!loading && error && (
+            <div
+              style={{
+                backgroundColor: "#fef2f2",
+                border: "1px solid #fecaca",
+                borderRadius: "8px",
+                padding: "24px",
+                margin: "20px 0",
+                textAlign: "center",
+                color: "#991b1b",
+              }}
+            >
+              <AlertCircle size={32} style={{ margin: "0 auto 8px" }} />
+              <p style={{ fontWeight: 600, marginBottom: "12px" }}>{error}</p>
+              <button
+                type="button"
+                onClick={() => {
+                  // Trigger reload
+                  setLoading(true);
+                  setError(null);
+                  api.get("/products")
+                    .then((res) => setProducts(res.data.products || res.data))
+                    .catch((e) => setError(e.message))
+                    .finally(() => setLoading(false));
+                }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "8px 16px",
+                  backgroundColor: "#dc2626",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                }}
+              >
+                <RotateCcw size={16} />
+                Retry
+              </button>
+            </div>
+          )}
+
+          {/* Product Grid */}
+          {!loading && !error && products.length > 0 && (
+            <div className="explore-products-grid">
+              {products.map((product) => (
+                <div className="explore-product-card" key={product.id || product._id}>
+                  <div className="explore-product-image">
+                    <img
+                      src={product.image || "/placeholder.jpg"}
+                      alt={product.name}
+                      loading="lazy"
+                    />
+                    <button className="explore-wishlist" type="button" aria-label="Add to wishlist">
+                      <Heart size={18} />
+                    </button>
+                  </div>
+
+                  <div className="explore-product-info">
+                    <span className="explore-category">{product.category}</span>
+
+                    <Link
+                      to={`/product/${product.id || product._id}`}
+                      className="explore-product-name"
+                    >
+                      {product.name}
+                    </Link>
+
+                    <span className="explore-artisan">by {product.artisan || "Master Artisan"}</span>
+
+                    <div className="explore-rating">
+                      <span className="explore-rating-box">
+                        {product.rating || 4.8}
+                        <Star size={11} fill="currentColor" />
+                      </span>
+                      <span>({product.reviews || 0})</span>
+                    </div>
+
+                    <strong className="explore-price">
+                      ₹{Number(product.price || 0).toLocaleString()}
+                    </strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && !error && products.length === 0 && (
+            <div className="no-products">
+              <h3>No products found</h3>
+              <p>Try changing your category or regional filters.</p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                style={{
+                  marginTop: "12px",
+                  padding: "8px 16px",
+                  backgroundColor: "#292524",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
         </section>
-
       </div>
-
     </main>
   );
 }
