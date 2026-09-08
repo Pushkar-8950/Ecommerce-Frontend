@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Minus,
   Plus,
@@ -10,8 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import "./Cart.css";
 
-
-const cartItems = [
+const defaultCartItems = [
   {
     id: 1,
     name: "Handwoven Cotton Dupatta",
@@ -34,6 +34,19 @@ const cartItems = [
 
 
 function Cart() {
+  const [items, setItems] = useState(() => {
+    const saved = localStorage.getItem("cart");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return defaultCartItems;
+  });
+
   return (
     <main className="cart-page">
 
@@ -45,7 +58,7 @@ function Cart() {
           <h1>Your Shopping Cart</h1>
 
           <span>
-            2 items in your cart
+            {items.length} items in your cart
           </span>
 
         </div>
@@ -63,13 +76,13 @@ function Cart() {
           <div className="cart-items-header">
             <h2>Cart Items</h2>
 
-            <span>2 Items</span>
+            <span>{items.length} Items</span>
           </div>
 
 
           <div className="cart-items-list">
 
-            {cartItems.map((item) => (
+            {items.map((item) => (
 
               <div
                 className="cart-item"

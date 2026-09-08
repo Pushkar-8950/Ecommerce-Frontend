@@ -10,12 +10,16 @@ import {
 
 import { Link } from "react-router-dom";
 import VoiceGuide from "../../components/artisan/VoiceGuide";
+import { useAuth } from "../../context/AuthContext";
 
 import "./ArtisanHome.css";
 
 function ArtisanHome() {
   const [isVoiceActive, setIsVoiceActive] = useState(false);
   const [speakTrigger, setSpeakTrigger] = useState(0);
+  const { user } = useAuth();
+
+  const artisanDisplayName = user?.name ? user.name.trim().split(" ")[0] : "Artisan";
 
   return (
     <main
@@ -81,7 +85,7 @@ function ArtisanHome() {
           <div className="artisan-greeting">
 
             <h1>
-              Namaste, Meera 👋
+              Namaste, {artisanDisplayName} 👋
             </h1>
 
           </div>
@@ -94,7 +98,7 @@ function ArtisanHome() {
           <div className="artisan-guidance-stage">
 
             <VoiceGuide
-              message="Namaste Meera. Welcome to Hunar Bazaar. Here, you can sell products, see your product listings, check your orders, or view your profile. To sell something you have made, choose Add Product."
+              message={`Namaste ${artisanDisplayName}. Welcome to Hunar Bazaar. Here, you can sell products, see your product listings, check your orders, or view your profile. To sell something you have made, choose Add Product.`}
               onSpeakingChange={setIsVoiceActive}
               speakTrigger={speakTrigger}
             />

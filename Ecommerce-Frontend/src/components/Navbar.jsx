@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-// Importing logos from lucide-react
 import {
   Search,
   User,
@@ -11,14 +11,15 @@ import {
   Heart,
   Settings,
   LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 
 import "./Navbar.css";
 
-
 function Navbar() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   return (
     <header className="navbar">
@@ -79,6 +80,29 @@ function Navbar() {
           />
         </div>
 
+        {/* Artisan Portal Header Link */}
+        {isAuthenticated && user?.role === "artisan" && (
+          <Link
+            to="/artisan"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              backgroundColor: "#f59e0b",
+              color: "#ffffff",
+              borderRadius: "6px",
+              fontWeight: 600,
+              fontSize: "13px",
+              textDecoration: "none",
+              marginRight: "4px",
+            }}
+          >
+            <LayoutDashboard size={16} />
+            <span>Artisan Portal</span>
+          </Link>
+        )}
+
         {/* Account */}
         <div
           className="navbar-dropdown-wrapper account-wrapper"
@@ -89,7 +113,9 @@ function Navbar() {
             <User size={19} />
 
             <div>
-              <span className="account-small">Hello, Sign in</span>
+              <span className="account-small">
+                {isAuthenticated ? `Hello, ${user?.name?.split(' ')[0] || 'Member'}` : 'Hello, Sign in'}
+              </span>
               <span className="account-main">
                 Account & Lists <ChevronDown size={14} />
               </span>
@@ -98,17 +124,47 @@ function Navbar() {
 
           {accountOpen && (
             <div className="account-dropdown">
-
               <div className="account-dropdown-header">
-                <Link to="/login" className="account-signin">
-                  Sign in
-                </Link>
-
-                <p>New customer?</p>
-                <Link to="/register">Create your account</Link>
+                {isAuthenticated ? (
+                  <div style={{ padding: "4px 0" }}>
+                    <p style={{ fontWeight: 600, fontSize: "14px", color: "#111827", margin: 0 }}>
+                      {user?.name}
+                    </p>
+                    <span style={{ fontSize: "12px", color: "#6b7280" }}>{user?.email}</span>
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/login" className="account-signin">
+                      Sign in
+                    </Link>
+                    <p>New customer?</p>
+                    <Link to="/register">Create your account</Link>
+                  </>
+                )}
               </div>
 
               <div className="account-dropdown-links">
+                {isAuthenticated && user?.role === "artisan" && (
+                  <Link
+                    to="/artisan"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "8px 12px",
+                      backgroundColor: "#fef3c7",
+                      color: "#92400e",
+                      borderRadius: "6px",
+                      fontWeight: 600,
+                      marginBottom: "6px",
+                      border: "1px solid #fde68a",
+                    }}
+                  >
+                    <LayoutDashboard size={17} />
+                    Artisan Dashboard
+                  </Link>
+                )}
+
                 <Link to="/orders">
                   <Package size={17} />
                   My Orders
@@ -124,12 +180,13 @@ function Navbar() {
                   Account Settings
                 </Link>
 
-                <button>
-                  <LogOut size={17} />
-                  Sign out
-                </button>
+                {isAuthenticated && (
+                  <button type="button" onClick={logout} style={{ width: "100%", textAlign: "left" }}>
+                    <LogOut size={17} />
+                    Sign out
+                  </button>
+                )}
               </div>
-
             </div>
           )}
         </div>
