@@ -1,582 +1,349 @@
 /* =========================
-   ADD PRODUCT PAGE
+   ADD PRODUCT - CLEAR & ACCESSIBLE UI
 ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
 
 .add-product-page {
     min-height: 100vh;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 40px 20px;
-
-    background:
-        radial-gradient(
-            circle at 15% 20%,
-            rgba(180, 83, 9, 0.10),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 85% 80%,
-            rgba(245, 158, 11, 0.08),
-            transparent 30%
-        ),
-        linear-gradient(
-            135deg,
-            #f8f6f2,
-            #fcfaf7
-        );
-
+    background: 
+        radial-gradient(circle at 15% 20%, rgba(180, 83, 9, 0.05), transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(245, 158, 11, 0.04), transparent 40%),
+        linear-gradient(135deg, #fdfbf7, #f4eee6);
     color: #26231f;
-
-    overflow: hidden;
-
     position: relative;
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
 }
-
 
 /* =========================
-   DECORATIVE BACKGROUND
+   GENTLE BACKGROUND
 ========================= */
-
-.add-product-page::before {
-    content: "";
-
+.bg-ripple {
     position: absolute;
-
-    width: 420px;
-    height: 420px;
-
-    top: -180px;
-    left: -180px;
-
     border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(180, 83, 9, 0.08),
-            transparent 70%
-        );
-
+    border: 2px solid rgba(180, 83, 9, 0.03);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: none;
+    animation: rippleExpand 12s infinite linear;
 }
 
-
-.add-product-page::after {
-    content: "";
-
-    position: absolute;
-
-    width: 350px;
-    height: 350px;
-
-    right: -150px;
-    bottom: -150px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(245, 158, 11, 0.07),
-            transparent 70%
-        );
-
-    pointer-events: none;
+.ripple-1 {
+    width: 300px; height: 300px;
 }
 
+@keyframes rippleExpand {
+    0% { width: 300px; height: 300px; opacity: 1; border-width: 2px; }
+    100% { width: 1400px; height: 1400px; opacity: 0; border-width: 10px; }
+}
 
 /* =========================
    MAIN BOX
 ========================= */
-
 .add-product-box {
     width: 100%;
-    max-width: 700px;
-
-    padding: 35px;
-
+    max-width: 500px;
+    padding: 45px 35px;
     position: relative;
-    z-index: 1;
+    z-index: 10;
+    
+    background: #ffffff;
+    border-radius: 28px;
+    border: 1px solid rgba(180, 83, 9, 0.1);
+    
+    box-shadow: 
+        0 20px 50px rgba(139, 90, 43, 0.06),
+        0 4px 15px rgba(180, 83, 9, 0.03);
 
-    background:
-        rgba(255, 255, 255, 0.78);
-
-    border:
-        1px solid rgba(180, 83, 9, 0.14);
-
-    border-radius: 22px;
-
-    box-shadow:
-        0 25px 70px rgba(53, 35, 20, 0.10),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    transition:
-        transform 0.35s ease,
-        box-shadow 0.35s ease;
+    animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-
-.add-product-box:hover {
-    transform:
-        translateY(-4px);
-
-    box-shadow:
-        0 30px 80px rgba(53, 35, 20, 0.14),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-
 
 /* =========================
    HEADER
 ========================= */
-
 .add-product-box-header {
     text-align: center;
-
-    margin-bottom: 30px;
+    margin-bottom: 120px;
 }
 
+.header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #fffaf4;
+    border: 1px solid rgba(180, 83, 9, 0.15);
+    border-radius: 20px;
+    color: #b45309;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
 
 .add-product-box-header p {
-    margin: 0;
-
+    margin: 0 0 8px 0;
+    font-size: 30px;
+    font-weight: 800;
     color: #29241f;
-
-    font-size: 25px;
-    font-weight: 750;
-
-    letter-spacing: -0.6px;
 }
 
-
-.add-product-box-header p::after {
-    content: "";
-
+.header-subtitle {
+    color: #6b6054;
+    font-size: 16px;
+    font-weight: 500;
     display: block;
-
-    width: 50px;
-    height: 4px;
-
-    margin: 12px auto 0;
-
-    border-radius: 20px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #b45309,
-            #f59e0b
-        );
+    line-height: 1.4;
 }
-
-
-/* =========================
-   IMAGE SECTION
-========================= */
 
 .add-product-image-section {
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
-    gap: 25px;
+    gap: 30px;
 }
-
 
 /* =========================
-   IMAGE BOX
+   CLEAR & OBVIOUS CAMERA AREA
 ========================= */
-
-.image-box {
-    width: 270px;
-    height: 270px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    position: relative;
-
-    border:
-        1.5px dashed #d2bca6;
-
-    border-radius: 20px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fffaf5,
-            #f8efe6
-        );
-
-    color: #b45309;
-
-    text-decoration: none;
-
-    overflow: hidden;
-
-    transition:
-        transform 0.35s ease,
-        border-color 0.35s ease,
-        box-shadow 0.35s ease,
-        background 0.35s ease;
-}
-
-
-/* Image box glow */
-
-.image-box::before {
-    content: "";
-
-    position: absolute;
-
-    width: 120px;
-    height: 120px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(180, 83, 9, 0.13),
-            transparent 70%
-        );
-
-    opacity: 0.8;
-
-    transition:
-        transform 0.5s ease;
-}
-
-
-.image-box:hover {
-    transform:
-        scale(1.025);
-
-    border-color:
-        #b45309;
-
-    background:
-        linear-gradient(
-            145deg,
-            #fffaf5,
-            #f7e8d8
-        );
-
-    box-shadow:
-        0 15px 35px
-        rgba(180, 83, 9, 0.14);
-}
-
-
-.image-box:hover::before {
-    transform:
-        scale(1.4);
-}
-
-
-.image-box svg {
-    position: relative;
-    z-index: 1;
-
-    filter:
-        drop-shadow(
-            0 6px 12px
-            rgba(180, 83, 9, 0.18)
-        );
-
-    transition:
-        transform 0.35s ease;
-}
-
-
-.image-box:hover svg {
-    transform:
-        scale(1.12)
-        translateY(-3px);
-}
-
-
-/* =========================
-   IMAGE BUTTONS
-========================= */
-
-.image-box-button-section {
+.clear-lens-container {
     width: 100%;
-
     display: flex;
-
     justify-content: center;
-
-    gap: 15px;
 }
 
-
-.image-box-take-image-button,
-.image-box-upload-image-button {
-    width: 185px;
-    height: 48px;
-
+.image-box-clear {
+    width: 220px;
+    height: 220px;
+    background: #fffaf5;
+    border: 3px dashed #d2bca6;
+    border-radius: 24px;
     display: flex;
-
     align-items: center;
     justify-content: center;
-
-    border-radius: 9px;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease,
-        border-color 0.25s ease,
-        color 0.25s ease;
+    text-decoration: none;
+    color: #b45309;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 20px rgba(180, 83, 9, 0.03);
 }
 
-
-/* Take image */
-
-.image-box-take-image-button {
-    border:
-        1px solid #b45309;
-
-    background:
-        #b45309;
-
-    color: #ffffff;
+.image-box-clear:hover {
+    background: #fff5eb;
+    border-color: #b45309;
+    border-style: solid;
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(180, 83, 9, 0.1);
 }
 
-
-.image-box-take-image-button:hover {
-    transform:
-        translateY(-3px)
-        scale(1.02);
-
-    background:
-        #92400e;
-
-    box-shadow:
-        0 10px 22px
-        rgba(180, 83, 9, 0.23);
+.image-box-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
-
-.image-box-take-image-button:active,
-.image-box-upload-image-button:active,
-.continue-button:active {
-    transform:
-        scale(0.97);
+.camera-icon-clear {
+    color: #b45309;
 }
 
-
-/* Upload */
-
-.image-box-upload-image-button {
-    border:
-        1px solid #d8cec3;
-
-    background:
-        #ffffff;
-
-    color:
-        #514b45;
+.tap-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #92400e;
 }
-
-
-.image-box-upload-image-button:hover {
-    transform:
-        translateY(-3px)
-        scale(1.02);
-
-    border-color:
-        #b45309;
-
-    color:
-        #b45309;
-
-    box-shadow:
-        0 10px 22px
-        rgba(0, 0, 0, 0.07);
-}
-
 
 /* =========================
-   BUTTON CONTENT
+   SIMPLE ACTION BUTTONS
 ========================= */
-
-.image-box-take-image-button-container,
-.image-box-upload-image-button-container {
+.action-buttons-group {
     display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-}
-
-
-.image-box-take-image-button span,
-.image-box-upload-image-button span {
-    font-size: 13px;
-
-    font-weight: 650;
-}
-
-
-/* =========================
-   CONTINUE BUTTON
-========================= */
-
-.continue-button {
-    width: 235px;
-    height: 50px;
-
-    margin-top: 10px;
-
-    display: flex;
-
     align-items: center;
     justify-content: center;
+    gap: 30px;
+    width: 100%;
+    margin-top: 20px;
+}
 
+.simple-btn {
+    width: 40%;
+
+    height: 60px;
+    border-radius: 16px;
     border: none;
-
-    border-radius: 10px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #b45309,
-            #d97706
-        );
-
-    color: #ffffff;
-
     cursor: pointer;
-
-    box-shadow:
-        0 10px 25px
-        rgba(180, 83, 9, 0.22);
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        background 0.3s ease;
+    font-size: 17px;
+    font-weight: 700;
+    transition: all 0.2s ease;
 }
 
-
-.continue-button:hover {
-    transform:
-        translateY(-3px)
-        scale(1.025);
-
-    background:
-        linear-gradient(
-            135deg,
-            #92400e,
-            #b45309
-        );
-
-    box-shadow:
-        0 15px 30px
-        rgba(180, 83, 9, 0.30);
+.btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
+/* Primary */
+.primary-simple {
+    background: #b45309;
+    color: white;
+    box-shadow: 0 8px 16px rgba(180, 83, 9, 0.2);
+}
+
+.primary-simple:hover {
+    background: #92400e;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px rgba(180, 83, 9, 0.25);
+}
+
+.primary-simple:active {
+    transform: translateY(1px);
+}
+
+/* Secondary */
+.secondary-simple {
+    background: #ffffff;
+    color: #78350f;
+    border: 2px solid #e6dace;
+}
+
+.secondary-simple:hover {
+    border-color: #b45309;
+    color: #b45309;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(139, 90, 43, 0.08);
+}
+
+.secondary-simple:active {
+    transform: translateY(1px);
+}
 
 /* =========================
-   CONTINUE CONTENT
+   SOLID CONTINUE BUTTON
 ========================= */
-
-.continue-button-content {
+.solid-continue-btn {
+    width: 100%;
+    height: 64px;
+    margin-top: 150px;
+    background: #29241f; /* Dark contrast for the final step */
+    border: none;
+    border-radius: 16px;
+    color: white;
+    cursor: pointer;
     display: flex;
-
     align-items: center;
-
     justify-content: center;
+    gap: 15px;
+    box-shadow: 0 10px 20px rgba(41, 36, 31, 0.2);
+    transition: all 0.2s ease;
+}
 
-    gap: 10px;
-
-    font-size: 14px;
-
+.btn-text {
+    font-size: 18px;
     font-weight: 700;
+    letter-spacing: 0.5px;
 }
 
-
-.continue-button-content svg {
-    transition:
-        transform 0.3s ease;
+.arrow-circle-simple {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
 }
 
-
-.continue-button:hover
-.continue-button-content svg {
-    transform:
-        translateX(5px);
+.solid-continue-btn:hover {
+    background: #1a1613;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 25px rgba(41, 36, 31, 0.3);
 }
 
+.solid-continue-btn:hover .arrow-circle-simple {
+    transform: translateX(6px);
+    background: #ffffff;
+    color: #29241f;
+}
+
+.solid-continue-btn:active {
+    transform: translateY(1px);
+}
+
+/* =========================
+   CAMERA & CAPTURED PREVIEW
+========================= */
+.camera-section,
+.captured-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.camera-preview,
+.captured-preview-img {
+    width: 260px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 3px solid #b45309;
+    box-shadow: 0 10px 25px rgba(180, 83, 9, 0.15);
+    background: #000;
+}
 
 /* =========================
    RESPONSIVE
 ========================= */
-
 @media (max-width: 600px) {
-
-    .add-product-page {
-        padding:
-            25px 15px;
-    }
-
-
     .add-product-box {
-        padding:
-            25px 18px;
-
-        border-radius:
-            17px;
+        padding: 35px 20px;
+        border-radius: 24px;
     }
-
-
+    
     .add-product-box-header p {
-        font-size:
-            21px;
+        font-size: 26px;
     }
-
-
-    .image-box {
-        width: 230px;
-        height: 230px;
+    
+    .image-box-clear {
+        width: 180px;
+        height: 180px;
     }
-
-
-    .image-box-button-section {
-        flex-direction:
-            column;
-
-        align-items:
-            center;
+    
+    .camera-icon-clear {
+        width: 50px;
+        height: 50px;
     }
-
-
-    .image-box-take-image-button,
-    .image-box-upload-image-button {
-        width:
-            min(100%, 260px);
+    
+    .tap-text {
+        font-size: 15px;
     }
-
-
-    .continue-button {
-        width:
-            min(100%, 260px);
+    
+    .simple-btn {
+        height: 56px;
+        font-size: 16px;
     }
-
+    
+    .solid-continue-btn {
+        height: 60px;
+    }
 }
