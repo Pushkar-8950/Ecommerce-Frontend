@@ -30,13 +30,17 @@ function Hero() {
         </div>
 
         <div className="hero-visual">
-          <div className="hero-image-placeholder">
-            <span>Craft</span>
-          </div>
+          {/* Decorative glow orbs */}
+          <div className="orb orb-1" />
+          <div className="orb orb-2" />
+          <div className="orb orb-3" />
+
+          <div className="hero-image-placeholder" />
 
           <div className="hero-floating-card">
             <span className="hero-card-label">Handcrafted</span>
             <strong>Made with tradition</strong>
+            <span className="card-sub">1,200+ artisans &amp; counting</span>
           </div>
         </div>
       </div>

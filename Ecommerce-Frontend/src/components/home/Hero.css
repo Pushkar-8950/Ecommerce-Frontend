@@ -90,12 +90,157 @@
   background: #f5f5f5;
 }
 
-/* Visual */
+/* ── Keyframes ─────────────────────────────────────────── */
+
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.55; }
+  50%       { transform: translateY(-18px) scale(1.08); opacity: 0.9; }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translateY(0px) scale(1); opacity: 0.45; }
+  50%       { transform: translateY(14px) scale(1.12); opacity: 0.8; }
+}
+
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-120%) rotate(25deg); }
+  100% { transform: translateX(220%) rotate(25deg); }
+}
+
+@keyframes ring-pulse {
+  0%, 100% { box-shadow: 0 0 0 0px rgba(180, 83, 9, 0.35), 0 0 0 12px rgba(180, 83, 9, 0.12); }
+  50%       { box-shadow: 0 0 0 8px rgba(180, 83, 9, 0.18), 0 0 0 24px rgba(180, 83, 9, 0.06); }
+}
+
+@keyframes card-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 0 0px rgba(34, 197, 94, 0.5); }
+  50%       { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+}
+
+/* ── Visual wrapper ─────────────────────────────────────── */
 
 .hero-visual {
+  background-image: url("https://imgs.search.brave.com/tsQkj1OgpYLC47-RiitVTRRUuGFBzO3sX_KZmLUR2c8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5lYXNlbXl0cmlw/LmNvbS9tZWRpYS9C/bG9nL0luZGlhLzYz/ODc0Mjc4MTA2MTcz/MzM0OS82Mzg3NDI3/ODEwNjE3MzMzNDk0/YlBpYXIucG5n");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   position: relative;
   min-height: 480px;
+  overflow: visible;
+
+  border-radius: 28px;
+
+  /* ── Crazy layered shadow stack ── */
+  box-shadow:
+    /* tight warm glow */
+    0 0 0 2px rgba(180, 83, 9, 0.18),
+    /* amber halo */
+    0 0 30px 8px rgba(251, 146, 60, 0.28),
+    /* mid-depth lift */
+    0 20px 50px -8px rgba(120, 53, 15, 0.45),
+    /* long ground shadow */
+    0 50px 90px -20px rgba(0, 0, 0, 0.45),
+    /* deep dramatic shadow */
+    0 80px 120px -30px rgba(0, 0, 0, 0.30);
+
+  animation: ring-pulse 3.5s ease-in-out infinite;
+
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
 }
+
+.hero-visual:hover {
+  transform: translateY(-6px) scale(1.012);
+  box-shadow:
+    0 0 0 3px rgba(180, 83, 9, 0.28),
+    0 0 50px 14px rgba(251, 146, 60, 0.38),
+    0 30px 70px -8px rgba(120, 53, 15, 0.55),
+    0 70px 110px -20px rgba(0, 0, 0, 0.50),
+    0 100px 140px -30px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Bottom gradient overlay ── */
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round 28px);
+  background: linear-gradient(
+    160deg,
+    rgba(0,0,0,0.04) 0%,
+    transparent 40%,
+    rgba(120, 53, 15, 0.22) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Shimmer sweep ── */
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: 0;
+  width: 60%;
+  height: 200%;
+  clip-path: inset(0 round 28px);
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.13) 45%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.13) 55%,
+    transparent 100%
+  );
+  animation: shimmer-sweep 4.5s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ── Decorative orbs ── */
+.hero-visual .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(32px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-visual .orb-1 {
+  width: 160px;
+  height: 160px;
+  top: -30px;
+  right: -30px;
+  background: radial-gradient(circle, rgba(251, 146, 60, 0.7), rgba(180, 83, 9, 0.3));
+  animation: orb-float 5s ease-in-out infinite;
+}
+
+.hero-visual .orb-2 {
+  width: 120px;
+  height: 120px;
+  bottom: 40px;
+  right: 20px;
+  background: radial-gradient(circle, rgba(234, 179, 8, 0.6), rgba(180, 83, 9, 0.2));
+  animation: orb-float-2 6.5s ease-in-out infinite;
+}
+
+.hero-visual .orb-3 {
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 10px;
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.5), transparent);
+  animation: orb-float 7s ease-in-out infinite 1s;
+}
+
+/* ── Image placeholder ── */
 
 .hero-image-placeholder {
   width: 100%;
@@ -106,46 +251,77 @@
   justify-content: center;
 
   border-radius: 14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #e7d7c3,
-      #c9a77b
-    );
+  background: transparent;
 
   color: rgba(255, 255, 255, 0.7);
   font-size: 80px;
   font-weight: 800;
 }
 
+/* ── Floating card ── */
+
 .hero-floating-card {
   position: absolute;
-  left: -30px;
-  bottom: 30px;
+  left: -36px;
+  bottom: 36px;
+  z-index: 10;
 
-  width: 210px;
-  padding: 18px;
+  width: 220px;
+  padding: 18px 20px;
 
-  background: #ffffff;
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
 
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.04),
+    0 12px 30px rgba(0,0,0,0.12),
+    0 30px 60px rgba(120, 53, 15, 0.15),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+
+  animation: card-float 4s ease-in-out infinite;
 }
 
 .hero-card-label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 7px;
   margin-bottom: 6px;
 
   color: #b45309;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* Live dot */
+.hero-card-label::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  animation: dot-pulse 1.8s ease-in-out infinite;
 }
 
 .hero-floating-card strong {
-  color: #222222;
+  display: block;
+  color: #1a1a1a;
   font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.hero-floating-card .card-sub {
+  display: block;
+  margin-top: 4px;
+  color: #78716c;
+  font-size: 11.5px;
 }
 
 /* Responsive */
