@@ -45,8 +45,12 @@ function Register() {
         role,
       });
 
-      // Redirect user upon successful registration
-      navigate("/");
+      // Role-based redirection: artisans go directly to artisan portal /artisan, buyers to /
+      if (role === "artisan") {
+        navigate("/artisan");
+      } else {
+        navigate("/");
+      }
     } catch (err) {
       const message =
         err.response?.data?.message ||

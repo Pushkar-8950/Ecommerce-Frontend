@@ -25,10 +25,15 @@ function Login() {
 
     try {
       // Authenticate with backend API
-      await login(email.trim(), password);
+      const authData = await login(email.trim(), password);
+      const authenticatedUser = authData?.user;
 
-      // Navigate to destination on success
-      navigate(from, { replace: true });
+      // Role-based redirection: artisans go to /artisan, buyers go to intended destination or /
+      if (authenticatedUser?.role === "artisan") {
+        navigate("/artisan", { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       const message =
         err.response?.data?.message ||

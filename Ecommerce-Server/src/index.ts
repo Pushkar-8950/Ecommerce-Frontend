@@ -3,6 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
+import productRoutes from './routes/productRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import aiRoutes from './routes/aiRoutes';
 import { errorHandler, notFound } from './middleware/errorMiddleware';
@@ -36,6 +38,9 @@ app.get('/api/health', (_req: Request, res: Response) => {
 
 // 6. Mount application API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/artisan/products', productRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/ai', aiRoutes);
 

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-// Importing logos from lucide-react
 import {
   Search,
   User,
@@ -12,6 +11,7 @@ import {
   Heart,
   Settings,
   LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 
 import "./Navbar.css";
@@ -80,6 +80,29 @@ function Navbar() {
           />
         </div>
 
+        {/* Artisan Portal Header Link */}
+        {isAuthenticated && user?.role === "artisan" && (
+          <Link
+            to="/artisan"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "6px 14px",
+              backgroundColor: "#f59e0b",
+              color: "#ffffff",
+              borderRadius: "6px",
+              fontWeight: 600,
+              fontSize: "13px",
+              textDecoration: "none",
+              marginRight: "4px",
+            }}
+          >
+            <LayoutDashboard size={16} />
+            <span>Artisan Portal</span>
+          </Link>
+        )}
+
         {/* Account */}
         <div
           className="navbar-dropdown-wrapper account-wrapper"
@@ -121,6 +144,27 @@ function Navbar() {
               </div>
 
               <div className="account-dropdown-links">
+                {isAuthenticated && user?.role === "artisan" && (
+                  <Link
+                    to="/artisan"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "8px 12px",
+                      backgroundColor: "#fef3c7",
+                      color: "#92400e",
+                      borderRadius: "6px",
+                      fontWeight: 600,
+                      marginBottom: "6px",
+                      border: "1px solid #fde68a",
+                    }}
+                  >
+                    <LayoutDashboard size={17} />
+                    Artisan Dashboard
+                  </Link>
+                )}
+
                 <Link to="/orders">
                   <Package size={17} />
                   My Orders
