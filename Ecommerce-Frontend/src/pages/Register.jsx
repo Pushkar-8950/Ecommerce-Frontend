@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, EyeOff, ArrowRight, Loader2, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Loader2, AlertCircle, ShoppingBag, Hammer } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Register.css";
@@ -96,60 +96,28 @@ function Register() {
             {/* Account Type Selector */}
             <div className="register-field">
               <label>I want to join as a:</label>
-              <div style={{ display: "flex", gap: "12px", marginTop: "4px" }}>
-                <label
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                    padding: "8px 12px",
-                    border: `1px solid ${role === "buyer" ? "#d97706" : "#e5e7eb"}`,
-                    backgroundColor: role === "buyer" ? "#fffbeb" : "#ffffff",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                  }}
+              <div className="role-picker">
+                <button
+                  type="button"
+                  id="role-buyer"
+                  className={`role-option ${role === "buyer" ? "role-option--active" : ""}`}
+                  onClick={() => setRole("buyer")}
                 >
-                  <input
-                    type="radio"
-                    name="role"
-                    value="buyer"
-                    checked={role === "buyer"}
-                    onChange={() => setRole("buyer")}
-                    style={{ margin: 0 }}
-                  />
-                  <span>Craft Lover (Buyer)</span>
-                </label>
+                  <span className="role-option__icon"><ShoppingBag size={22} /></span>
+                  <span className="role-option__title">Buyer</span>
+                  <span className="role-option__sub">Browse &amp; buy crafts</span>
+                </button>
 
-                <label
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "6px",
-                    padding: "8px 12px",
-                    border: `1px solid ${role === "artisan" ? "#d97706" : "#e5e7eb"}`,
-                    backgroundColor: role === "artisan" ? "#fffbeb" : "#ffffff",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                  }}
+                <button
+                  type="button"
+                  id="role-crafter"
+                  className={`role-option ${role === "artisan" ? "role-option--active" : ""}`}
+                  onClick={() => setRole("artisan")}
                 >
-                  <input
-                    type="radio"
-                    name="role"
-                    value="artisan"
-                    checked={role === "artisan"}
-                    onChange={() => setRole("artisan")}
-                    style={{ margin: 0 }}
-                  />
-                  <span>Maker (Artisan)</span>
-                </label>
+                  <span className="role-option__icon"><Hammer size={22} /></span>
+                  <span className="role-option__title">Crafter</span>
+                  <span className="role-option__sub">Sell your creations</span>
+                </button>
               </div>
             </div>
 
