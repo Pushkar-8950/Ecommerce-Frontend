@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
-import VoiceGuide from "../../components/artisan/VoiceGuide";
+import VoiceGuide from "../../components/artisan-side-component/VoiceGuide";
 import { useAuth } from "../../context/AuthContext";
 
 import "./ArtisanHome.css";

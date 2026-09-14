@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Eye, EyeOff, ArrowRight, Loader2, AlertCircle, ShoppingBag, Hammer } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, Loader2, AlertCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import "./Register.css";
+import { useAuth } from "../../context/AuthContext";
+import "./BuyerRegister.css";
 
-function Register() {
+function BuyerRegister() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -12,7 +12,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("buyer"); // 'buyer' or 'artisan'
+  const role = "buyer";
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -45,12 +45,7 @@ function Register() {
         role,
       });
 
-      // Role-based redirection: artisans go directly to artisan portal /artisan, buyers to /
-      if (role === "artisan") {
-        navigate("/artisan");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     } catch (err) {
       const message =
         err.response?.data?.message ||
@@ -93,33 +88,7 @@ function Register() {
 
           {/* Form */}
           <form className="register-form" onSubmit={handleSubmit}>
-            {/* Account Type Selector */}
-            <div className="register-field">
-              <label>I want to join as a:</label>
-              <div className="role-picker">
-                <button
-                  type="button"
-                  id="role-buyer"
-                  className={`role-option ${role === "buyer" ? "role-option--active" : ""}`}
-                  onClick={() => setRole("buyer")}
-                >
-                  <span className="role-option__icon"><ShoppingBag size={22} /></span>
-                  <span className="role-option__title">Buyer</span>
-                  <span className="role-option__sub">Browse &amp; buy crafts</span>
-                </button>
 
-                <button
-                  type="button"
-                  id="role-crafter"
-                  className={`role-option ${role === "artisan" ? "role-option--active" : ""}`}
-                  onClick={() => setRole("artisan")}
-                >
-                  <span className="role-option__icon"><Hammer size={22} /></span>
-                  <span className="role-option__title">Crafter</span>
-                  <span className="role-option__sub">Sell your creations</span>
-                </button>
-              </div>
-            </div>
 
             {/* Name */}
             <div className="register-field">
@@ -226,7 +195,7 @@ function Register() {
           {/* Login */}
           <div className="register-login">
             <span>Already have an account?</span>
-            <Link to="/login">Sign In</Link>
+            <Link to="/buyer-login">Sign In</Link>
           </div>
         </div>
 
@@ -242,4 +211,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default BuyerRegister;

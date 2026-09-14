@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Eye, EyeOff, ArrowRight, Loader2, AlertCircle } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import "./Login.css";
+import { useAuth } from "../../context/AuthContext";
+import "./BuyerLogin.css";
 
-function Login() {
+function BuyerLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -153,7 +153,7 @@ function Login() {
           {/* Register */}
           <div className="login-register">
             <span>New to CraftConnect?</span>
-            <Link to="/register">Create an account</Link>
+            <Link to="/buyer-register">Create an account</Link>
           </div>
         </div>
 
@@ -169,4 +169,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default BuyerLogin;

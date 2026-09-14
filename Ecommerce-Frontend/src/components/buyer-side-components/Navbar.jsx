@@ -165,11 +165,11 @@ function Navbar() {
                   </div>
                 ) : (
                   <>
-                    <Link to="/login" className="account-signin">
+                    <Link to="/buyer-login" className="account-signin">
                       Sign in
                     </Link>
                     <p>New customer?</p>
-                    <Link to="/register">Create your account</Link>
+                    <Link to="/buyer-register">Create your account</Link>
                   </>
                 )}
               </div>

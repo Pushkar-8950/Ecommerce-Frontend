@@ -1,31 +1,33 @@
 import { Routes, Route } from "react-router-dom";
 
 import PublicLayout from "../layouts/PublicLayout";
-import Home from "../pages/Home";
-import Explore from "../pages/Explore";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import ProductDetails from "../pages/ProductDetails";
-import NotFound from "../pages/NotFound";
-import Cart from "../pages/Cart";
-import Wishlist from "../pages/Wishlist";
-import Account from "../pages/Account";
-import Orders from "../pages/Orders";
-import ArtisanHome from "../components/artisan/ArtisanHome";
-import AddProduct from "../pages/artisan/AddProduct";
+import ArtisanLayout from "../layouts/ArtisanLayout";
+import Home from "../pages/buyer-side-pages/Home";
+import Explore from "../pages/buyer-side-pages/Explore";
+import BuyerLogin from "../pages/buyer-side-pages/BuyerLogin";
+import BuyerRegister from "../pages/buyer-side-pages/BuyerRegister";
+import ProductDetails from "../pages/buyer-side-pages/ProductDetails";
+import NotFound from "../pages/buyer-side-pages/NotFound";
+import Cart from "../pages/buyer-side-pages/Cart";
+import Wishlist from "../pages/buyer-side-pages/Wishlist";
+import Account from "../pages/buyer-side-pages/Account";
+import Orders from "../pages/buyer-side-pages/Orders";
+import ArtisanHome from "../pages/artisan-side-pages/ArtisanHome";
+import AddProduct from "../pages/artisan-side-pages/AddProduct";
+import RegistrationPage from "../pages/common-pages/RegistrationPage";
 
 function AppRoutes() {
   return (
 
-    // Buyer Side
+    // {/* ================= BUYER SIDE ================= */}
 
     <Routes>
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/product-details/:id" element={<ProductDetails />} />
+        <Route path="/buyer-login" element={<BuyerLogin />} />
+        <Route path="/buyer-register" element={<BuyerRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/account" element={<Account />} />
@@ -34,12 +36,17 @@ function AppRoutes() {
 
       {/* ================= ARTISAN SIDE ================= */}
 
-      <Route path="/artisan" element={<ArtisanHome />} />
-      <Route path="/artisan/add-product" element={<AddProduct />} />
+      <Route element={<ArtisanLayout />}>
+        <Route path="/artisan" element={<ArtisanHome />} />
+        <Route path="/artisan/add-product" element={<AddProduct />} />
+      </Route>
 
       {/* ================= ERROR 404 ================= */}
 
       <Route path="*" element={<NotFound />} />
+    
+      {/* ================= COMMON SIDE =============== */}
+      <Route path="/RegistrationPage" element={<RegistrationPage />} />
     </Routes>
   );
 }

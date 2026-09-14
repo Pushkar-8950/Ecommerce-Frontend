@@ -59,8 +59,8 @@ function Footer() {
           <div className="footer-column">
             <h3>For Artisans</h3>
 
-            <Link to="/register">Become an Artisan</Link>
-            <Link to="/login">Artisan Login</Link>
+            <Link to="/buyer-register">Become an Artisan</Link>
+            <Link to="/buyer-login">Artisan Login</Link>
             <Link to="/dashboard">Artisan Dashboard</Link>
             <Link to="/add-product">Add a Product</Link>
             <Link to="/ai-studio">AI Product Assistant</Link>

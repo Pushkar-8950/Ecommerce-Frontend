@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 import { Link, useNavigate } from "react-router-dom";
-import api from "../services/api";
+import api from "../../services/api";
 import "./Cart.css";
 
 function Cart() {
@@ -151,7 +151,7 @@ function Cart() {
       console.error("Checkout failed:", err);
       if (err.response?.status === 401) {
         alert("Please log in to complete your order.");
-        navigate("/login");
+        navigate("/buyer-login");
       } else {
         alert(err.response?.data?.message || "Failed to complete checkout.");
       }

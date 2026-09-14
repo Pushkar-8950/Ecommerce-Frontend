@@ -23,7 +23,7 @@ function Hero() {
               <ArrowRight size={18} />
             </Link>
 
-            <Link to="/register" className="hero-secondary-btn">
+            <Link to="/buyer-register" className="hero-secondary-btn">
               Become an Artisan
             </Link>
           </div>
