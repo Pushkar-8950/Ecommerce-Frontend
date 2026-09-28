@@ -25,7 +25,7 @@ function RegistrationPage() {
                             <span>Buyer</span>
                         </button>
 
-                        <button className="artisan-button" onClick={() => navigate('/artisan-register')}>
+                        <button className="artisan-button" onClick={() => navigate('/artisan-register-1')}>
                             <Hammer size={30}/>
                         <span>Artisan</span>
                     </button>

@@ -15,6 +15,12 @@ import Orders from "../pages/buyer-side-pages/Orders";
 import ArtisanHome from "../pages/artisan-side-pages/ArtisanHome";
 import AddProduct from "../pages/artisan-side-pages/AddProduct";
 import RegistrationPage from "../pages/common-pages/RegistrationPage";
+import ArtisanRegisterFirstPage from "../pages/artisan-side-pages/ArtisanRegisterFirstPage";
+import ArtisanRegisterSecondPage from "../pages/artisan-side-pages/ArtisanRegisterSecondPage"
+import ArtisanRegisterThirdPage from "../pages/artisan-side-pages/ArtisanRegisterThirdPage"
+import ArtisanRegisterFourthPage from "../pages/artisan-side-pages/ArtisanRegisterFourthPage"
+import ArtisanRegisterFifthPage from "../pages/artisan-side-pages/ArtisanRegisterFifthPage"
+import ArtisanRegisterSixthPage from "../pages/artisan-side-pages/ArtisanRegisterSixthPage"
 
 function AppRoutes() {
   return (
@@ -26,13 +32,14 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/product-details/:id" element={<ProductDetails />} />
-        <Route path="/buyer-login" element={<BuyerLogin />} />
-        <Route path="/buyer-register" element={<BuyerRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/account" element={<Account />} />
         <Route path="/orders" element={<Orders />} />
       </Route>
+
+      <Route path="/buyer-login" element={<BuyerLogin />} />
+      <Route path="/buyer-register" element={<BuyerRegister />} />
 
       {/* ================= ARTISAN SIDE ================= */}
 
@@ -40,6 +47,13 @@ function AppRoutes() {
         <Route path="/artisan" element={<ArtisanHome />} />
         <Route path="/artisan/add-product" element={<AddProduct />} />
       </Route>
+
+      <Route path="/artisan-register-1" element={<ArtisanRegisterFirstPage />} />
+      <Route path="/artisan-register-2" element={<ArtisanRegisterSecondPage />} />
+      <Route path="/artisan-register-3" element={<ArtisanRegisterThirdPage />} />
+      <Route path="/artisan-register-4" element={<ArtisanRegisterFourthPage />} />
+      <Route path="/artisan-register-5" element={<ArtisanRegisterFifthPage />} />
+      <Route path="/artisan-register-6" element={<ArtisanRegisterSixthPage />} />
 
       {/* ================= ERROR 404 ================= */}
 

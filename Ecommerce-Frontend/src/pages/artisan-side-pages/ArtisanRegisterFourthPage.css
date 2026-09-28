@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================
+   PAGE - PREMIUM OBSIDIAN THEME
+========================= */
+.Artisan-Register-Fourth-Page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #09090b; 
+    background-image: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.4) 0%, transparent 60%);
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+.Artisan-Register-Fourth-Page * {
+    box-sizing: border-box;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+.Artisan-Register-Fourth-Page .main-container {
+    width: 100%;
+    max-width: 540px; 
+    padding: 30px 48px 48px 48px; /* Reduced top padding */
+    background: rgba(24, 24, 27, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+.Artisan-Register-Fourth-Page .main-heading {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px; /* Increased bottom margin */
+}
+
+.Artisan-Register-Fourth-Page .main-heading h1 {
+    margin: 0;
+    color: #fafafa;
+    font-size: 35px; /* Increased font-size */
+    font-weight: 700; /* Decreased font-weight */
+    letter-spacing: -0.5px;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* =========================
+   INPUT SECTION
+========================= */
+.input-fields-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* =========================
+   LOCATION BUTTON
+========================= */
+.use-location-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 60px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid #10b981;
+    color: #10b981;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.use-location-button:hover {
+    background: rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.divider-text {
+    text-align: center;
+    color: #71717a;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 8px 0;
+}
+
+/* =========================
+   INPUT STYLES
+========================= */
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    height: 60px; 
+    gap: 16px;
+    padding: 0 20px;
+    background: #09090b; 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.input-with-icon svg {
+    color: #f59e0b;
+}
+
+.input-with-icon input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #fafafa; 
+    font-size: 16px; 
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+}
+
+.input-with-icon input::placeholder {
+    color: #52525b; 
+    font-weight: 500;
+}
+
+/* DISABLED AUTO FILL */
+.disabled-input {
+    background: #18181b;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+.disabled-input input { 
+    color: #a1a1aa; 
+    text-align: center;
+}
+.disabled-input svg { color: #52525b; }
+
+.auto-fill-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+}
+.auto-fill-row .input-with-icon {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    position: relative;
+    justify-content: center;
+}
+.auto-fill-row .input-with-icon svg {
+    position: absolute;
+    left: 12px;
+    color: #a1a1aa; /* Brighter color to make it visible */
+}
+.auto-fill-row .input-with-icon input {
+    flex: none;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    padding: 0 36px; /* Keep text from overlapping the absolute icon */
+}
+
+/* =========================
+   PICKUP CARD & CHECKBOX
+========================= */
+.pickup-card {
+    background: rgba(245, 158, 11, 0.03);
+    border: 1px solid rgba(245, 158, 11, 0.15);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 16px;
+}
+
+.pickup-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.pickup-card-header h2 {
+    color: #fafafa;
+    font-size: 19px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.massive-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    padding: 16px 20px;
+    background: #09090b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+.massive-checkbox:hover {
+    border-color: rgba(245, 158, 11, 0.5);
+}
+.massive-checkbox input { display: none; }
+.checkmark {
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: #09090b;
+    position: relative;
+    flex-shrink: 0;
+}
+.massive-checkbox input:checked ~ .checkmark {
+    background: #f59e0b;
+    border-color: #f59e0b;
+}
+.massive-checkbox input:checked ~ .checkmark:after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    width: 7px;
+    height: 14px;
+    border: solid #09090b;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+.checkbox-text {
+    color: #fafafa;
+    font-size: 15px;
+    font-weight: 600;
+}
+.massive-checkbox input:checked ~ .checkbox-text {
+    color: #f59e0b;
+}
+
+/* =========================
+   PICKUP SECTION ANIMATION
+========================= */
+.pickup-address-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 16px;
+    animation: slideDownFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDownFade {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   CONTINUE BUTTON
+========================= */
+.continue-button-section {
+    width: 100%;
+    height: 64px; 
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f59e0b, #d97706); 
+    color: #09090b; 
+    font-size: 18px; 
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.continue-button-section:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); 
+}
+
+@media (max-width: 550px) {
+    .main-container {
+        padding: 40px 24px;
+        border-radius: 16px;
+    }
+    .main-heading h1 { font-size: 24px; }
+}

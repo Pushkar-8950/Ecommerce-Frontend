@@ -1,0 +1,254 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================
+   PAGE - PREMIUM OBSIDIAN THEME
+========================= */
+.Artisan-Register-Fifth-Page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #09090b; 
+    background-image: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.4) 0%, transparent 60%);
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+.Artisan-Register-Fifth-Page * {
+    box-sizing: border-box;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+.main-container {
+    width: 100%;
+    max-width: 540px; 
+    padding: 56px 48px;
+    background: rgba(24, 24, 27, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+.main-heading {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.main-heading h1 {
+    margin: 0;
+    color: #fafafa;
+    font-size: 32px; 
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-align: center;
+}
+
+.main-container > span {
+    display: block;
+    text-align: center;
+    color: #a1a1aa;
+    font-size: 16px; 
+    line-height: 1.6;
+    margin-bottom: 32px;
+    font-weight: 500;
+}
+
+/* =========================
+   SIMPLE OPTIONS
+========================= */
+.simple-options-section {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.simple-option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    background: #09090b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.simple-option-btn:hover {
+    border-color: rgba(245, 158, 11, 0.5);
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.simple-option-btn.selected {
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.radio-circle {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #52525b;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.simple-option-btn.selected .radio-circle {
+    border-color: #f59e0b;
+}
+
+.radio-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #f59e0b;
+    border-radius: 50%;
+}
+
+.simple-option-btn span {
+    color: #fafafa;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   INPUT SECTION
+========================= */
+.gstin-input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideDownFade {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    height: 60px; 
+    gap: 16px;
+    padding: 0 20px;
+    background: #09090b; 
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.input-with-icon:focus-within {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.input-with-icon svg {
+    color: #f59e0b;
+}
+
+.input-with-icon input {
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #fafafa; 
+    font-size: 16px; 
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+}
+
+.input-with-icon input::placeholder {
+    color: #52525b; 
+    font-weight: 500;
+}
+
+/* =========================
+   VERIFY BUTTON
+========================= */
+.verify-button {
+    width: 100%;
+    height: 60px;
+    border: none;
+    border-radius: 12px;
+    background: #10b981; 
+    color: #ffffff;
+    font-size: 18px; 
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.verify-button:hover {
+    background: #059669;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+}
+
+.verify-button:active {
+    transform: translateY(1px);
+}
+
+.verification-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    color: #10b981;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: -12px;
+}
+
+/* =========================
+   CONTINUE BUTTON
+========================= */
+.continue-button-section {
+    width: 100%;
+    height: 64px; 
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f59e0b, #d97706); 
+    color: #09090b; 
+    font-size: 18px; 
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.continue-button-section:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #fbbf24, #f59e0b); 
+}
+
+@media (max-width: 550px) {
+    .main-container {
+        padding: 40px 24px;
+        border-radius: 16px;
+    }
+    .simple-options-section {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
