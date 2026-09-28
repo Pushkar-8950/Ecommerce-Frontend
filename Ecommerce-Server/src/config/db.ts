@@ -8,15 +8,14 @@ export const connectDB = async (): Promise<void> => {
   const mongoUri = process.env.MONGO_URI;
 
   if (!mongoUri) {
-    console.error('❌ Error: MONGO_URI is not defined in environment variables.');
-    process.exit(1);
+    console.warn('⚠️ Warning: MONGO_URI is not defined. Running with fallback mock data.');
+    return;
   }
 
   try {
-    const conn = await mongoose.connect(mongoUri);
+    const conn = await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
     console.log(`✅ MongoDB Connected successfully: ${conn.connection.host}`);
   } catch (error: any) {
-    console.error(`❌ MongoDB connection failed: ${error.message}`);
-    process.exit(1);
+    console.warn(`⚠️ MongoDB connection warning: ${error.message}. Server remaining active with offline/demo mode.`);
   }
 };

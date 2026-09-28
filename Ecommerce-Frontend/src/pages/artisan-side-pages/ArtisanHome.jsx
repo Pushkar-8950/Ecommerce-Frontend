@@ -6,12 +6,14 @@ import {
   UserRound,
   ChevronRight,
   RotateCcw,
+  Sparkles,
+  ShieldCheck,
+  Volume2,
+  TrendingUp,
 } from "lucide-react";
-
 import { Link } from "react-router-dom";
 import VoiceGuide from "../../components/artisan-side-component/VoiceGuide";
 import { useAuth } from "../../context/AuthContext";
-
 import "./ArtisanHome.css";
 
 function ArtisanHome() {
@@ -22,207 +24,136 @@ function ArtisanHome() {
   const artisanDisplayName = user?.name ? user.name.trim().split(" ")[0] : "Artisan";
 
   return (
-    <main
-      className={`artisan-home ${
-        isVoiceActive ? "voice-guidance-active" : ""
-      }`}
-    >
-      {/* =========================
-          HEADER
-      ========================= */}
+    <main className={`artisan-home ${isVoiceActive ? "voice-guidance-active" : ""}`}>
+      <div className="artisan-home-container">
+        {/* MoSJE Heritage Banner */}
+        <div className="artisan-mosje-banner">
+          <div className="mosje-banner-content">
+            <div className="gov-tag-row">
+              <span className="gov-tag">
+                <ShieldCheck size={14} />
+                Ministry of Social Justice and Empowerment (MoSJE)
+              </span>
+              <span className="samagam-tag">Shilp Samagam & Surajkund Mela Linkage</span>
+            </div>
+            <h2>AI-Driven Market Linkage & Smart Cataloging Portal</h2>
+            <p>
+              Year-round digital marketplace connectivity for marginalized artisans, micro-entrepreneurs, and weavers across India.
+            </p>
+          </div>
+        </div>
 
-      <header className="artisan-home-header">
-
-        <div className="artisan-home-header-container">
-
-          <Link
-            to="/artisan"
-            className="artisan-home-logo"
+        {/* Greeting & Header */}
+        <div className="artisan-greeting-section">
+          <div className="greeting-text-wrap">
+            <h1>Namaste, {artisanDisplayName} 👋</h1>
+            <p>Ready to digitize and sell your handcrafted creations today?</p>
+          </div>
+          <button
+            type="button"
+            className="artisan-replay-voice-btn"
+            onClick={() => setSpeakTrigger((prev) => prev + 1)}
+            title="Replay Voice Guidance in Hindi"
           >
-            Hunar<span>Bazaar</span>
+            <RotateCcw size={16} />
+            <span>Replay Voice Guide / निर्देश सुनें</span>
+          </button>
+        </div>
+
+        {/* Voice Guidance Banner */}
+        <div className="artisan-voice-wrapper">
+          <VoiceGuide
+            message={`Namaste ${artisanDisplayName}. Welcome to Hunar Bazaar. Here, you can sell products, see your product listings, check your orders, or view your profile. To sell something you have made, choose Add Product.`}
+            onSpeakingChange={setIsVoiceActive}
+            speakTrigger={speakTrigger}
+          />
+        </div>
+
+        {/* Hero Card: Add a Product with AI Studio */}
+        <div className="artisan-primary-action-wrap">
+          <Link to="/artisan/add-product" className="artisan-hero-add-card">
+            <div className="hero-add-left">
+              <div className="hero-add-icon-ring">
+                <Plus size={32} />
+              </div>
+              <div className="hero-add-text">
+                <div className="hero-badge-row">
+                  <span className="ai-studio-pill">
+                    <Sparkles size={13} />
+                    AI Smart Catalog Studio
+                  </span>
+                  <span className="compliance-pill">No-Background Policy Compliant</span>
+                </div>
+                <h2>Add a New Product / नया उत्पाद जोड़ें</h2>
+                <p>
+                  Photograph on your phone → AI automatically removes messy workshop backgrounds → Voice describe in your language → One-click listing to ONDC & GeM.
+                </p>
+              </div>
+            </div>
+            <div className="hero-add-cta">
+              <span className="cta-label">Open Studio</span>
+              <div className="cta-arrow-circle">
+                <ChevronRight size={22} />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* 4-Card Quick Actions Grid */}
+        <div className="artisan-dashboard-grid">
+          {/* Card 1: Products */}
+          <Link to="/artisan/products" className="artisan-grid-card card-products">
+            <div className="grid-card-icon-wrap">
+              <Package size={22} />
+            </div>
+            <div className="grid-card-content">
+              <span className="grid-card-tag">My Inventory</span>
+              <strong className="grid-card-stat">12 Products</strong>
+              <small className="grid-card-desc">Active listings across ONDC & GeM</small>
+            </div>
+            <ChevronRight size={18} className="grid-card-arrow" />
           </Link>
 
-
-          <nav className="artisan-home-nav">
-
-            <div className="artisan-home-nav-links">
-
-              <Link to="/artisan/products">
-                My Products
-              </Link>
-
-              <Link to="/artisan/orders">
-                Orders
-              </Link>
-
+          {/* Card 2: Orders */}
+          <Link to="/artisan/orders" className="artisan-grid-card card-orders">
+            <div className="grid-card-icon-wrap">
+              <ShoppingBag size={22} />
             </div>
+            <div className="grid-card-content">
+              <span className="grid-card-tag">Orders & Demand</span>
+              <strong className="grid-card-stat">4 Orders</strong>
+              <small className="grid-card-desc">₹99,334 Total DBT Payout</small>
+            </div>
+            <ChevronRight size={18} className="grid-card-arrow" />
+          </Link>
 
+          {/* Card 3: Pehchan Digital ID */}
+          <Link to="/artisan/profile" className="artisan-grid-card card-pehchan">
+            <div className="grid-card-icon-wrap">
+              <UserRound size={22} />
+            </div>
+            <div className="grid-card-content">
+              <span className="grid-card-tag">Digital Pehchan</span>
+              <strong className="grid-card-stat">MoSJE Verified</strong>
+              <small className="grid-card-desc">Govt. Certified QR Smart Card</small>
+            </div>
+            <ChevronRight size={18} className="grid-card-arrow" />
+          </Link>
 
-            <Link to="/artisan/profile">
-              <UserRound size={17} />
-            </Link>
-
-          </nav>
-
+          {/* Card 4: Fair Wage Status */}
+          <Link to="/artisan/orders" className="artisan-grid-card card-earnings">
+            <div className="grid-card-icon-wrap">
+              <TrendingUp size={22} />
+            </div>
+            <div className="grid-card-content">
+              <span className="grid-card-tag">Fair Living Wage</span>
+              <strong className="grid-card-stat">₹38,050 Earned</strong>
+              <small className="grid-card-desc">Guaranteed ₹120/hr dignity wage</small>
+            </div>
+            <ChevronRight size={18} className="grid-card-arrow" />
+          </Link>
         </div>
-
-      </header>
-
-
-      {/* =========================
-          MAIN CONTENT
-      ========================= */}
-
-      <section className="artisan-home-content">
-
-        <div className="artisan-home-container">
-
-
-          {/* =========================
-              GREETING
-          ========================= */}
-
-          <div className="artisan-greeting">
-
-            <h1>
-              Namaste, {artisanDisplayName} 👋
-            </h1>
-
-          </div>
-
-
-          {/* =========================
-              GUIDANCE + TARGET
-          ========================= */}
-
-          <div className="artisan-guidance-stage">
-
-            <VoiceGuide
-              message={`Namaste ${artisanDisplayName}. Welcome to Hunar Bazaar. Here, you can sell products, see your product listings, check your orders, or view your profile. To sell something you have made, choose Add Product.`}
-              onSpeakingChange={setIsVoiceActive}
-              speakTrigger={speakTrigger}
-            />
-
-
-            {/* =========================
-                ADD PRODUCT
-            ========================= */}
-
-            <Link
-              to="/artisan/add-product"
-              className="artisan-add-product-card"
-            >
-
-              <div className="artisan-add-icon">
-                <Plus size={30} />
-              </div>
-
-              <div className="artisan-add-content">
-
-                <h2>
-                  Add a Product
-                </h2>
-
-              </div>
-
-              <ChevronRight
-                className="artisan-card-arrow"
-                size={22}
-              />
-
-            </Link>
-
-            {!isVoiceActive && (
-                <button
-                  className="artisan-hear-again-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSpeakTrigger(prev => prev + 1);
-                  }}
-                  aria-label="Hear instruction again"
-                >
-                  <RotateCcw size={22} />
-                </button>
-              )}
-
-          </div>
-
-
-          {/* =========================
-              QUICK ACTIONS
-          ========================= */}
-
-          <div className="artisan-quick-actions">
-
-            <Link
-              to="/artisan/products"
-              className="artisan-quick-card"
-            >
-
-              <div className="artisan-quick-icon">
-                <Package size={21} />
-              </div>
-
-
-              <div>
-
-                <span>
-                  My Products
-                </span>
-
-                <strong>
-                  12
-                </strong>
-
-                <small>
-                  Products listed
-                </small>
-
-              </div>
-
-
-              <ChevronRight size={18} />
-
-            </Link>
-
-
-            <Link
-              to="/artisan/orders"
-              className="artisan-quick-card"
-            >
-
-              <div className="artisan-quick-icon">
-                <ShoppingBag size={21} />
-              </div>
-
-
-              <div>
-
-                <span>
-                  Orders
-                </span>
-
-                <strong>
-                  4
-                </strong>
-
-                <small>
-                  Orders received
-                </small>
-
-              </div>
-
-
-              <ChevronRight size={18} />
-
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-
+      </div>
     </main>
   );
 }
