@@ -14,6 +14,9 @@ import Account from "../pages/buyer-side-pages/Account";
 import Orders from "../pages/buyer-side-pages/Orders";
 import ArtisanHome from "../pages/artisan-side-pages/ArtisanHome";
 import AddProduct from "../pages/artisan-side-pages/AddProduct";
+import ArtisanProducts from "../pages/artisan-side-pages/ArtisanProducts";
+import ArtisanOrders from "../pages/artisan-side-pages/ArtisanOrders";
+import ArtisanProfile from "../pages/artisan-side-pages/ArtisanProfile";
 import RegistrationPage from "../pages/common-pages/RegistrationPage";
 import ArtisanRegisterFirstPage from "../pages/artisan-side-pages/ArtisanRegisterFirstPage";
 import ArtisanRegisterSecondPage from "../pages/artisan-side-pages/ArtisanRegisterSecondPage"
@@ -46,6 +49,9 @@ function AppRoutes() {
       <Route element={<ArtisanLayout />}>
         <Route path="/artisan" element={<ArtisanHome />} />
         <Route path="/artisan/add-product" element={<AddProduct />} />
+        <Route path="/artisan/products" element={<ArtisanProducts />} />
+        <Route path="/artisan/orders" element={<ArtisanOrders />} />
+        <Route path="/artisan/profile" element={<ArtisanProfile />} />
       </Route>
 
       <Route path="/artisan-register-1" element={<ArtisanRegisterFirstPage />} />

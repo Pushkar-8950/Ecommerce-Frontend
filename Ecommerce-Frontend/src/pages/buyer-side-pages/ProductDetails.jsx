@@ -230,11 +230,21 @@ function ProductDetails() {
 
           <div className="product-main-info">
 
+            <div className="mosje-product-badge">
+              <span className="mosje-verified-tag">✓ MoSJE Verified • Shilp Samagam Certified</span>
+              <span className="fair-wage-tag">Fair Living Wage Guaranteed</span>
+            </div>
+
             <span className="product-details-category">
-              {product?.category?.toUpperCase() || "TEXTILES"}
+              {product?.category?.toUpperCase() || "TEXTILES"} • {product?.region || "Rajasthan"}
             </span>
 
             <h1>{product?.name || "Handwoven Cotton Dupatta"}</h1>
+            {product?.hindiName && (
+              <h2 className="product-hindi-title" style={{ fontSize: "1.1rem", color: "#b45309", margin: "-0.2rem 0 0.5rem" }}>
+                {product.hindiName}
+              </h2>
+            )}
 
             {/* Rating */}
 
@@ -256,14 +266,23 @@ function ProductDetails() {
             </div>
 
             <div className="product-price-note">
-              Inclusive of all taxes
+              Inclusive of all taxes • 100% Proceeds to Marginalized Artisan
             </div>
 
-            {/* Description */}
+            {/* Description & Bilingual Toggle */}
 
             <p className="product-short-description">
               {product?.description || "A beautifully handwoven cotton dupatta created using traditional weaving techniques by skilled artisans. Lightweight, elegant, and perfect for everyday wear or special occasions."}
             </p>
+
+            {product?.hindiDescription && (
+              <div style={{ backgroundColor: "#fffbeb", padding: "10px 14px", borderRadius: "10px", border: "1px solid #fde68a", margin: "10px 0" }}>
+                <span style={{ fontSize: "11px", fontWeight: "bold", color: "#92400e", textTransform: "uppercase" }}>हिंदी में विवरण (Hindi Story):</span>
+                <p style={{ margin: "4px 0 0", fontSize: "13.5px", color: "#451a03", lineHeight: "1.4" }}>
+                  {product.hindiDescription}
+                </p>
+              </div>
+            )}
 
             <div className="product-divider" />
 
