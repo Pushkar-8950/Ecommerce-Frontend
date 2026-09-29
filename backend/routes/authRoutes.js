@@ -29,6 +29,10 @@ router.post('/register', async (req, res, next) => {
       address,
       state = 'Delhi',
       district = 'Central Delhi',
+      pincode = '',
+      gstin = '',
+      panNumber = '',
+      businessType = 'Commercial',
     } = req.body;
 
     if (!fullName || !email || !phone || !password) {
@@ -58,6 +62,10 @@ router.post('/register', async (req, res, next) => {
       address: address || 'Main Commercial Road',
       state,
       district,
+      pincode,
+      gstin,
+      panNumber,
+      businessType,
     });
 
     await logAudit({
@@ -67,7 +75,7 @@ router.post('/register', async (req, res, next) => {
       userRole: user.role,
       entity: 'User',
       entityId: user._id,
-      details: { email: user.email, role: user.role },
+      details: { email: user.email, role: user.role, district: user.district, pincode: user.pincode },
       ipAddress: req.ip,
     });
 
@@ -86,6 +94,10 @@ router.post('/register', async (req, res, next) => {
         address: user.address,
         state: user.state,
         district: user.district,
+        pincode: user.pincode,
+        gstin: user.gstin,
+        panNumber: user.panNumber,
+        businessType: user.businessType,
       },
     });
   } catch (error) {
@@ -145,6 +157,10 @@ router.post('/login', async (req, res, next) => {
         address: user.address,
         state: user.state,
         district: user.district,
+        pincode: user.pincode,
+        gstin: user.gstin,
+        panNumber: user.panNumber,
+        businessType: user.businessType,
         designation: user.designation,
         department: user.department,
       },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNotifications } from '../../context/NotificationContext';
@@ -21,6 +21,20 @@ export const Navbar = ({ onToggleSidebar }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Close menus when clicking outside - enforce one window at a time
+  useEffect(() => {
+    const handleDocumentClick = (e) => {
+      if (!e.target.closest('#nav-notifications-btn') && !e.target.closest('#nav-notifications-popover')) {
+        setShowNotifications(false);
+      }
+      if (!e.target.closest('#nav-profile-btn') && !e.target.closest('#nav-profile-menu')) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener('click', handleDocumentClick);
+    return () => document.removeEventListener('click', handleDocumentClick);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -56,12 +70,7 @@ export const Navbar = ({ onToggleSidebar }) => {
           <span>Legal Metrology Division | Department of Consumer Affairs</span>
         </div>
         <div className="hidden sm:flex items-center gap-4 text-[11px]">
-          <Link to="/about" className="hover:text-white transition-colors">
-            System Architecture
-          </Link>
-          <Link to="/verify" className="hover:text-white transition-colors">
-            Public Certificate Lookup
-          </Link>
+          {/* Top navigation links removed as requested */}
         </div>
       </div>
 
@@ -80,7 +89,7 @@ export const Navbar = ({ onToggleSidebar }) => {
             </button>
           )}
 
-          <Link to="/" className="flex items-center gap-2.5">
+          <Link to={user ? (user.role === 'BUSINESS_USER' ? '/business/dashboard' : user.role === 'LMO_OFFICER' ? '/lmo/dashboard' : user.role === 'GATC' ? '/gatc/dashboard' : '/admin/dashboard') : '/'} className="flex items-center gap-2.5">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 flex items-center justify-center text-amber-400 shadow-md">
               <Scale className="w-5 h-5" />
             </div>
@@ -123,6 +132,7 @@ export const Navbar = ({ onToggleSidebar }) => {
           {user && (
             <div className="relative">
               <button
+                id="nav-notifications-btn"
                 onClick={() => {
                   setShowNotifications(!showNotifications);
                   setShowProfileMenu(false);
@@ -139,7 +149,10 @@ export const Navbar = ({ onToggleSidebar }) => {
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div
+                  id="nav-notifications-popover"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                >
                   <div className="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
                     <div>
                       <h4 className="text-xs font-bold text-slate-900">Notifications & Expiry Alerts</h4>
@@ -212,6 +225,7 @@ export const Navbar = ({ onToggleSidebar }) => {
           {user ? (
             <div className="relative">
               <button
+                id="nav-profile-btn"
                 onClick={() => {
                   setShowProfileMenu(!showProfileMenu);
                   setShowNotifications(false);
@@ -233,8 +247,21 @@ export const Navbar = ({ onToggleSidebar }) => {
               </button>
 
               {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50">
-                  <div className="px-4 py-2 border-b border-slate-100">
+                <div
+                  id="nav-profile-menu"
+                  className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50"
+                >
+                  <div
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      if (user.role === 'BUSINESS_USER') navigate('/business/profile');
+                      else if (user.role === 'GATC') navigate('/gatc/profile');
+                      else if (user.role === 'LMO_OFFICER') navigate('/lmo/profile');
+                      else if (user.role === 'ADMIN') navigate('/admin/profile');
+                    }}
+                    className="px-4 py-2 border-b border-slate-100 cursor-pointer hover:bg-slate-50 transition-colors"
+                    title="Click to view full profile details"
+                  >
                     <span className="text-xs font-bold text-slate-900 block truncate">
                       {user.fullName}
                     </span>
@@ -251,6 +278,9 @@ export const Navbar = ({ onToggleSidebar }) => {
                       onClick={() => {
                         setShowProfileMenu(false);
                         if (user.role === 'BUSINESS_USER') navigate('/business/profile');
+                        else if (user.role === 'GATC') navigate('/gatc/profile');
+                        else if (user.role === 'LMO_OFFICER') navigate('/lmo/profile');
+                        else if (user.role === 'ADMIN') navigate('/admin/profile');
                       }}
                       className="w-full flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 transition-colors text-left"
                     >

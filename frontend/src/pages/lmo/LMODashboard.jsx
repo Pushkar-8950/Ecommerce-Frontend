@@ -12,26 +12,48 @@ import {
   ClipboardList,
   Eye,
   CheckCircle,
+  Filter,
+  Sparkles,
 } from 'lucide-react';
 
 export const LMODashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeTimeRange, setActiveTimeRange] = useState('ALL'); // ALL, TODAY, WEEK, MONTH, YEAR
+
+  const fetchDashboard = async (silent = false) => {
+    try {
+      if (!silent) setLoading(true);
+      const res = await api.get('/dashboard/lmo');
+      setData(res.data.data);
+    } catch (err) {
+      console.error('Failed to load LMO dashboard', err);
+    } finally {
+      if (!silent) setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get('/dashboard/lmo');
-        setData(res.data.data);
-      } catch (err) {
-        console.error('Failed to load LMO dashboard', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchDashboard();
+
+    // Real-time synchronization across roles
+    const handleSync = () => fetchDashboard(true);
+    window.addEventListener('metraverify_sync', handleSync);
+
+    let bc;
+    if (window.BroadcastChannel) {
+      bc = new BroadcastChannel('metraverify_sync_channel');
+      bc.onmessage = () => fetchDashboard(true);
+    }
+
+    const timer = setInterval(() => fetchDashboard(true), 4000);
+
+    return () => {
+      window.removeEventListener('metraverify_sync', handleSync);
+      if (bc) bc.close();
+      clearInterval(timer);
+    };
   }, []);
 
   if (loading) {
@@ -44,6 +66,11 @@ export const LMODashboard = () => {
   }
 
   const { metrics = {}, assignedApplications = [] } = data || {};
+  const tbm = metrics.timeBasedMetrics || {
+    certificates: { today: 0, week: 0, month: 0, year: 0, total: 0 },
+    completedInspections: { today: 0, week: 0, month: 0, year: 0, total: 0 },
+    pendingInspections: { today: 0, week: 0, month: 0, year: 0, total: 0 },
+  };
 
   return (
     <div className="space-y-6">
@@ -61,45 +88,240 @@ export const LMODashboard = () => {
           </p>
         </div>
 
-        <Link
-          to="/lmo/applications"
-          className="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0"
-        >
-          <ClipboardList className="w-4 h-4" />
-          <span>View Assigned Queue</span>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/lmo/certificates"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+          >
+            <Award className="w-4 h-4 text-purple-600" />
+            <span>Certificates Repository</span>
+          </Link>
+          <Link
+            to="/lmo/applications"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0"
+          >
+            <ClipboardList className="w-4 h-4" />
+            <span>Assigned Cases Queue</span>
+          </Link>
+        </div>
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatsCard
-          title="Today's Scheduled"
-          value={metrics.todaysInspections || 0}
-          icon={Calendar}
-          color="blue"
-          subtitle="Field & bench visits"
-        />
-        <StatsCard
-          title="Pending Inspections"
-          value={metrics.pendingInspections || 0}
-          icon={Clock}
-          color="amber"
-          subtitle="In your caseload"
-        />
-        <StatsCard
-          title="Completed Inspections"
-          value={metrics.completedInspections || 0}
-          icon={CheckCircle}
-          color="emerald"
-          subtitle="Evaluated cases"
-        />
-        <StatsCard
-          title="Certificates Issued"
-          value={metrics.certificatesIssued || 0}
-          icon={Award}
-          color="purple"
-          subtitle="Digitally stamped"
-        />
+      {/* Time-Based Filter Toggles */}
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-xs text-slate-600 font-semibold">
+          <Filter className="w-4 h-4 text-purple-600" />
+          <span>Timeline Metrics Filter:</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs">
+          {[
+            { key: 'ALL', label: 'All-Time' },
+            { key: 'TODAY', label: 'Today' },
+            { key: 'WEEK', label: 'This Week' },
+            { key: 'MONTH', label: 'This Month' },
+            { key: 'YEAR', label: 'This Year' },
+          ].map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTimeRange(tab.key)}
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+                activeTimeRange === tab.key
+                  ? 'bg-white text-purple-700 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Detailed Metrics Rows */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Certificates Section */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-purple-700">
+              <Award className="w-5 h-5" />
+              <h3 className="font-bold text-slate-900">Certificates Issued</h3>
+            </div>
+            <span className="text-xl font-black text-purple-700">
+              {activeTimeRange === 'TODAY'
+                ? tbm.certificates?.today || 0
+                : activeTimeRange === 'WEEK'
+                ? tbm.certificates?.week || 0
+                : activeTimeRange === 'MONTH'
+                ? tbm.certificates?.month || 0
+                : activeTimeRange === 'YEAR'
+                ? tbm.certificates?.year || 0
+                : tbm.certificates?.total || 0}
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'TODAY' ? 'bg-purple-50 font-bold text-purple-900' : 'text-slate-600'
+              }`}
+            >
+              <span>Today (Daily)</span>
+              <span className="font-bold">{tbm.certificates?.today || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'WEEK' ? 'bg-purple-50 font-bold text-purple-900' : 'text-slate-600'
+              }`}
+            >
+              <span>This Week</span>
+              <span className="font-bold">{tbm.certificates?.week || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'MONTH' ? 'bg-purple-50 font-bold text-purple-900' : 'text-slate-600'
+              }`}
+            >
+              <span>This Month</span>
+              <span className="font-bold">{tbm.certificates?.month || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'YEAR' ? 'bg-purple-50 font-bold text-purple-900' : 'text-slate-600'
+              }`}
+            >
+              <span>This Year</span>
+              <span className="font-bold">{tbm.certificates?.year || 0}</span>
+            </div>
+            <div className="flex justify-between items-center text-xs border-t border-slate-100 pt-2 px-2">
+              <span className="font-semibold text-slate-700">Total All-Time</span>
+              <span className="font-black text-purple-700 text-sm">
+                {tbm.certificates?.total || 0}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Completed Inspections Section */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-emerald-600">
+              <CheckCircle className="w-5 h-5" />
+              <h3 className="font-bold text-slate-900">Completed Inspections</h3>
+            </div>
+            <span className="text-xl font-black text-emerald-600">
+              {activeTimeRange === 'TODAY'
+                ? tbm.completedInspections?.today || 0
+                : activeTimeRange === 'WEEK'
+                ? tbm.completedInspections?.week || 0
+                : activeTimeRange === 'MONTH'
+                ? tbm.completedInspections?.month || 0
+                : activeTimeRange === 'YEAR'
+                ? tbm.completedInspections?.year || 0
+                : tbm.completedInspections?.total || 0}
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'TODAY' ? 'bg-emerald-50 font-bold text-emerald-900' : 'text-slate-600'
+              }`}
+            >
+              <span>Today (Daily)</span>
+              <span className="font-bold">{tbm.completedInspections?.today || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'WEEK' ? 'bg-emerald-50 font-bold text-emerald-900' : 'text-slate-600'
+              }`}
+            >
+              <span>This Week</span>
+              <span className="font-bold">{tbm.completedInspections?.week || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'MONTH' ? 'bg-emerald-50 font-bold text-emerald-900' : 'text-slate-600'
+              }`}
+            >
+              <span>This Month</span>
+              <span className="font-bold">{tbm.completedInspections?.month || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'YEAR' ? 'bg-emerald-50 font-bold text-emerald-900' : 'text-slate-600'
+              }`}
+            >
+              <span>This Year</span>
+              <span className="font-bold">{tbm.completedInspections?.year || 0}</span>
+            </div>
+            <div className="flex justify-between items-center text-xs border-t border-slate-100 pt-2 px-2">
+              <span className="font-semibold text-slate-700">Total All-Time</span>
+              <span className="font-black text-emerald-600 text-sm">
+                {tbm.completedInspections?.total || 0}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Pending Inspections Section */}
+        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-300 transition-all">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-amber-500">
+              <Clock className="w-5 h-5" />
+              <h3 className="font-bold text-slate-900">Pending Inspections</h3>
+            </div>
+            <span className="text-xl font-black text-amber-600">
+              {activeTimeRange === 'TODAY'
+                ? tbm.pendingInspections?.today || 0
+                : activeTimeRange === 'WEEK'
+                ? tbm.pendingInspections?.week || 0
+                : activeTimeRange === 'MONTH'
+                ? tbm.pendingInspections?.month || 0
+                : activeTimeRange === 'YEAR'
+                ? tbm.pendingInspections?.year || 0
+                : tbm.pendingInspections?.total || 0}
+            </span>
+          </div>
+
+          <div className="space-y-2.5">
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'TODAY' ? 'bg-amber-50 font-bold text-amber-900' : 'text-slate-600'
+              }`}
+            >
+              <span>Scheduled Today</span>
+              <span className="font-bold">{tbm.pendingInspections?.today || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'WEEK' ? 'bg-amber-50 font-bold text-amber-900' : 'text-slate-600'
+              }`}
+            >
+              <span>Scheduled This Week</span>
+              <span className="font-bold">{tbm.pendingInspections?.week || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'MONTH' ? 'bg-amber-50 font-bold text-amber-900' : 'text-slate-600'
+              }`}
+            >
+              <span>Scheduled This Month</span>
+              <span className="font-bold">{tbm.pendingInspections?.month || 0}</span>
+            </div>
+            <div
+              className={`flex justify-between items-center text-xs p-2 rounded-lg transition-colors ${
+                activeTimeRange === 'YEAR' ? 'bg-amber-50 font-bold text-amber-900' : 'text-slate-600'
+              }`}
+            >
+              <span>Scheduled This Year</span>
+              <span className="font-bold">{tbm.pendingInspections?.year || 0}</span>
+            </div>
+            <div className="flex justify-between items-center text-xs border-t border-slate-100 pt-2 px-2">
+              <span className="font-semibold text-slate-700">Total Pending Queue</span>
+              <span className="font-black text-amber-600 text-sm">
+                {tbm.pendingInspections?.total || 0}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Priority Inspection Queue */}

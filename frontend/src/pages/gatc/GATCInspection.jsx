@@ -141,6 +141,13 @@ export const GATCInspection = () => {
       setError('Please evaluate all 7 mandatory laboratory test parameters before concluding.');
       return;
     }
+    const isFail = failedCount > 0;
+    const decisionToSubmit = isFail ? 'REJECTED' : 'VERIFIED'; // Updated to use the correct enum for backend
+    
+    if (isFail && !remarks) {
+      setError('Failure reason and remarks are mandatory for a REJECTED outcome.');
+      return;
+    }
 
     try {
       setSubmitting(true);
@@ -149,8 +156,14 @@ export const GATCInspection = () => {
         checks,
         remarks,
         officerNotes,
-        finalDecision,
+        finalDecision: decisionToSubmit,
       });
+
+      if (window.BroadcastChannel) {
+        const bc = new BroadcastChannel('metraverify_sync_channel');
+        bc.postMessage({ type: 'GATC_INSPECTION_COMPLETED', decision: decisionToSubmit, timestamp: Date.now() });
+      }
+      window.dispatchEvent(new CustomEvent('metraverify_sync'));
 
       setSuccessResult(res.data);
     } catch (err) {
@@ -182,7 +195,7 @@ export const GATCInspection = () => {
           </div>
 
           <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-            GATC Laboratory Testing Completed!
+            GATC Laboratory Verification Completed!
           </h2>
 
           <p className="text-xs text-slate-600 mt-1 max-w-md mx-auto">
@@ -263,7 +276,7 @@ export const GATCInspection = () => {
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Testing Queue</span>
+          <span>Back to Verification Queue</span>
         </Link>
 
         {/* 1-Click Pass All for Demonstration */}
@@ -292,10 +305,10 @@ export const GATCInspection = () => {
               </span>
             </div>
             <h1 className="text-xl font-bold text-slate-900 mt-1">
-              Laboratory Calibration: {app?.instrument?.instrumentType}
+              Laboratory Verification: {app?.instrument?.instrumentType}
             </h1>
             <p className="text-xs text-slate-500">
-              Enterprise: <span className="font-semibold text-slate-700">{app?.owner?.organizationName}</span> • Test Mode: Laboratory Standard Verification
+              Enterprise: <span className="font-semibold text-slate-700">{app?.owner?.organizationName}</span> • Verification Mode: Laboratory Standard Verification
             </p>
           </div>
 
@@ -340,7 +353,7 @@ export const GATCInspection = () => {
         <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-sm font-bold text-slate-900">
-              7-Point GATC Laboratory Calibration & Standards Test
+              7-Point GATC Digital Verification & Testing Workflow
             </h2>
             <p className="text-xs text-slate-500">
               Conducted in compliance with NABL accreditation and Legal Metrology Act parameters.
@@ -404,13 +417,13 @@ export const GATCInspection = () => {
         <div className="p-6 border-t border-slate-100 bg-slate-50/30 space-y-4">
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Laboratory Calibration Notes & Traceable Standard Masses Applied *
+              Laboratory Verification Notes & Traceable Standard Masses Applied *
             </label>
             <input
               type="text"
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
-              placeholder="e.g. Certified Class F1 standard weights applied; corner load differential <= 0.02%."
+              placeholder="e.g. Certified Class F1 standard weights applied; corner load differential <= 0.02%. Required if failed."
               className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500/20"
             />
           </div>
@@ -423,7 +436,7 @@ export const GATCInspection = () => {
               type="text"
               value={officerNotes}
               onChange={(e) => setOfficerNotes(e.target.value)}
-              placeholder="e.g. Hologram GATC-SEAL-2026 affixed to calibration interface."
+              placeholder="e.g. Hologram GATC-SEAL-2026 affixed to verification interface."
               className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500/20"
             />
           </div>
@@ -431,7 +444,7 @@ export const GATCInspection = () => {
           {/* Final Determination Block */}
           <div className="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="text-xs font-bold text-slate-900 block">Final Laboratory Test Determination</span>
+              <span className="text-xs font-bold text-slate-900 block">Final Laboratory Verification Determination</span>
               <p className="text-[11px] text-slate-500">
                 {passedCount === 7
                   ? 'All 7 mandatory checks passed. System will issue Digital Certificate + QR.'
@@ -455,7 +468,7 @@ export const GATCInspection = () => {
                 ) : passedCount === 7 ? (
                   <>
                     <Award className="w-4 h-4" />
-                    <span>Pass & Issue Digital Certificate</span>
+                    <span>Pass & Generate Digital Verification Certificate</span>
                   </>
                 ) : (
                   <>

@@ -161,6 +161,43 @@ router.get(
         (insp) => insp.finalResult === 'VERIFIED' || insp.finalResult === 'REJECTED'
       );
 
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const weekStart = new Date(todayStart);
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+      const monthStart = new Date(todayStart.getFullYear(), todayStart.getMonth(), 1);
+      const yearStart = new Date(todayStart.getFullYear(), 0, 1);
+
+      const timeBasedMetrics = {
+        certificates: { today: 0, week: 0, month: 0, year: 0, total: certificates.length },
+        completedInspections: { today: 0, week: 0, month: 0, year: 0, total: completedInspections.length },
+        pendingInspections: { today: 0, week: 0, month: 0, year: 0, total: pendingInspections.length },
+      };
+
+      certificates.forEach((c) => {
+        const d = new Date(c.issueDate || c.verificationDate || c.createdAt);
+        if (d >= todayStart) timeBasedMetrics.certificates.today++;
+        if (d >= weekStart) timeBasedMetrics.certificates.week++;
+        if (d >= monthStart) timeBasedMetrics.certificates.month++;
+        if (d >= yearStart) timeBasedMetrics.certificates.year++;
+      });
+
+      completedInspections.forEach((insp) => {
+        const d = new Date(insp.completedAt || insp.inspectionDate || insp.createdAt);
+        if (d >= todayStart) timeBasedMetrics.completedInspections.today++;
+        if (d >= weekStart) timeBasedMetrics.completedInspections.week++;
+        if (d >= monthStart) timeBasedMetrics.completedInspections.month++;
+        if (d >= yearStart) timeBasedMetrics.completedInspections.year++;
+      });
+
+      pendingInspections.forEach((app) => {
+        const d = new Date(app.scheduledDate || app.createdAt);
+        if (d >= todayStart) timeBasedMetrics.pendingInspections.today++;
+        if (d >= weekStart) timeBasedMetrics.pendingInspections.week++;
+        if (d >= monthStart) timeBasedMetrics.pendingInspections.month++;
+        if (d >= yearStart) timeBasedMetrics.pendingInspections.year++;
+      });
+
       res.json({
         success: true,
         data: {
@@ -169,6 +206,7 @@ router.get(
             pendingInspections: pendingInspections.length,
             completedInspections: completedInspections.length,
             certificatesIssued: certificates.length,
+            timeBasedMetrics,
           },
           assignedApplications: assignedApps,
           recentInspections: inspections.slice(0, 5),
@@ -202,8 +240,10 @@ router.get('/gatc', protect, authorizeRoles('GATC', 'ADMIN'), async (req, res, n
       data: {
         metrics: {
           assignedCases: assignedApps.length,
-          pendingTests: assignedApps.filter((a) => a.status === 'SCHEDULED' || a.status === 'INSPECTION').length,
+          pendingTests: assignedApps.filter((a) => a.status === 'SCHEDULED' || a.status === 'INSPECTION' || a.status === 'SUBMITTED' || a.status === 'ASSIGNED').length,
           completedTests: inspections.filter((i) => i.finalResult !== 'IN_PROGRESS').length,
+          passed: inspections.filter((i) => i.finalResult === 'VERIFIED').length,
+          failed: inspections.filter((i) => i.finalResult === 'REJECTED').length,
           calibrationsIssued: certificates.length,
         },
         assignedApplications: assignedApps,

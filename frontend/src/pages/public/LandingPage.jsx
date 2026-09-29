@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import {
   Scale,
   ShieldCheck,
@@ -17,7 +18,18 @@ import {
 
 export const LandingPage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [certInput, setCertInput] = useState('');
+
+  // Auto redirect logged in users to their workspace so they never land on login/signup page
+  useEffect(() => {
+    if (user) {
+      if (user.role === 'BUSINESS_USER') navigate('/business/dashboard', { replace: true });
+      else if (user.role === 'LMO_OFFICER') navigate('/lmo/dashboard', { replace: true });
+      else if (user.role === 'GATC') navigate('/gatc/dashboard', { replace: true });
+      else if (user.role === 'ADMIN') navigate('/admin/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleVerifySubmit = (e) => {
     e.preventDefault();

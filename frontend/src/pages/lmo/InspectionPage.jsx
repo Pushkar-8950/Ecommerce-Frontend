@@ -154,6 +154,12 @@ export const InspectionPage = () => {
         finalDecision,
       });
 
+      if (window.BroadcastChannel) {
+        const bc = new BroadcastChannel('metraverify_sync_channel');
+        bc.postMessage({ type: 'INSPECTION_COMPLETED', decision: finalDecision, timestamp: Date.now() });
+      }
+      window.dispatchEvent(new CustomEvent('metraverify_sync'));
+
       setSuccessResult(res.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to finalize inspection.');

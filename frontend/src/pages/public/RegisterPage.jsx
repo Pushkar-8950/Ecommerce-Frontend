@@ -17,10 +17,12 @@ export const RegisterPage = () => {
     address: '',
     state: 'Delhi',
     district: 'Central Delhi',
+    pincode: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [detectingLoc, setDetectingLoc] = useState(false);
 
   const statesAndDistricts = {
     Delhi: ['Central Delhi', 'North Delhi', 'South Delhi', 'East Delhi', 'West Delhi'],
@@ -39,6 +41,36 @@ export const RegisterPage = () => {
       }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleAutoDetectLocation = () => {
+    setDetectingLoc(true);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // For SIH Demo: In a real app we would reverse geocode the lat/lng.
+          // Here we mock a successful detection to one of our available regions.
+          setTimeout(() => {
+            setFormData(prev => ({
+              ...prev,
+              state: 'Delhi',
+              district: 'South Delhi',
+              address: 'Okhla Industrial Estate Phase 3',
+              pincode: '110020'
+            }));
+            setDetectingLoc(false);
+          }, 800);
+        },
+        (err) => {
+          console.warn(err);
+          setDetectingLoc(false);
+          setError('Location access denied or unavailable. Please fill manually.');
+        }
+      );
+    } else {
+      setDetectingLoc(false);
+      setError('Geolocation not supported by this browser.');
     }
   };
 
@@ -175,6 +207,19 @@ export const RegisterPage = () => {
               </div>
             </div>
 
+            <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-2">
+              <h3 className="text-xs font-bold text-slate-800">Location Details</h3>
+              <button
+                type="button"
+                onClick={handleAutoDetectLocation}
+                disabled={detectingLoc}
+                className="text-[10px] font-bold bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg hover:bg-amber-200 transition-colors flex items-center gap-1.5"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                {detectingLoc ? 'Detecting...' : 'Auto-Detect Location'}
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -213,20 +258,41 @@ export const RegisterPage = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Commercial Facility Address
-              </label>
-              <div className="relative">
-                <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-                <textarea
-                  name="address"
-                  rows="2"
-                  value={formData.address}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Commercial Facility Address *
+                </label>
+                <div className="relative">
+                  <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                  <textarea
+                    name="address"
+                    rows="2"
+                    value={formData.address}
+                    onChange={handleChange}
+                    required
+                    placeholder="Plot/Unit No., Industrial Area, Street"
+                    className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Pincode *
+                </label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={formData.pincode}
                   onChange={handleChange}
-                  placeholder="Plot/Unit No., Industrial Area, Street"
-                  className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  required
+                  placeholder="e.g. 110020"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 h-10 mt-0.5"
                 />
+                <span className="text-[10px] text-slate-400 mt-1 block">
+                  Used for local inspector matching
+                </span>
               </div>
             </div>
 

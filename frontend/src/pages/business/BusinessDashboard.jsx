@@ -35,20 +35,37 @@ export const BusinessDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get('/dashboard/business');
-        setData(res.data.data);
-      } catch (err) {
-        console.error('Failed to load business dashboard', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchDashboard = async (silent = false) => {
+    try {
+      if (!silent) setLoading(true);
+      const res = await api.get('/dashboard/business');
+      setData(res.data.data);
+    } catch (err) {
+      console.error('Failed to load business dashboard', err);
+    } finally {
+      if (!silent) setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchDashboard();
+
+    const handleSync = () => fetchDashboard(true);
+    window.addEventListener('metraverify_sync', handleSync);
+
+    let bc;
+    if (window.BroadcastChannel) {
+      bc = new BroadcastChannel('metraverify_sync_channel');
+      bc.onmessage = () => fetchDashboard(true);
+    }
+
+    const timer = setInterval(() => fetchDashboard(true), 4000);
+
+    return () => {
+      window.removeEventListener('metraverify_sync', handleSync);
+      if (bc) bc.close();
+      clearInterval(timer);
+    };
   }, []);
 
   if (loading) {

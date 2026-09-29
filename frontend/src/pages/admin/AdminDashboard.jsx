@@ -35,19 +35,38 @@ export const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchAdminDashboard = async (silent = false) => {
+    try {
+      if (!silent) setLoading(true);
+      const res = await api.get('/dashboard/admin');
+      setData(res.data.data);
+    } catch (err) {
+      console.error('Failed to load admin dashboard', err);
+    } finally {
+      if (!silent) setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchAdminDashboard = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get('/dashboard/admin');
-        setData(res.data.data);
-      } catch (err) {
-        console.error('Failed to load admin dashboard', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchAdminDashboard();
+
+    // Real-time synchronization
+    const handleSync = () => fetchAdminDashboard(true);
+    window.addEventListener('metraverify_sync', handleSync);
+
+    let bc;
+    if (window.BroadcastChannel) {
+      bc = new BroadcastChannel('metraverify_sync_channel');
+      bc.onmessage = () => fetchAdminDashboard(true);
+    }
+
+    const timer = setInterval(() => fetchAdminDashboard(true), 4000);
+
+    return () => {
+      window.removeEventListener('metraverify_sync', handleSync);
+      if (bc) bc.close();
+      clearInterval(timer);
+    };
   }, []);
 
   if (loading) {
@@ -60,8 +79,7 @@ export const AdminDashboard = () => {
   }
 
   const { metrics = {}, charts = {}, recentApplications = [] } = data || {};
-  const { statusDistribution = [], monthlyTrends = [], instrumentTypes = [], districtDistribution = [] } =
-    charts;
+  const { statusDistribution = [], monthlyTrends = [] } = charts;
 
   return (
     <div className="space-y-6">
@@ -81,11 +99,11 @@ export const AdminDashboard = () => {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <Link
-            to="/admin/applications"
+            to="/admin/allocation"
             className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
           >
             <Clock className="w-4 h-4" />
-            <span>Assign Pending Cases</span>
+            <span>Officer & Inspection Allocation</span>
           </Link>
 
           <Link
@@ -226,43 +244,6 @@ export const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Chart 3: Instrument Types */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
-          <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-900">Instrument Category Distribution</h3>
-            <p className="text-xs text-slate-500">Proportion of weighbridges, counter scales, dispensers & balances</p>
-          </div>
-          <div className="flex-1 min-h-[220px]">
-            <ResponsiveContainer width="100%" height={230}>
-              <BarChart data={instrumentTypes} layout="vertical" margin={{ left: 30 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-                <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11 }} />
-                <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} width={120} />
-                <Tooltip />
-                <Bar dataKey="count" name="Instruments" fill="#8b5cf6" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Chart 4: District Distribution */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
-          <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-900">District-wise Registry Distribution</h3>
-            <p className="text-xs text-slate-500">Commercial instrumentation load across regional circles</p>
-          </div>
-          <div className="flex-1 min-h-[220px]">
-            <ResponsiveContainer width="100%" height={230}>
-              <BarChart data={districtDistribution}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="district" tick={{ fontSize: 11 }} />
-                <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
-                <Tooltip />
-                <Bar dataKey="count" name="Instruments" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
       </div>
 
       {/* Recent Applications Management Preview */}
@@ -325,10 +306,10 @@ export const AdminDashboard = () => {
                   </td>
                   <td className="py-3 px-4 text-right">
                     <Link
-                      to="/admin/applications"
-                      className="px-3 py-1 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg font-semibold transition-colors inline-block"
+                      to={`/admin/allocation?case=${app.applicationId}`}
+                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs shadow-sm transition-colors inline-block"
                     >
-                      Assign / Review
+                      Allocate Officer
                     </Link>
                   </td>
                 </tr>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Html5Qrcode } from 'html5-qrcode';
 import {
   ShieldCheck,
   AlertTriangle,
@@ -10,15 +11,15 @@ import {
   CheckCircle,
   Calendar,
   Building,
-  User,
   Scale,
-  Hash,
-  Clock,
-  ArrowRight,
-  ExternalLink,
+  QrCode,
+  Camera,
+  UploadCloud,
   Printer,
+  Sparkles,
+  RefreshCw,
+  ExternalLink,
 } from 'lucide-react';
-import StatusBadge from '../../components/common/StatusBadge';
 
 export const PublicCertificateVerificationPage = () => {
   const { certificateNumber } = useParams();
@@ -29,18 +30,56 @@ export const PublicCertificateVerificationPage = () => {
   const [certData, setCertData] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const fetchCertificate = async (num) => {
-    if (!num) return;
+  // Scanner state
+  const [isCameraActive, setIsCameraActive] = useState(false);
+  const [cameraError, setCameraError] = useState('');
+  const [scannedMessage, setScannedMessage] = useState('');
+  const html5QrCodeRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  // Helper to extract clean CERT-YYYY-XXXXXX from any scanned string or URL
+  const extractCertificateNumber = (raw) => {
+    if (!raw) return '';
+    const trimmed = raw.trim();
+
+    // Match CERT-YYYY-XXXXXX
+    const match = trimmed.match(/(CERT-\d{4}-\d{6})/i);
+    if (match) {
+      return match[1].toUpperCase();
+    }
+
+    // Try parsing URL path /verify/:cert
+    try {
+      if (trimmed.includes('/verify/')) {
+        const parts = trimmed.split('/verify/');
+        if (parts[1]) {
+          const seg = parts[1].split('/')[0].split('?')[0].split('#')[0];
+          return seg.trim().toUpperCase();
+        }
+      }
+    } catch (e) {
+      console.warn('URL parsing failed', e);
+    }
+
+    return trimmed.toUpperCase();
+  };
+
+  const fetchCertificate = async (rawCode) => {
+    const cleanCode = extractCertificateNumber(rawCode);
+    if (!cleanCode) return;
+
     try {
       setLoading(true);
       setErrorMsg('');
-      const res = await axios.get(`/api/public/verify/${num.trim().toUpperCase()}`);
+      setScannedMessage('');
+      const res = await axios.get(`/api/public/verify/${cleanCode}`);
       setCertData(res.data.data);
+      setInputVal(cleanCode);
     } catch (err) {
       setCertData(null);
       setErrorMsg(
         err.response?.data?.message ||
-          `No certificate found with reference "${num}". Please check the ID and try again.`
+          `No certificate found with reference "${cleanCode}". Please verify the QR code or ID and try again.`
       );
     } finally {
       setLoading(false);
@@ -49,16 +88,99 @@ export const PublicCertificateVerificationPage = () => {
 
   useEffect(() => {
     if (certificateNumber) {
-      setInputVal(certificateNumber);
-      fetchCertificate(certificateNumber);
+      const clean = extractCertificateNumber(certificateNumber);
+      setInputVal(clean);
+      fetchCertificate(clean);
     }
   }, [certificateNumber]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputVal.trim()) {
-      navigate(`/verify/${inputVal.trim().toUpperCase()}`);
+  // Clean up scanner on unmount
+  useEffect(() => {
+    return () => {
+      stopCameraScanner();
+    };
+  }, []);
+
+  const startCameraScanner = async () => {
+    setCameraError('');
+    setScannedMessage('');
+    setIsCameraActive(true);
+
+    // Wait for DOM element #reader to mount
+    setTimeout(async () => {
+      try {
+        if (!html5QrCodeRef.current) {
+          html5QrCodeRef.current = new Html5Qrcode('qr-reader-container');
+        }
+
+        const qrCodeSuccessCallback = (decodedText) => {
+          const cleanCert = extractCertificateNumber(decodedText);
+          setScannedMessage(`QR Code Scanned: ${cleanCert}`);
+          stopCameraScanner();
+          navigate(`/verify/${cleanCert}`);
+        };
+
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        await html5QrCodeRef.current.start(
+          { facingMode: 'environment' },
+          config,
+          qrCodeSuccessCallback
+        );
+      } catch (err) {
+        console.error('Camera Scanner start error', err);
+        setCameraError(
+          'Could not access camera. Please allow camera permissions or upload a QR image instead.'
+        );
+        setIsCameraActive(false);
+      }
+    }, 150);
+  };
+
+  const stopCameraScanner = async () => {
+    if (html5QrCodeRef.current && html5QrCodeRef.current.isScanning) {
+      try {
+        await html5QrCodeRef.current.stop();
+        await html5QrCodeRef.current.clear();
+      } catch (err) {
+        console.warn('Error stopping scanner', err);
+      }
     }
+    setIsCameraActive(false);
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setLoading(true);
+      setErrorMsg('');
+      setCameraError('');
+
+      let scanner = html5QrCodeRef.current;
+      if (!scanner) {
+        scanner = new Html5Qrcode('qr-reader-hidden');
+        html5QrCodeRef.current = scanner;
+      }
+
+      const decodedText = await scanner.scanFile(file, true);
+      const cleanCert = extractCertificateNumber(decodedText);
+      setScannedMessage(`QR Image Decoded: ${cleanCert}`);
+      navigate(`/verify/${cleanCert}`);
+    } catch (err) {
+      console.error('File scan error', err);
+      setErrorMsg('Failed to detect or decode QR code in the uploaded image. Please ensure the QR is clear and well-lit.');
+    } finally {
+      setLoading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleManualSubmit = (e) => {
+    e.preventDefault();
+    if (!inputVal.trim()) return;
+    const clean = extractCertificateNumber(inputVal);
+    navigate(`/verify/${clean}`);
   };
 
   const getStatusBanner = (status) => {
@@ -75,7 +197,7 @@ export const PublicCertificateVerificationPage = () => {
         bg: 'bg-amber-600 text-white',
         icon: AlertTriangle,
         badgeText: 'EXPIRING SOON - RE-VERIFICATION DUE',
-        subtitle: 'This instrument is within 30 days of mandatory re-verification.',
+        subtitle: 'This instrument is within 30 days of mandatory statutory re-verification.',
       };
     }
     if (status === 'REVOKED') {
@@ -83,41 +205,113 @@ export const PublicCertificateVerificationPage = () => {
         bg: 'bg-red-700 text-white',
         icon: XCircle,
         badgeText: 'CERTIFICATE REVOKED',
-        subtitle: 'This certificate has been revoked due to tampering or broken seal.',
+        subtitle: 'This certificate has been revoked due to broken seal, tampering, or failed inspection.',
       };
     }
     return {
       bg: 'bg-rose-600 text-white',
       icon: XCircle,
       badgeText: 'STAMPING EXPIRED / LAPSED',
-      subtitle: 'Periodic verification period has elapsed. Commercial usage is unauthorized.',
+      subtitle: 'Periodic verification period has elapsed. Commercial usage is strictly unauthorized.',
     };
   };
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header Search Section */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm mb-8 text-center">
+      {/* Hidden container for file-based scanner */}
+      <div id="qr-reader-hidden" className="hidden" />
+
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Verification Command Box */}
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm text-center">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs font-semibold mb-3">
             <ShieldCheck className="w-3.5 h-3.5" />
-            Public Verification Registry
+            National Legal Metrology Digital Verification Portal
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             Verify Instrument Stamping Certificate
           </h1>
           <p className="text-slate-500 text-xs sm:text-sm mt-1 max-w-lg mx-auto">
-            Scan the QR code printed on the instrument or enter the certificate registration number below to check authenticity in real time.
+            Scan the official QR code printed on the instrument stamping sticker or enter the certificate ID below to inspect authenticity and calibration status.
           </p>
 
-          <form onSubmit={handleSubmit} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+          {/* Action Tabs: Camera Scanner, Image Upload, Manual Search */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            {!isCameraActive ? (
+              <button
+                type="button"
+                onClick={startCameraScanner}
+                className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
+              >
+                <Camera className="w-4 h-4" />
+                <span>Scan with Camera</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={stopCameraScanner}
+                className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
+              >
+                <XCircle className="w-4 h-4" />
+                <span>Stop Camera Scanner</span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold rounded-xl transition-all shadow-md flex items-center gap-2"
+            >
+              <UploadCloud className="w-4 h-4 text-amber-400" />
+              <span>Upload QR Image</span>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+          </div>
+
+          {/* Live Camera Scanner Box */}
+          {isCameraActive && (
+            <div className="mt-6 max-w-md mx-auto p-4 bg-slate-900 rounded-2xl shadow-xl border border-slate-700 text-center animate-in fade-in zoom-in-95 duration-200">
+              <span className="text-xs font-bold text-amber-400 block mb-2">
+                Point your camera at the MetraVerify QR Code
+              </span>
+              <div
+                id="qr-reader-container"
+                className="overflow-hidden rounded-xl bg-black border border-slate-700"
+              />
+              <p className="text-[11px] text-slate-400 mt-2">
+                Align the square QR code within the highlighted viewfinder.
+              </p>
+            </div>
+          )}
+
+          {cameraError && (
+            <div className="mt-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl max-w-md mx-auto">
+              {cameraError}
+            </div>
+          )}
+
+          {scannedMessage && (
+            <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl max-w-md mx-auto flex items-center justify-center gap-2">
+              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <span className="font-bold">{scannedMessage}</span>
+            </div>
+          )}
+
+          {/* Manual Input Form */}
+          <form onSubmit={handleManualSubmit} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
             <div className="relative flex-1">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
-                placeholder="Enter Certificate No. (e.g. CERT-2026-001001)"
+                placeholder="Enter Certificate No. or paste QR URL (e.g. CERT-2026-001001)"
                 className="w-full pl-10 pr-4 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
               />
             </div>
@@ -130,26 +324,35 @@ export const PublicCertificateVerificationPage = () => {
             </button>
           </form>
 
-          {/* Quick Demo links */}
+          {/* Quick Demo Test Buttons */}
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-500">
-            <span>Quick test IDs:</span>
+            <span className="font-medium text-slate-400">Quick Test Scans:</span>
             <button
-              onClick={() => navigate('/verify/CERT-2026-001001')}
-              className="px-2 py-0.5 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded border border-emerald-200 font-medium"
+              onClick={() => {
+                setInputVal('CERT-2026-001001');
+                fetchCertificate('CERT-2026-001001');
+              }}
+              className="px-2.5 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg border border-emerald-200 font-bold transition-colors"
             >
-              CERT-2026-001001 (Valid)
+              Scan CERT-2026-001001 (Valid)
             </button>
             <button
-              onClick={() => navigate('/verify/CERT-2025-000844')}
-              className="px-2 py-0.5 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded border border-amber-200 font-medium"
+              onClick={() => {
+                setInputVal('CERT-2025-000844');
+                fetchCertificate('CERT-2025-000844');
+              }}
+              className="px-2.5 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg border border-amber-200 font-bold transition-colors"
             >
-              CERT-2025-000844 (Expiring Soon)
+              Scan CERT-2025-000844 (Expiring)
             </button>
             <button
-              onClick={() => navigate('/verify/CERT-2025-000412')}
-              className="px-2 py-0.5 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded border border-rose-200 font-medium"
+              onClick={() => {
+                setInputVal('CERT-2025-000412');
+                fetchCertificate('CERT-2025-000412');
+              }}
+              className="px-2.5 py-1 bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg border border-rose-200 font-bold transition-colors"
             >
-              CERT-2025-000412 (Expired)
+              Scan CERT-2025-000412 (Expired)
             </button>
           </div>
         </div>
@@ -158,7 +361,7 @@ export const PublicCertificateVerificationPage = () => {
         {loading && (
           <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center shadow-sm">
             <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm font-semibold text-slate-700">Querying National Metrology Registry...</p>
+            <p className="text-sm font-semibold text-slate-700">Checking National Metrology Registry for Certificate Details...</p>
           </div>
         )}
 
@@ -173,22 +376,24 @@ export const PublicCertificateVerificationPage = () => {
           </div>
         )}
 
-        {/* Certificate Result Card */}
+        {/* Scanned Certificate Result Details Card */}
         {certData && !loading && (
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden printable-certificate">
+          <div className="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden printable-certificate animate-in fade-in slide-in-from-bottom-3 duration-200">
             {/* Top Status Banner */}
             {(() => {
               const banner = getStatusBanner(certData.status);
               const BannerIcon = banner.icon;
               return (
-                <div className={`${banner.bg} p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left`}>
+                <div
+                  className={`${banner.bg} p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left`}
+                >
                   <div className="flex items-center gap-4">
                     <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm shrink-0">
                       <BannerIcon className="w-8 h-8" />
                     </div>
                     <div>
                       <span className="text-xs font-bold tracking-widest uppercase opacity-90 block">
-                        CERTIFICATE VERIFIED
+                        AUTHENTICATED VERIFICATION RECORD
                       </span>
                       <h2 className="text-xl sm:text-2xl font-black tracking-tight mt-0.5">
                         {banner.badgeText}
@@ -213,16 +418,20 @@ export const PublicCertificateVerificationPage = () => {
             })()}
 
             {/* Verification Metadata Header */}
-            <div className="px-6 sm:px-8 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
-              <div className="flex items-center gap-2">
+            <div className="px-6 sm:px-8 py-4 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-3">
                 <span className="text-slate-500 font-medium">Certificate Ref:</span>
                 <span className="font-mono font-bold text-slate-900 text-sm">
                   {certData.certificateNumber}
                 </span>
+                <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded font-bold text-[10px]">
+                  {certData.statusLabel || certData.status}
+                </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-slate-500 font-medium">Verification Timestamp:</span>
-                <span className="text-slate-700 font-semibold">
+
+              <div className="flex items-center gap-2 text-slate-600">
+                <span className="text-slate-400">Verification Timestamp:</span>
+                <span className="font-semibold">
                   {new Date(certData.verificationTimestamp).toLocaleString('en-IN', {
                     day: '2-digit',
                     month: 'short',
@@ -234,53 +443,82 @@ export const PublicCertificateVerificationPage = () => {
               </div>
             </div>
 
-            {/* Main Details Grid */}
+            {/* Main Details Body */}
             <div className="p-6 sm:p-8 space-y-6">
-              {/* Instrument Information Box */}
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
-                  <Scale className="w-4 h-4 text-blue-600" />
-                  Instrument Specifications
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 bg-slate-50/70 rounded-xl p-4 border border-slate-200/80">
-                  <div>
-                    <span className="text-[11px] text-slate-500 block">Instrument Type</span>
-                    <span className="text-xs font-bold text-slate-800">{certData.instrumentType}</span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-500 block">Instrument ID</span>
-                    <span className="text-xs font-bold font-mono text-blue-600">{certData.instrumentId}</span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-500 block">Serial Number</span>
-                    <span className="text-xs font-bold font-mono text-slate-800">{certData.serialNumber}</span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-500 block">Manufacturer / Model</span>
-                    <span className="text-xs font-semibold text-slate-800">
-                      {certData.manufacturer} - {certData.model}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-500 block">Capacity / Verification Scale Interval</span>
-                    <span className="text-xs font-bold text-slate-800">{certData.capacity}</span>
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-500 block">Accuracy Class</span>
-                    <span className="text-xs font-semibold text-slate-800">{certData.accuracyClass}</span>
+              {/* Instrument & QR Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+                {/* QR Display Card (1 col) */}
+                <div className="lg:col-span-1 bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center flex flex-col items-center justify-center space-y-2">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    Digital Stamping QR
+                  </span>
+                  {certData.qrCodeDataUrl ? (
+                    <img
+                      src={certData.qrCodeDataUrl}
+                      alt="Verified QR"
+                      className="w-36 h-36 rounded-xl border border-slate-300 shadow-inner p-1 bg-white"
+                    />
+                  ) : (
+                    <div className="w-36 h-36 rounded-xl border border-slate-300 flex items-center justify-center bg-white">
+                      <QrCode className="w-16 h-16 text-slate-400" />
+                    </div>
+                  )}
+                  <span className="font-mono text-[10px] text-slate-500 font-bold block truncate max-w-[160px]">
+                    {certData.digitalStampCode}
+                  </span>
+                  <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
+                    <CheckCircle className="w-3 h-3" />
+                    QR Live & Validated
+                  </span>
+                </div>
+
+                {/* Instrument Specifications (3 cols) */}
+                <div className="lg:col-span-3 space-y-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                    <Scale className="w-4 h-4 text-blue-600" />
+                    Instrument Specifications & Calibration Class
+                  </h4>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 bg-slate-50/80 rounded-2xl p-4 border border-slate-200/80">
+                    <div>
+                      <span className="text-[11px] text-slate-500 block">Instrument Type</span>
+                      <span className="text-xs font-bold text-slate-900">{certData.instrumentType}</span>
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-500 block">Asset / Instrument ID</span>
+                      <span className="text-xs font-bold font-mono text-blue-600">{certData.instrumentId}</span>
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-500 block">Serial Number</span>
+                      <span className="text-xs font-bold font-mono text-slate-800">{certData.serialNumber}</span>
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-500 block">Manufacturer & Model</span>
+                      <span className="text-xs font-semibold text-slate-800">
+                        {certData.manufacturer} - {certData.model}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-500 block">Capacity / Interval</span>
+                      <span className="text-xs font-bold text-slate-900">{certData.capacity}</span>
+                    </div>
+                    <div>
+                      <span className="text-[11px] text-slate-500 block">Accuracy Class</span>
+                      <span className="text-xs font-semibold text-slate-800">{certData.accuracyClass}</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Stakeholder & Jurisdiction */}
+              {/* Stakeholder & Enforcement Jurisdiction */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
                   <Building className="w-4 h-4 text-blue-600" />
-                  Stakeholder & Stamping Jurisdiction
+                  Commercial Enterprise & Enforcement Authority
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50/70 rounded-xl p-4 border border-slate-200/80">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50/80 rounded-2xl p-4 border border-slate-200/80 text-xs">
                   <div>
-                    <span className="text-[11px] text-slate-500 block">Registered Business / Enterprise</span>
+                    <span className="text-[11px] text-slate-500 block">Registered Commercial Business</span>
                     <span className="text-xs font-bold text-slate-900">{certData.businessName}</span>
                   </div>
                   <div>
@@ -290,27 +528,27 @@ export const PublicCertificateVerificationPage = () => {
                     </span>
                   </div>
                   <div>
-                    <span className="text-[11px] text-slate-500 block">Issuing Authority</span>
+                    <span className="text-[11px] text-slate-500 block">Issuing Legal Authority</span>
                     <span className="text-xs font-semibold text-slate-800">{certData.issuingAuthority}</span>
                   </div>
                   <div>
                     <span className="text-[11px] text-slate-500 block">Inspecting Officer</span>
-                    <span className="text-xs font-bold text-slate-800">
+                    <span className="text-xs font-bold text-slate-900">
                       {certData.verifiedByName} ({certData.verifiedByDesignation})
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Validity & Stamping Dates */}
+              {/* Validity & Stamping Schedule */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-blue-600" />
-                  Validity & Stamping Dates
+                  Validity & Expiry Countdown
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                    <span className="text-[11px] text-slate-500 block">Verification Conducted</span>
+                  <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <span className="text-[11px] text-slate-500 block">Date of Stamping Verification</span>
                     <span className="text-sm font-bold text-slate-900 mt-1 block">
                       {new Date(certData.verificationDate).toLocaleDateString('en-IN', {
                         day: '2-digit',
@@ -319,8 +557,9 @@ export const PublicCertificateVerificationPage = () => {
                       })}
                     </span>
                   </div>
-                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                    <span className="text-[11px] text-slate-500 block">Valid Until (Next Due)</span>
+
+                  <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <span className="text-[11px] text-slate-500 block">Valid Until (Mandatory Due Date)</span>
                     <span className="text-sm font-bold text-slate-900 mt-1 block">
                       {new Date(certData.validUntil).toLocaleDateString('en-IN', {
                         day: '2-digit',
@@ -329,8 +568,9 @@ export const PublicCertificateVerificationPage = () => {
                       })}
                     </span>
                   </div>
-                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                    <span className="text-[11px] text-slate-500 block">Days Remaining</span>
+
+                  <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <span className="text-[11px] text-slate-500 block">Validity Status</span>
                     <span
                       className={`text-sm font-extrabold mt-1 block ${
                         certData.daysRemaining < 0
@@ -348,32 +588,24 @@ export const PublicCertificateVerificationPage = () => {
                 </div>
               </div>
 
-              {/* Digital Seal Stamp */}
-              <div className="p-4 bg-slate-900 text-slate-300 rounded-xl flex items-center justify-between gap-4">
+              {/* Tamper Seal Bar */}
+              <div className="p-4 bg-slate-950 text-slate-300 rounded-2xl flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center font-bold">
+                  <div className="w-10 h-10 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center font-bold shrink-0">
                     <CheckCircle className="w-6 h-6" />
                   </div>
                   <div>
                     <span className="text-xs font-bold text-white block">
-                      Digital Stamping Code: {certData.digitalStampCode}
+                      Digital Cryptographic Stamp: {certData.digitalStampCode}
                     </span>
                     <span className="text-[11px] text-slate-400">
-                      Verified through MetraVerify digital verification portal.
+                      Verified through MetraVerify National Digital Verification Architecture
                     </span>
                   </div>
                 </div>
                 <div className="hidden sm:block text-right text-[11px] text-emerald-400 font-semibold">
                   Tamper-Evident Record
                 </div>
-              </div>
-
-              {/* Official Disclaimer */}
-              <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-xl text-center">
-                <p className="text-[11px] text-amber-900 font-medium">
-                  <span className="font-bold">Important Disclaimer: </span>
-                  {certData.disclaimer}
-                </p>
               </div>
             </div>
           </div>

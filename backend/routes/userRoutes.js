@@ -13,7 +13,7 @@ router.get('/officers', protect, async (req, res, next) => {
     const officers = await User.find({
       role: 'LMO_OFFICER',
       isActive: true,
-    }).select('fullName email phone designation department district state');
+    }).select('fullName email phone designation department district state pincode address');
     res.json({ success: true, count: officers.length, data: officers });
   } catch (error) {
     next(error);
@@ -28,7 +28,7 @@ router.get('/gatcs', protect, async (req, res, next) => {
     const gatcs = await User.find({
       role: 'GATC',
       isActive: true,
-    }).select('fullName email phone organizationName district state');
+    }).select('fullName email phone organizationName district state pincode address');
     res.json({ success: true, count: gatcs.length, data: gatcs });
   } catch (error) {
     next(error);
@@ -92,12 +92,17 @@ router.patch('/:id', protect, async (req, res, next) => {
       'phone',
       'organizationName',
       'address',
+      'pincode',
       'state',
       'district',
       'designation',
+      'department',
+      'gstin',
+      'panNumber',
+      'businessType',
     ];
     if (req.user.role === 'ADMIN') {
-      allowedUpdates.push('role', 'isActive', 'department');
+      allowedUpdates.push('role', 'isActive');
     }
 
     const updates = {};

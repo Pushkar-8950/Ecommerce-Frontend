@@ -20,7 +20,7 @@ const generateApplicationId = async () => {
 // @access  Private (BUSINESS_USER, ADMIN)
 router.post('/', protect, async (req, res, next) => {
   try {
-    const {
+    let {
       instrumentId, // Mongo ID of instrument
       applicationType = 'NEW_VERIFICATION',
       preferredDate,
@@ -29,6 +29,15 @@ router.post('/', protect, async (req, res, next) => {
       supportingDocuments = [],
       instrumentPhotos = [],
     } = req.body;
+
+    if (applicationType) {
+      const normalized = applicationType.toUpperCase().trim();
+      if (normalized === 'PERIODIC_REVERIFICATION' || normalized === 'REVERIFICATION') {
+        applicationType = 'RE_VERIFICATION';
+      } else {
+        applicationType = normalized;
+      }
+    }
 
     if (!instrumentId || !preferredDate) {
       return res.status(400).json({

@@ -60,6 +60,7 @@ router.get('/verify/:certificateNumber', async (req, res, next) => {
       verifiedByDesignation: certificate.verifiedByDesignation,
       issuingAuthority: certificate.issuingAuthority,
       digitalStampCode: certificate.digitalStampCode,
+      qrCodeDataUrl: certificate.qrCodeDataUrl,
       verificationTimestamp: new Date().toISOString(),
       disclaimer:
         'This is a Smart India Hackathon prototype demonstrating a digital verification workflow under Legal Metrology.',

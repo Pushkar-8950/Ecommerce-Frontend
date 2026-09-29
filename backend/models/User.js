@@ -41,6 +41,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    pincode: {
+      type: String,
+      default: '',
+    },
+    gstin: {
+      type: String,
+      default: '',
+    },
+    panNumber: {
+      type: String,
+      default: '',
+    },
+    businessType: {
+      type: String,
+      default: 'Commercial',
+    },
     state: {
       type: String,
       default: 'Delhi',

@@ -31,11 +31,17 @@ import AssignedApplications from '../pages/lmo/AssignedApplications';
 import InspectionPage from '../pages/lmo/InspectionPage';
 import InspectionHistory from '../pages/lmo/InspectionHistory';
 import LMOCertificates from '../pages/lmo/LMOCertificates';
+import LMOProfile from '../pages/lmo/LMOProfile';
 
 // GATC Portal Pages
 import GATCDashboard from '../pages/gatc/GATCDashboard';
 import GATCApplications from '../pages/gatc/GATCApplications';
 import GATCInspection from '../pages/gatc/GATCInspection';
+import GATCHistory from '../pages/gatc/GATCHistory';
+import GATCCertificates from '../pages/gatc/GATCCertificates';
+import GATCReports from '../pages/gatc/GATCReports';
+import GATCNotifications from '../pages/gatc/GATCNotifications';
+import GATCProfile from '../pages/gatc/GATCProfile';
 
 // Admin Portal Pages
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -47,6 +53,8 @@ import GATCManagement from '../pages/admin/GATCManagement';
 import CertificateManagement from '../pages/admin/CertificateManagement';
 import AuditLogs from '../pages/admin/AuditLogs';
 import AnalyticsPage from '../pages/admin/AnalyticsPage';
+import AdminProfile from '../pages/admin/AdminProfile';
+import OfficerAllocationPage from '../pages/admin/OfficerAllocationPage';
 
 export const AppRoutes = () => {
   return (
@@ -83,6 +91,7 @@ export const AppRoutes = () => {
         <Route path="/lmo/inspect/:applicationId" element={<InspectionPage />} />
         <Route path="/lmo/history" element={<InspectionHistory />} />
         <Route path="/lmo/certificates" element={<LMOCertificates />} />
+        <Route path="/lmo/profile" element={<LMOProfile />} />
       </Route>
 
       {/* GATC Portal */}
@@ -90,11 +99,18 @@ export const AppRoutes = () => {
         <Route path="/gatc/dashboard" element={<GATCDashboard />} />
         <Route path="/gatc/applications" element={<GATCApplications />} />
         <Route path="/gatc/inspect/:applicationId" element={<GATCInspection />} />
+        <Route path="/gatc/history" element={<GATCHistory />} />
+        <Route path="/gatc/certificates" element={<GATCCertificates />} />
+        <Route path="/gatc/reports" element={<GATCReports />} />
+        <Route path="/gatc/notifications" element={<GATCNotifications />} />
+        <Route path="/gatc/profile" element={<GATCProfile />} />
       </Route>
 
       {/* Admin Portal */}
       <Route element={<DashboardLayout allowedRoles={['ADMIN']} />}>
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/allocation" element={<OfficerAllocationPage />} />
+        <Route path="/admin/allocation/:id" element={<OfficerAllocationPage />} />
         <Route path="/admin/applications" element={<ApplicationManagement />} />
         <Route path="/admin/instruments" element={<InstrumentManagement />} />
         <Route path="/admin/users" element={<UserManagement />} />
@@ -103,6 +119,7 @@ export const AppRoutes = () => {
         <Route path="/admin/certificates" element={<CertificateManagement />} />
         <Route path="/admin/audit-logs" element={<AuditLogs />} />
         <Route path="/admin/analytics" element={<AnalyticsPage />} />
+        <Route path="/admin/profile" element={<AdminProfile />} />
       </Route>
 
       {/* Catch-all */}

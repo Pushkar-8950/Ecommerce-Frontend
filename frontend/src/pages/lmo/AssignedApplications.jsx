@@ -10,20 +10,37 @@ export const AssignedApplications = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
 
-  const fetchApplications = async () => {
+  const fetchApplications = async (silent = false) => {
     try {
-      setLoading(true);
+      if (!silent) setLoading(true);
       const res = await api.get('/applications');
       setApplications(res.data.data || []);
     } catch (err) {
       console.error('Failed to load applications', err);
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchApplications();
+
+    const handleSync = () => fetchApplications(true);
+    window.addEventListener('metraverify_sync', handleSync);
+
+    let bc;
+    if (window.BroadcastChannel) {
+      bc = new BroadcastChannel('metraverify_sync_channel');
+      bc.onmessage = () => fetchApplications(true);
+    }
+
+    const timer = setInterval(() => fetchApplications(true), 4000);
+
+    return () => {
+      window.removeEventListener('metraverify_sync', handleSync);
+      if (bc) bc.close();
+      clearInterval(timer);
+    };
   }, []);
 
   const filtered = applications.filter((app) => {

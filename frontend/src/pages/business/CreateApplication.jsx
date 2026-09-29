@@ -54,6 +54,11 @@ export const CreateApplication = () => {
       setSubmitting(true);
       setError('');
       const res = await api.post('/applications', formData);
+      if (window.BroadcastChannel) {
+        const bc = new BroadcastChannel('metraverify_sync_channel');
+        bc.postMessage({ type: 'APPLICATION_CREATED', timestamp: Date.now() });
+      }
+      window.dispatchEvent(new CustomEvent('metraverify_sync'));
       navigate(`/business/applications/${res.data.data._id}`);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to submit application.');

@@ -26,9 +26,9 @@ export const GATCApplications = () => {
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <h1 className="text-2xl font-bold text-slate-900">Calibration Testing Queue</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Verification Queue</h1>
         <p className="text-xs text-slate-500 mt-0.5">
-          Laboratory bench cases referred for precision measurement verification.
+          Laboratory bench cases referred for precision measurement and verification.
         </p>
       </div>
 
@@ -40,7 +40,7 @@ export const GATCApplications = () => {
           </div>
         ) : applications.length === 0 ? (
           <div className="py-16 text-center text-xs text-slate-400">
-            No calibration cases assigned.
+            No verification cases assigned.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -82,7 +82,7 @@ export const GATCApplications = () => {
                         className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs shadow-sm transition-colors"
                       >
                         <FileCheck className="w-3.5 h-3.5" />
-                        <span>Start Test</span>
+                        <span>Conduct Inspection</span>
                       </Link>
                     </td>
                   </tr>

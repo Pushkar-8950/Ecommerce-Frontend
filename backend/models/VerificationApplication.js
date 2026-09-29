@@ -22,7 +22,7 @@ const verificationApplicationSchema = new mongoose.Schema(
     },
     applicationType: {
       type: String,
-      enum: ['NEW_VERIFICATION', 'RE_VERIFICATION'],
+      enum: ['NEW_VERIFICATION', 'RE_VERIFICATION', 'PERIODIC_REVERIFICATION'],
       default: 'NEW_VERIFICATION',
     },
     preferredDate: {

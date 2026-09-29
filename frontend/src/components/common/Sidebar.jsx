@@ -17,6 +17,7 @@ import {
   BarChart3,
   ShieldCheck,
   CheckCircle,
+  UserCheck,
 } from 'lucide-react';
 
 export const Sidebar = ({ isOpen, onClose }) => {
@@ -28,6 +29,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
       case 'ADMIN':
         return [
           { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Admin Overview' },
+          { to: '/admin/allocation', icon: UserCheck, label: 'Officer & Inspection Allocation' },
           { to: '/admin/applications', icon: ClipboardList, label: 'Applications Management' },
           { to: '/admin/instruments', icon: Scale, label: 'Global Registry' },
           { to: '/admin/users', icon: Users, label: 'Stakeholders & Users' },
@@ -36,6 +38,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
           { to: '/admin/certificates', icon: Award, label: 'Digital Certificates' },
           { to: '/admin/audit-logs', icon: History, label: 'Audit Compliance Logs' },
           { to: '/admin/analytics', icon: BarChart3, label: 'Analytics & Reports' },
+          { to: '/admin/profile', icon: User, label: 'HQ Admin Profile' },
         ];
       case 'LMO_OFFICER':
         return [
@@ -43,11 +46,17 @@ export const Sidebar = ({ isOpen, onClose }) => {
           { to: '/lmo/applications', icon: ClipboardList, label: 'Assigned Inspections' },
           { to: '/lmo/history', icon: CheckCircle, label: 'Inspection Records' },
           { to: '/lmo/certificates', icon: Award, label: 'Issued Certificates' },
+          { to: '/lmo/profile', icon: User, label: 'Officer Profile' },
         ];
       case 'GATC':
         return [
           { to: '/gatc/dashboard', icon: LayoutDashboard, label: 'Test Centre Dashboard' },
-          { to: '/gatc/applications', icon: ClipboardList, label: 'Calibration Test Queue' },
+          { to: '/gatc/applications', icon: ClipboardList, label: 'Verification Queue' },
+          { to: '/gatc/history', icon: History, label: 'Inspection History' },
+          { to: '/gatc/certificates', icon: Award, label: 'Certificate Repository' },
+          { to: '/gatc/reports', icon: BarChart3, label: 'Reports' },
+          { to: '/gatc/notifications', icon: Bell, label: 'Notifications' },
+          { to: '/gatc/profile', icon: Building2, label: 'GATC Profile' },
         ];
       default: // BUSINESS_USER
         return [

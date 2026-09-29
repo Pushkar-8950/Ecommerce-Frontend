@@ -43,7 +43,7 @@ export const GATCDashboard = () => {
             Government Approved Test Centre (GATC)
           </span>
           <h1 className="text-2xl font-bold text-slate-900 mt-1">
-            Calibration & Standards Testing Workstation
+            Verification & Testing Workstation
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
             Independent laboratory verification and accuracy testing under Legal Metrology accreditation.
@@ -55,46 +55,60 @@ export const GATCDashboard = () => {
           className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0"
         >
           <ClipboardList className="w-4 h-4" />
-          <span>Testing Queue</span>
+          <span>Verification Queue</span>
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         <StatsCard
-          title="Assigned Lab Cases"
+          title="Assigned"
           value={metrics.assignedCases || 0}
           icon={ClipboardList}
           color="amber"
-          subtitle="Referred cases"
+          subtitle="Total referred"
         />
         <StatsCard
-          title="Pending Tests"
+          title="Pending"
           value={metrics.pendingTests || 0}
           icon={Building2}
           color="blue"
-          subtitle="Awaiting bench testing"
+          subtitle="Awaiting testing"
         />
         <StatsCard
-          title="Completed Tests"
+          title="Completed"
           value={metrics.completedTests || 0}
           icon={CheckCircle}
           color="emerald"
-          subtitle="Finalized evaluations"
+          subtitle="Total finalized"
         />
         <StatsCard
-          title="Calibrations Issued"
-          value={metrics.calibrationsIssued || 0}
+          title="Passed"
+          value={metrics.passed || 0}
           icon={Award}
+          color="emerald"
+          subtitle="Successfully passed"
+        />
+        <StatsCard
+          title="Failed"
+          value={metrics.failed || 0}
+          icon={Eye}
+          color="rose"
+          subtitle="Rejected/Failed"
+        />
+        <StatsCard
+          title="Certificates Generated"
+          value={metrics.calibrationsIssued || 0}
+          icon={FileCheck}
           color="purple"
-          subtitle="Certified stamped"
+          subtitle="Digital verified"
         />
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900">Lab Calibration Test Queue</h3>
-            <p className="text-xs text-slate-500">Instruments scheduled for laboratory standard test</p>
+            <h3 className="text-sm font-bold text-slate-900">Verification Queue</h3>
+            <p className="text-xs text-slate-500">Instruments scheduled for laboratory standard verification test</p>
           </div>
         </div>
 
@@ -113,7 +127,7 @@ export const GATCDashboard = () => {
               {assignedApplications.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="text-center py-8 text-slate-400">
-                    No calibration cases assigned to this test centre.
+                    No verification cases assigned to this test centre.
                   </td>
                 </tr>
               ) : (
@@ -147,7 +161,7 @@ export const GATCDashboard = () => {
                         className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold text-xs shadow-sm transition-colors"
                       >
                         <FileCheck className="w-3.5 h-3.5" />
-                        <span>Conduct Test</span>
+                        <span>Conduct Inspection</span>
                       </Link>
                     </td>
                   </tr>

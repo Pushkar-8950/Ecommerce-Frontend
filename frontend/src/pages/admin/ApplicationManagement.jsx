@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import api from '../../api/client';
 import StatusBadge from '../../components/common/StatusBadge';
 import Modal from '../../components/common/Modal';
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export const ApplicationManagement = () => {
+  const location = useLocation();
   const [applications, setApplications] = useState([]);
   const [officers, setOfficers] = useState([]);
   const [gatcs, setGatcs] = useState([]);
@@ -56,6 +58,19 @@ export const ApplicationManagement = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!loading && applications.length > 0) {
+      const searchParams = new URLSearchParams(location.search);
+      const assignId = searchParams.get('openAssign');
+      if (assignId) {
+        const appToAssign = applications.find(a => a.applicationId === assignId);
+        if (appToAssign) {
+          handleOpenAssignModal(appToAssign);
+        }
+      }
+    }
+  }, [loading, applications, location.search]);
 
   const handleOpenAssignModal = (app) => {
     setSelectedApp(app);
