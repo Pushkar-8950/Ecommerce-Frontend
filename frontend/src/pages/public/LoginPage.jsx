@@ -82,11 +82,11 @@ export const LoginPage = () => {
           <p className="text-[11px] text-amber-800 mb-3">
             Click any role to auto-populate credentials for instant testing:
           </p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => handleFillDemo('BUSINESS')}
-              className="p-2 bg-white hover:bg-emerald-50 border border-amber-200 rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
+              className="p-2.5 sm:p-2 bg-white hover:bg-emerald-50 border border-amber-200 rounded-xl sm:rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
             >
               <Briefcase className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <div className="truncate">
@@ -100,7 +100,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleFillDemo('ADMIN')}
-              className="p-2 bg-white hover:bg-blue-50 border border-amber-200 rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
+              className="p-2.5 sm:p-2 bg-white hover:bg-blue-50 border border-amber-200 rounded-xl sm:rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
             >
               <Shield className="w-3.5 h-3.5 text-blue-600 shrink-0" />
               <div className="truncate">
@@ -114,7 +114,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleFillDemo('LMO')}
-              className="p-2 bg-white hover:bg-purple-50 border border-amber-200 rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
+              className="p-2.5 sm:p-2 bg-white hover:bg-purple-50 border border-amber-200 rounded-xl sm:rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
             >
               <FileCheck className="w-3.5 h-3.5 text-purple-600 shrink-0" />
               <div className="truncate">
@@ -128,7 +128,7 @@ export const LoginPage = () => {
             <button
               type="button"
               onClick={() => handleFillDemo('GATC')}
-              className="p-2 bg-white hover:bg-amber-50 border border-amber-200 rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
+              className="p-2.5 sm:p-2 bg-white hover:bg-amber-50 border border-amber-200 rounded-xl sm:rounded-lg text-left text-xs transition-colors flex items-center gap-2 group"
             >
               <User className="w-3.5 h-3.5 text-amber-600 shrink-0" />
               <div className="truncate">

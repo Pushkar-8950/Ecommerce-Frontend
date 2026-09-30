@@ -94,12 +94,12 @@ export const LMOCertificates = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">
             Stamping Records & Output
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
             Issued Verification Certificates
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -109,14 +109,14 @@ export const LMOCertificates = () => {
 
         <Link
           to="/lmo/dashboard"
-          className="px-4 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl text-xs font-bold transition-colors shrink-0"
+          className="w-full sm:w-auto text-center px-4 py-2.5 sm:py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl text-xs font-bold transition-colors shrink-0"
         >
           Back to Workstation
         </Link>
       </div>
 
       {/* Time-Based Metrics Breakdown Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         <div
           onClick={() => setTimeFilter('TODAY')}
           className={`p-4 rounded-xl border cursor-pointer transition-all ${
@@ -245,7 +245,7 @@ export const LMOCertificates = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[720px]">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3 px-4">Certificate Ref & QR</th>

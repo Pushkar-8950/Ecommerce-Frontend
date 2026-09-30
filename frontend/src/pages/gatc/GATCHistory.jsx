@@ -38,19 +38,19 @@ export const GATCHistory = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Verification History</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Verification History</h1>
           <p className="text-xs text-slate-500 mt-0.5">
             Archived laboratory verification logs and physical testing records.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2 text-xs">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 text-xs">
           {['ALL', 'PENDING', 'SCHEDULED', 'COMPLETED', 'PASSED', 'FAILED'].map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg font-bold transition-colors ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg font-bold transition-colors text-[11px] sm:text-xs ${
                 filter === f ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
@@ -72,7 +72,7 @@ export const GATCHistory = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[650px]">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3 px-4">Case ID</th>

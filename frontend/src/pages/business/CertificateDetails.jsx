@@ -66,7 +66,7 @@ export const CertificateDetails = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Top Action Ribbon (hidden on print) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
         <Link
           to="/business/certificates"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
@@ -75,10 +75,10 @@ export const CertificateDetails = () => {
           <span>Back to Certificates</span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Link
             to={`/verify/${cert.certificateNumber}`}
-            className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"
+            className="flex-1 sm:flex-initial px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 text-center"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>Open Public QR Page</span>
@@ -86,7 +86,7 @@ export const CertificateDetails = () => {
 
           <button
             onClick={handlePrint}
-            className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"
+            className="flex-1 sm:flex-initial px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 text-center"
           >
             <Printer className="w-3.5 h-3.5" />
             <span>Print</span>
@@ -96,7 +96,7 @@ export const CertificateDetails = () => {
             href={`/api/certificates/${cert.certificateNumber}/pdf`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition-colors flex items-center gap-1.5"
+            className="w-full sm:w-auto px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition-colors flex items-center justify-center gap-1.5 text-center"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Download PDF</span>
@@ -105,15 +105,15 @@ export const CertificateDetails = () => {
       </div>
 
       {/* Official Certificate Layout Frame */}
-      <div className="bg-white border-4 border-slate-900 rounded-2xl p-6 sm:p-12 shadow-2xl relative overflow-hidden printable-certificate">
+      <div className="bg-white border-2 sm:border-4 border-slate-900 rounded-2xl p-3 sm:p-6 md:p-12 shadow-2xl relative overflow-hidden printable-certificate">
         {/* Inner Ornamental Border */}
-        <div className="border border-amber-600 p-6 sm:p-8 rounded-xl relative">
+        <div className="border border-amber-600 p-3 sm:p-6 md:p-8 rounded-xl relative">
           {/* Header */}
           <div className="text-center pb-6 border-b border-slate-200">
             <div className="w-12 h-12 rounded-2xl bg-slate-900 text-amber-400 flex items-center justify-center mx-auto mb-2 shadow-md">
               <Scale className="w-6 h-6" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-wider font-sans uppercase">
+            <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-wider font-sans uppercase">
               DIGITAL MACHINE
             </h1>
             <p className="text-xs font-semibold text-amber-700 uppercase tracking-widest mt-0.5">
@@ -127,18 +127,18 @@ export const CertificateDetails = () => {
             </span>
 
             {/* Title Box */}
-            <div className="mt-4 py-2 px-6 bg-slate-50 border border-slate-200 rounded-lg inline-block">
-              <span className="text-sm sm:text-base font-extrabold text-slate-900 tracking-widest uppercase">
+            <div className="mt-4 py-2 px-4 sm:px-6 bg-slate-50 border border-slate-200 rounded-lg inline-block max-w-full">
+              <span className="text-xs sm:text-base font-extrabold text-slate-900 tracking-widest uppercase break-words">
                 DIGITAL VERIFICATION CERTIFICATE
               </span>
             </div>
           </div>
 
           {/* Certificate Reference & Status Row */}
-          <div className="py-4 flex flex-col sm:flex-row items-center justify-between gap-2 border-b border-slate-200 text-xs">
-            <div className="flex items-center gap-2">
+          <div className="py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-200 text-xs">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-slate-500 font-medium">Certificate Ref No:</span>
-              <span className="font-mono font-black text-blue-700 text-sm">
+              <span className="font-mono font-black text-blue-700 text-sm break-all">
                 {cert.certificateNumber}
               </span>
             </div>
@@ -156,35 +156,35 @@ export const CertificateDetails = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
               <div>
                 <span className="text-slate-400 block">Instrument ID</span>
-                <span className="font-mono font-bold text-slate-900 mt-0.5 block">{cert.instrumentId}</span>
+                <span className="font-mono font-bold text-slate-900 mt-0.5 block break-all">{cert.instrumentId}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Instrument Type</span>
-                <span className="font-bold text-slate-900 mt-0.5 block">{cert.instrumentType}</span>
+                <span className="font-bold text-slate-900 mt-0.5 block break-words">{cert.instrumentType}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Manufacturer / Model</span>
-                <span className="font-medium text-slate-800 mt-0.5 block">{cert.manufacturer} - {cert.model}</span>
+                <span className="font-medium text-slate-800 mt-0.5 block break-words">{cert.manufacturer} - {cert.model}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Serial Number</span>
-                <span className="font-mono font-bold text-slate-900 mt-0.5 block">{cert.serialNumber}</span>
+                <span className="font-mono font-bold text-slate-900 mt-0.5 block break-all">{cert.serialNumber}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Capacity / Interval</span>
-                <span className="font-bold text-slate-900 mt-0.5 block">{cert.capacity}</span>
+                <span className="font-bold text-slate-900 mt-0.5 block break-words">{cert.capacity}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Accuracy Class</span>
-                <span className="font-semibold text-slate-900 mt-0.5 block">{cert.accuracyClass}</span>
+                <span className="font-semibold text-slate-900 mt-0.5 block break-words">{cert.accuracyClass}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Application Reference</span>
-                <span className="font-mono text-slate-700 mt-0.5 block">{cert.applicationId}</span>
+                <span className="font-mono text-slate-700 mt-0.5 block break-all">{cert.applicationId}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Category</span>
-                <span className="font-medium text-slate-800 mt-0.5 block">{cert.category || 'Commercial'}</span>
+                <span className="font-medium text-slate-800 mt-0.5 block break-words">{cert.category || 'Commercial'}</span>
               </div>
             </div>
           </div>
@@ -197,15 +197,15 @@ export const CertificateDetails = () => {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
               <div>
                 <span className="text-slate-400 block">Enterprise / Business Name</span>
-                <span className="font-bold text-slate-900 mt-0.5 block">{cert.businessName}</span>
+                <span className="font-bold text-slate-900 mt-0.5 block break-words">{cert.businessName}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">Applicant / Owner</span>
-                <span className="font-semibold text-slate-800 mt-0.5 block">{cert.ownerName}</span>
+                <span className="font-semibold text-slate-800 mt-0.5 block break-words">{cert.ownerName}</span>
               </div>
               <div>
                 <span className="text-slate-400 block">State & District Jurisdiction</span>
-                <span className="font-semibold text-slate-800 mt-0.5 block">
+                <span className="font-semibold text-slate-800 mt-0.5 block break-words">
                   {cert.district}, {cert.state}
                 </span>
               </div>
@@ -240,7 +240,7 @@ export const CertificateDetails = () => {
               </div>
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl">
                 <span className="text-slate-500 block">Inspecting Authority</span>
-                <span className="font-bold text-slate-900 mt-0.5 block">{cert.verifiedByName}</span>
+                <span className="font-bold text-slate-900 mt-0.5 block break-words">{cert.verifiedByName}</span>
                 <span className="text-[10px] text-slate-500 block">
                   {cert.verifiedByDesignation || 'Legal Metrology Officer'}
                 </span>
@@ -249,8 +249,8 @@ export const CertificateDetails = () => {
           </div>
 
           {/* Tamper-Evident QR Authentication & Digital Seal Box */}
-          <div className="mt-6 p-4 sm:p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
+          <div className="mt-6 p-4 sm:p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4">
               {cert.qrCodeDataUrl ? (
                 <div className="bg-white p-2 rounded-xl border border-slate-200 shadow-sm shrink-0">
                   <img
@@ -271,17 +271,17 @@ export const CertificateDetails = () => {
                 <p className="text-slate-500 text-[11px] mt-0.5 leading-relaxed max-w-sm">
                   This cryptographic QR code encodes the public verification URL. Anyone can scan it to check authenticity without logging in.
                 </p>
-                <div className="mt-2 text-[11px] font-mono text-blue-700">
+                <div className="mt-2 text-[11px] font-mono text-blue-700 break-all">
                   Digital Stamping Code: {cert.digitalStampCode || 'LM-STAMP-2026-9921'}
                 </div>
               </div>
             </div>
 
-            <div className="text-center sm:text-right shrink-0 border-t sm:border-t-0 sm:border-l border-slate-200 pt-3 sm:pt-0 sm:pl-6">
+            <div className="text-center md:text-right shrink-0 border-t md:border-t-0 md:border-l border-slate-200 pt-3 md:pt-0 md:pl-6 w-full md:w-auto">
               <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider block">
                 Official Digital Seal
               </span>
-              <div className="w-16 h-16 rounded-full border-2 border-emerald-600 bg-emerald-50 text-emerald-700 flex flex-col items-center justify-center mx-auto sm:ml-auto mt-1">
+              <div className="w-16 h-16 rounded-full border-2 border-emerald-600 bg-emerald-50 text-emerald-700 flex flex-col items-center justify-center mx-auto md:ml-auto mt-1">
                 <CheckCircle2 className="w-6 h-6" />
                 <span className="text-[8px] font-bold uppercase">STAMPED</span>
               </div>

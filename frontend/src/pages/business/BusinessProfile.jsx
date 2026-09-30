@@ -104,7 +104,7 @@ export const BusinessProfile = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Profile Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white rounded-2xl p-6 sm:p-8 shadow-lg border border-slate-700">
+      <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border border-slate-700">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950 rounded-2xl flex items-center justify-center font-black text-2xl shadow-md shrink-0">
@@ -190,8 +190,8 @@ export const BusinessProfile = () => {
       )}
 
       {/* Main Profile Form */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
             <h2 className="text-base font-bold text-slate-900">Business & Facility Identification</h2>
             <p className="text-xs text-slate-500">
@@ -202,7 +202,7 @@ export const BusinessProfile = () => {
             type="button"
             onClick={handleAutoDetectLocation}
             disabled={detectingLoc}
-            className="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1.5 rounded-xl hover:bg-amber-100 transition-colors flex items-center gap-1.5"
+            className="self-start sm:self-auto text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1.5 rounded-xl hover:bg-amber-100 transition-colors flex items-center gap-1.5 shrink-0"
           >
             <MapPin className="w-3.5 h-3.5 text-amber-600" />
             <span>{detectingLoc ? 'Detecting...' : 'Auto-Detect Location'}</span>
@@ -393,11 +393,11 @@ export const BusinessProfile = () => {
             </div>
           </div>
 
-          <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+          <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-slate-100">
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-2 text-xs"
+              className="w-full sm:w-auto justify-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-2 text-xs"
             >
               <Save className="w-4 h-4" />
               {loading ? 'Saving Changes...' : 'Save Profile Changes'}

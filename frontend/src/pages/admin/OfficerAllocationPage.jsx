@@ -179,14 +179,14 @@ export const OfficerAllocationPage = () => {
   return (
     <div className="space-y-6">
       {/* Central Authority Header */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-lg">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-4 sm:p-6 rounded-2xl border border-slate-800 shadow-lg">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold mb-2">
               <Shield className="w-3.5 h-3.5 text-amber-400" />
               Central Authority Mandate (HQ Admin)
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-white font-sans">
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white font-sans">
               Officer & Inspection Allocation Console
             </h1>
             <p className="text-xs text-slate-300 mt-1 max-w-2xl">
@@ -194,19 +194,19 @@ export const OfficerAllocationPage = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0 w-full sm:w-auto">
             <Link
               to="/admin/dashboard"
-              className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
+              className="flex-1 sm:flex-initial justify-center px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors text-center"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to Overview</span>
+              <span>Overview</span>
             </Link>
             <Link
               to="/admin/applications"
-              className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 transition-colors"
+              className="flex-1 sm:flex-initial justify-center px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md flex items-center gap-1.5 transition-colors text-center"
             >
-              <span>All Applications</span>
+              <span>Applications</span>
             </Link>
           </div>
         </div>

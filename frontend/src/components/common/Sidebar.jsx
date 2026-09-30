@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   CheckCircle,
   UserCheck,
+  X,
 } from 'lucide-react';
 
 export const Sidebar = ({ isOpen, onClose }) => {
@@ -79,27 +80,37 @@ export const Sidebar = ({ isOpen, onClose }) => {
       {/* Mobile backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/40 z-30 lg:hidden"
+          className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-40 lg:hidden"
           onClick={onClose}
         />
       )}
 
       <aside
-        className={`fixed top-[88px] bottom-0 left-0 w-64 bg-slate-900 text-slate-300 z-30 flex flex-col border-r border-slate-800 transition-transform duration-200 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 w-72 max-w-[85vw] lg:w-64 lg:top-[88px] bg-slate-900 text-slate-300 z-50 lg:z-30 flex flex-col border-r border-slate-800 transition-transform duration-300 ease-in-out lg:translate-x-0 shadow-2xl lg:shadow-none ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* User Context Header */}
-        <div className="p-4 border-b border-slate-800 bg-slate-950/40">
-          <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 block">
-            Current Workspace
-          </span>
-          <span className="text-xs font-semibold text-white block mt-0.5 truncate">
-            {user.organizationName || user.fullName}
-          </span>
-          <span className="text-[11px] text-amber-400 font-medium block truncate">
-            {user.district}, {user.state}
-          </span>
+        <div className="p-4 border-b border-slate-800 bg-slate-950/60 flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 block">
+              Current Workspace
+            </span>
+            <span className="text-xs font-semibold text-white block mt-0.5 truncate">
+              {user.organizationName || user.fullName}
+            </span>
+            <span className="text-[11px] text-amber-400 font-medium block truncate">
+              {user.district}, {user.state}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="lg:hidden p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            aria-label="Close Sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigation list */}

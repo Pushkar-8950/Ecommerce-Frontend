@@ -48,12 +48,12 @@ export const ExpiryAlertBanner = ({ expiringList = [], expiredCount = 0 }) => {
           </div>
         </div>
 
-        <div className="shrink-0 flex items-center gap-2">
+        <div className="shrink-0 flex items-center gap-2 w-full sm:w-auto">
           <Link
             to="/business/applications/new"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors text-center"
           >
-            Apply for Re-verification
+            <span>Apply for Re-verification</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

@@ -48,10 +48,10 @@ export const AuditLogs = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-slate-900">Tamper-Evident Audit Trail</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Tamper-Evident Audit Trail</h1>
             <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">
               IMMUTABLE
             </span>
@@ -62,7 +62,7 @@ export const AuditLogs = () => {
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <form onSubmit={handleSearch} className="flex-1 w-full sm:max-w-md relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -77,7 +77,7 @@ export const AuditLogs = () => {
         <select
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
-          className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
+          className="w-full sm:w-auto px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
         >
           <option value="">All Actions</option>
           <option value="CERTIFICATE_ISSUED">CERTIFICATE_ISSUED</option>
@@ -100,7 +100,7 @@ export const AuditLogs = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[750px]">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3 px-4">Timestamp (IST)</th>

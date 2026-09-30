@@ -47,9 +47,9 @@ export const CertificateList = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Digital Verification Certificates</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Digital Verification Certificates</h1>
           <p className="text-xs text-slate-500 mt-0.5">
             Legally valid electronic verification certificates stamped with cryptographic QR authentication.
           </p>
@@ -57,7 +57,7 @@ export const CertificateList = () => {
 
         <Link
           to="/verify"
-          className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors shrink-0 w-full sm:w-auto text-center"
         >
           <ExternalLink className="w-4 h-4 text-amber-400" />
           <span>Public QR Portal</span>
@@ -65,7 +65,7 @@ export const CertificateList = () => {
       </div>
 
       {/* Filter and Search */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <form onSubmit={handleSearch} className="flex-1 w-full sm:max-w-md relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -81,7 +81,7 @@ export const CertificateList = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="w-full sm:w-auto px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
             <option value="">All Validity States</option>
             <option value="VALID">Valid</option>
@@ -108,7 +108,7 @@ export const CertificateList = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[720px]">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3 px-4">Certificate No.</th>

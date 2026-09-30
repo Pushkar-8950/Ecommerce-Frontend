@@ -195,13 +195,13 @@ export const LandingPage = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 relative">
           {steps.map((st, i) => {
             const Icon = st.icon;
             return (
               <div
                 key={i}
-                className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col items-center text-center group"
+                className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow relative flex flex-col items-center text-center group"
               >
                 <span className="text-3xl font-black text-slate-200 group-hover:text-blue-200 transition-colors mb-2">
                   {st.num}
@@ -224,21 +224,21 @@ export const LandingPage = () => {
             <span className="text-xs font-bold uppercase tracking-wider text-blue-600">
               Robust Architecture
             </span>
-            <h2 className="text-3xl font-extrabold text-slate-900 mt-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">
               Built for Legal Metrology Excellence
             </h2>
-            <p className="text-slate-600 text-sm mt-2">
+            <p className="text-slate-600 text-xs sm:text-sm mt-2">
               Engineered with tamper-detection, cryptographic verification, and strict statutory rules.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {features.map((f, idx) => {
               const Icon = f.icon;
               return (
                 <div
                   key={idx}
-                  className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex items-start gap-4 hover:border-blue-300 transition-colors"
+                  className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm flex items-start gap-4 hover:border-blue-300 transition-colors"
                 >
                   <div className="p-3 rounded-xl bg-slate-900 text-amber-400 shrink-0">
                     <Icon className="w-6 h-6" />
@@ -255,8 +255,8 @@ export const LandingPage = () => {
       </section>
 
       {/* Stakeholder Roles Banner */}
-      <section className="py-20 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl relative overflow-hidden">
+      <section className="py-16 sm:py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+        <div className="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-3xl p-6 sm:p-12 shadow-xl relative overflow-hidden">
           <div className="relative z-10 max-w-3xl">
             <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-2">
               Unified Stakeholder Experience
@@ -264,11 +264,11 @@ export const LandingPage = () => {
             <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight mb-4">
               Designed for Businesses, Inspectors, Labs & Citizens
             </h2>
-            <p className="text-slate-300 text-sm leading-relaxed mb-8">
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-8">
               Whether you are a mandi trader in Haryana, a jeweller in Delhi, an LMO officer verifying retail scales, or an accredited calibration laboratory, MetraVerify delivers tailored workflows.
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
               <div className="p-4 bg-white/5 rounded-xl border border-white/10">
                 <span className="text-xl font-bold text-amber-400 block">Business</span>
                 <span className="text-[11px] text-slate-300">Self-registration & automated renewal</span>

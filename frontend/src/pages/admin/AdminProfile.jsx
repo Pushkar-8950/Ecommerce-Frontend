@@ -49,7 +49,7 @@ export const AdminProfile = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-lg">
+      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-4 sm:p-6 md:p-8 rounded-2xl border border-slate-800 shadow-lg">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-blue-600/30 border border-blue-400/40 text-amber-400 rounded-2xl flex items-center justify-center shrink-0 shadow-inner">
@@ -84,13 +84,13 @@ export const AdminProfile = () => {
       )}
 
       {/* Profile Details & Edit Form */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 md:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
           <div>
             <h2 className="text-base font-bold text-slate-900">Administrator Credentials & Workstation Profile</h2>
             <p className="text-xs text-slate-500">Official administrative details and national jurisdiction identity</p>
           </div>
-          <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100">
+          <span className="self-start sm:self-auto text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-lg border border-blue-100 shrink-0">
             Active Central Session
           </span>
         </div>
@@ -227,11 +227,11 @@ export const AdminProfile = () => {
             </div>
           </div>
 
-          <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+          <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-slate-100">
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all text-xs"
+              className="w-full sm:w-auto justify-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-md transition-all text-xs text-center"
             >
               {saving ? 'Saving...' : 'Save Profile Changes'}
             </button>

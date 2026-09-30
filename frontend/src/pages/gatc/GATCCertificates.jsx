@@ -37,9 +37,9 @@ export const GATCCertificates = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Certificate Repository</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Certificate Repository</h1>
           <p className="text-xs text-slate-500 mt-0.5">
             Digital verification certificates issued by this Test Centre.
           </p>
@@ -68,7 +68,7 @@ export const GATCCertificates = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[650px]">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3 px-4">Certificate Ref</th>

@@ -75,12 +75,12 @@ export const LMODashboard = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">
             Legal Metrology Officer (LMO) Portal
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
             Field Verification & Stamping Workstation
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -88,20 +88,20 @@ export const LMODashboard = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Link
             to="/lmo/certificates"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors text-center"
           >
             <Award className="w-4 h-4 text-purple-600" />
-            <span>Certificates Repository</span>
+            <span>Certificates</span>
           </Link>
           <Link
             to="/lmo/applications"
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0 text-center"
           >
             <ClipboardList className="w-4 h-4" />
-            <span>Assigned Cases Queue</span>
+            <span>Cases Queue</span>
           </Link>
         </div>
       </div>
@@ -341,7 +341,7 @@ export const LMODashboard = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[680px]">
             <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
               <tr>
                 <th className="py-3 px-4">Application ID</th>
