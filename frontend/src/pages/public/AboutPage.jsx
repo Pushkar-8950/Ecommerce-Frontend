@@ -5,22 +5,22 @@ import { Scale, CheckCircle2, Shield, Layers, QrCode, FileText, ArrowRight } fro
 export const AboutPage = () => {
   return (
     <div className="bg-slate-50 py-12 px-4 sm:px-8">
-      <div className="max-w-4xl mx-auto space-y-10">
+      <div className="max-w-4xl 2xl:max-w-6xl 3xl:max-w-7xl mx-auto space-y-10 2xl:space-y-12">
         <div className="text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs font-semibold mb-3">
-            <Scale className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs 2xl:text-sm font-semibold mb-3">
+            <Scale className="w-3.5 h-3.5 2xl:w-4 2xl:h-4" />
             Legal Metrology | Department of Consumer Affairs, GoI
           </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl 2xl:text-5xl font-black text-slate-900 tracking-tight">
             Unified Online Verification & Digital Certification System
           </h1>
-          <p className="text-sm text-slate-600 mt-2 max-w-2xl mx-auto">
+          <p className="text-sm 2xl:text-base text-slate-600 mt-2 max-w-2xl 2xl:max-w-3xl mx-auto">
             Digital Trust for Weights & Measures under Legal Metrology Regulations
           </p>
         </div>
 
         {/* Problem Statement Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 2xl:p-10 shadow-sm">
           <h2 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
             <Shield className="w-5 h-5 text-blue-600" />
             The Problem Statement
@@ -45,7 +45,7 @@ export const AboutPage = () => {
         </div>
 
         {/* Solution Architecture */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 2xl:p-10 shadow-sm">
           <h2 className="text-lg font-bold text-slate-900 mb-3 flex items-center gap-2">
             <Layers className="w-5 h-5 text-blue-600" />
             The MetraVerify Solution

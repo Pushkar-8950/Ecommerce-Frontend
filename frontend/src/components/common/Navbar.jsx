@@ -64,18 +64,18 @@ export const Navbar = ({ onToggleSidebar }) => {
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
       {/* Official Government Prototype Top Ribbon */}
-      <div className="bg-slate-900 text-slate-300 text-[10px] sm:text-[11px] py-1 px-3 sm:px-8 flex justify-between items-center">
+      <div className="bg-slate-900 text-slate-300 text-[10px] sm:text-[11px] 2xl:text-xs py-1 px-3 sm:px-8 2xl:px-12 flex justify-between items-center">
         <div className="flex items-center gap-2 truncate">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
           <span className="truncate">Legal Metrology Division | Department of Consumer Affairs</span>
         </div>
-        <div className="hidden sm:flex items-center gap-4 text-[11px] shrink-0">
+        <div className="hidden sm:flex items-center gap-4 text-[11px] 2xl:text-xs shrink-0">
           {/* Top navigation links */}
         </div>
       </div>
 
       {/* Main Navbar */}
-      <div className="px-3 sm:px-8 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4">
+      <div className="px-3 sm:px-8 2xl:px-12 py-2 sm:py-2.5 2xl:py-3 flex items-center justify-between gap-2 sm:gap-4">
         {/* Logo and Brand */}
         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           {onToggleSidebar && (
@@ -91,19 +91,19 @@ export const Navbar = ({ onToggleSidebar }) => {
           )}
 
           <Link to={user ? (user.role === 'BUSINESS_USER' ? '/business/dashboard' : user.role === 'LMO_OFFICER' ? '/lmo/dashboard' : user.role === 'GATC' ? '/gatc/dashboard' : '/admin/dashboard') : '/'} className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 flex items-center justify-center text-amber-400 shadow-md shrink-0">
-              <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 2xl:w-11 2xl:h-11 rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 flex items-center justify-center text-amber-400 shadow-md shrink-0">
+              <Scale className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-6 2xl:h-6" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 font-sans truncate">
+                <span className="text-base sm:text-lg 2xl:text-xl font-black tracking-tight text-slate-900 font-sans truncate">
                   Metra<span className="text-amber-600">Verify</span>
                 </span>
-                <span className="hidden sm:inline-block text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded">
+                <span className="hidden sm:inline-block text-[10px] 2xl:text-xs font-bold px-1.5 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded">
                   PORTAL
                 </span>
               </div>
-              <p className="hidden md:block text-[10px] font-medium text-slate-500 tracking-wide truncate">
+              <p className="hidden md:block text-[10px] 2xl:text-xs font-medium text-slate-500 tracking-wide truncate">
                 Digital Trust for Weights & Measures
               </p>
             </div>
@@ -111,7 +111,7 @@ export const Navbar = ({ onToggleSidebar }) => {
         </div>
 
         {/* Global Search Box */}
-        <form onSubmit={handleSearch} className="hidden md:flex items-center flex-1 max-w-md mx-4">
+        <form onSubmit={handleSearch} className="hidden md:flex items-center flex-1 max-w-md 2xl:max-w-2xl mx-4">
           <div className="relative w-full">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
@@ -119,7 +119,7 @@ export const Navbar = ({ onToggleSidebar }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by Instrument ID, Serial No, or Certificate ID..."
-              className="w-full pl-9 pr-4 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full pl-9 pr-4 py-1.5 2xl:py-2 text-xs 2xl:text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
           </div>
         </form>

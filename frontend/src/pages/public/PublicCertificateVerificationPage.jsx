@@ -221,17 +221,17 @@ export const PublicCertificateVerificationPage = () => {
       {/* Hidden container for file-based scanner */}
       <div id="qr-reader-hidden" className="hidden" />
 
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-4xl 2xl:max-w-6xl 3xl:max-w-7xl mx-auto space-y-8 2xl:space-y-10">
         {/* Verification Command Box */}
-        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm text-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs font-semibold mb-3">
-            <ShieldCheck className="w-3.5 h-3.5" />
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 2xl:p-10 shadow-sm text-center">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-full text-xs 2xl:text-sm font-semibold mb-3">
+            <ShieldCheck className="w-3.5 h-3.5 2xl:w-4 2xl:h-4" />
             National Legal Metrology Digital Verification Portal
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+          <h1 className="text-2xl sm:text-3xl 2xl:text-4xl font-extrabold text-slate-900">
             Verify Instrument Stamping Certificate
           </h1>
-          <p className="text-slate-500 text-xs sm:text-sm mt-1 max-w-lg mx-auto">
+          <p className="text-slate-500 text-xs sm:text-sm 2xl:text-base mt-1 max-w-lg 2xl:max-w-2xl mx-auto">
             Scan the official QR code printed on the instrument stamping sticker or enter the certificate ID below to inspect authenticity and calibration status.
           </p>
 
@@ -304,7 +304,7 @@ export const PublicCertificateVerificationPage = () => {
           )}
 
           {/* Manual Input Form */}
-          <form onSubmit={handleManualSubmit} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+          <form onSubmit={handleManualSubmit} className="mt-6 flex flex-col sm:flex-row gap-3 max-w-xl 2xl:max-w-3xl mx-auto">
             <div className="relative flex-1">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input

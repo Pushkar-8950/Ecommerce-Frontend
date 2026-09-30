@@ -73,17 +73,17 @@ export const LMODashboard = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 2xl:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 2xl:p-8 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider">
+          <span className="text-xs 2xl:text-sm font-semibold text-purple-600 uppercase tracking-wider">
             Legal Metrology Officer (LMO) Portal
           </span>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-slate-900 mt-1">
             Field Verification & Stamping Workstation
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs 2xl:text-sm text-slate-500 mt-0.5">
             Conduct 7-point digital inspections, verify standard weights, and issue digital certificates.
           </p>
         </div>
@@ -136,7 +136,7 @@ export const LMODashboard = () => {
       </div>
 
       {/* Detailed Metrics Rows */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 2xl:gap-8">
         {/* Certificates Section */}
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-purple-300 transition-all">
           <div className="flex items-center justify-between mb-4">

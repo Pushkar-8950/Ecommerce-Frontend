@@ -89,14 +89,14 @@ export const BusinessDashboard = () => {
     };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 2xl:space-y-8">
       {/* Top Banner & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 2xl:p-8 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+          <span className="text-xs 2xl:text-sm font-semibold text-blue-600 uppercase tracking-wider">
             Commercial Stakeholder Portal
           </span>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-slate-900 mt-1">
             Instrument Verification & Stamping Dashboard
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -135,7 +135,7 @@ export const BusinessDashboard = () => {
       <ExpiryAlertBanner expiringList={expiryAlerts} expiredCount={metrics.expired} />
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 2xl:gap-6">
         <StatsCard
           title="Total Registered"
           value={metrics.totalInstruments || 0}
@@ -178,24 +178,24 @@ export const BusinessDashboard = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 2xl:gap-8">
         {/* Verification Status Distribution (Donut Chart) */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+        <div className="bg-white p-5 2xl:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
           <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-900">Instrument Verification Status</h3>
-            <p className="text-xs text-slate-500">Distribution across active assets</p>
+            <h3 className="text-sm 2xl:text-base font-bold text-slate-900">Instrument Verification Status</h3>
+            <p className="text-xs 2xl:text-sm text-slate-500">Distribution across active assets</p>
           </div>
 
-          <div className="flex-1 min-h-[220px] flex items-center justify-center">
+          <div className="flex-1 min-h-[240px] 2xl:min-h-[290px] flex items-center justify-center">
             {statusDistribution.length === 0 ? (
               <span className="text-xs text-slate-400">No instrument data</span>
             ) : (
-              <ResponsiveContainer width="100%" height={220}>
+              <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
                   <Pie
                     data={statusDistribution}
-                    innerRadius={50}
-                    outerRadius={80}
+                    innerRadius={55}
+                    outerRadius={85}
                     paddingAngle={4}
                     dataKey="value"
                   >
@@ -209,7 +209,7 @@ export const BusinessDashboard = () => {
             )}
           </div>
 
-          <div className="mt-2 flex flex-wrap gap-2 justify-center text-[11px]">
+          <div className="mt-2 flex flex-wrap gap-2 justify-center text-[11px] 2xl:text-xs">
             {statusDistribution.map((item, idx) => (
               <div key={idx} className="flex items-center gap-1.5 text-slate-600">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
@@ -220,19 +220,19 @@ export const BusinessDashboard = () => {
         </div>
 
         {/* Monthly Verification & Applications Activity (Bar Chart) */}
-        <div className="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+        <div className="lg:col-span-2 bg-white p-5 2xl:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-sm font-bold text-slate-900">Verification Lifecycle Activity</h3>
-              <p className="text-xs text-slate-500">Applications submitted vs. certificates stamped ({new Date().getFullYear()})</p>
+              <h3 className="text-sm 2xl:text-base font-bold text-slate-900">Verification Lifecycle Activity</h3>
+              <p className="text-xs 2xl:text-sm text-slate-500">Applications submitted vs. certificates stamped ({new Date().getFullYear()})</p>
             </div>
-            <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded">
+            <span className="text-[11px] 2xl:text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded">
               Monthly Trends
             </span>
           </div>
 
-          <div className="flex-1 min-h-[220px]">
-            <ResponsiveContainer width="100%" height={230}>
+          <div className="flex-1 min-h-[240px] 2xl:min-h-[290px]">
+            <ResponsiveContainer width="100%" height={260}>
               <BarChart data={monthlyActivity.slice(0, 9)} barGap={4}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="month" tick={{ fontSize: 11 }} />

@@ -5,7 +5,7 @@ import { Scale } from 'lucide-react';
 export const Footer = () => {
   return (
     <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
+      <div className="max-w-7xl 2xl:max-w-[1700px] 3xl:max-w-[2000px] mx-auto px-4 sm:px-8 2xl:px-12 py-8 2xl:py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-3">

@@ -102,7 +102,7 @@ export const BusinessProfile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl 2xl:max-w-6xl 3xl:max-w-7xl mx-auto space-y-6">
       {/* Profile Header Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-blue-900 text-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border border-slate-700">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">

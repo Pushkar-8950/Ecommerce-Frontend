@@ -36,7 +36,7 @@ export const DashboardLayout = ({ allowedRoles = [] }) => {
       <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
       <div className="flex-1 flex min-w-0">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <main className="flex-1 lg:ml-64 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto min-w-0 overflow-x-hidden">
+        <main className="flex-1 lg:ml-64 2xl:ml-72 p-3.5 sm:p-6 lg:p-8 2xl:p-10 3xl:p-12 w-full max-w-[2000px] 3xl:max-w-[2500px] mx-auto min-w-0 overflow-x-hidden">
           <Outlet />
         </main>
       </div>

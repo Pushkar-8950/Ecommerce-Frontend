@@ -55,13 +55,13 @@ export const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-8">
-      <div className="max-w-md w-full">
+      <div className="max-w-md 2xl:max-w-lg 3xl:max-w-xl w-full">
         {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-900 text-amber-400 flex items-center justify-center mx-auto mb-3 shadow-lg">
-            <Scale className="w-6 h-6" />
+          <div className="w-12 h-12 2xl:w-14 2xl:h-14 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-900 text-amber-400 flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <Scale className="w-6 h-6 2xl:w-7 2xl:h-7" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-2xl 2xl:text-3xl font-black text-slate-900 tracking-tight">
             Metra<span className="text-amber-600">Verify</span> Portal Login
           </h2>
           <p className="text-xs text-slate-500 mt-1">
@@ -142,7 +142,7 @@ export const LoginPage = () => {
         </div>
 
         {/* Main Form Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 2xl:p-10 shadow-sm">
           {error && (
             <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
               {error}

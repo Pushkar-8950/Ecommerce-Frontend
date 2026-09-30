@@ -82,17 +82,17 @@ export const AdminDashboard = () => {
   const { statusDistribution = [], monthlyTrends = [] } = charts;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 2xl:space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 2xl:p-8 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
+          <span className="text-xs 2xl:text-sm font-semibold text-blue-600 uppercase tracking-wider">
             National Executive Command Portal
           </span>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-slate-900 mt-1">
             Legal Metrology Administration & Compliance Hub
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs 2xl:text-sm text-slate-500 mt-0.5">
             Jurisdictional oversight, officer allocation, audit trails, and national instrument registries.
           </p>
         </div>
@@ -117,7 +117,7 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Metrics Row 1 */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 2xl:gap-6">
         <StatsCard
           title="Total Instruments"
           value={metrics.totalInstruments || 0}
@@ -153,7 +153,7 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Metrics Row 2 */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 2xl:gap-6">
         <StatsCard
           title="Stamping Expired"
           value={metrics.expired || 0}
@@ -188,20 +188,20 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Charts Section: 4 Recharts Visualizations */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 2xl:gap-8">
         {/* Chart 1: Verification Status Distribution */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+        <div className="bg-white p-5 2xl:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
           <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-900">National Instrument Stamping Status</h3>
-            <p className="text-xs text-slate-500">Live breakdown of verified vs. pending and expired assets</p>
+            <h3 className="text-sm 2xl:text-base font-bold text-slate-900">National Instrument Stamping Status</h3>
+            <p className="text-xs 2xl:text-sm text-slate-500">Live breakdown of verified vs. pending and expired assets</p>
           </div>
-          <div className="flex-1 min-h-[220px] flex items-center justify-center">
-            <ResponsiveContainer width="100%" height={220}>
+          <div className="flex-1 min-h-[240px] 2xl:min-h-[300px] flex items-center justify-center">
+            <ResponsiveContainer width="100%" height={260}>
               <PieChart>
                 <Pie
                   data={statusDistribution}
-                  innerRadius={55}
-                  outerRadius={85}
+                  innerRadius={60}
+                  outerRadius={95}
                   paddingAngle={3}
                   dataKey="value"
                 >
@@ -213,7 +213,7 @@ export const AdminDashboard = () => {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 flex flex-wrap gap-2 justify-center text-[11px]">
+          <div className="mt-2 flex flex-wrap gap-2 justify-center text-[11px] 2xl:text-xs">
             {statusDistribution.map((item, idx) => (
               <div key={idx} className="flex items-center gap-1.5 text-slate-600">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
@@ -224,13 +224,13 @@ export const AdminDashboard = () => {
         </div>
 
         {/* Chart 2: Monthly Trends */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+        <div className="bg-white p-5 2xl:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
           <div className="mb-4">
-            <h3 className="text-sm font-bold text-slate-900">Monthly Verification & Stamping Trends</h3>
-            <p className="text-xs text-slate-500">Intake applications vs. official certificates stamped ({new Date().getFullYear()})</p>
+            <h3 className="text-sm 2xl:text-base font-bold text-slate-900">Monthly Verification & Stamping Trends</h3>
+            <p className="text-xs 2xl:text-sm text-slate-500">Intake applications vs. official certificates stamped ({new Date().getFullYear()})</p>
           </div>
-          <div className="flex-1 min-h-[220px]">
-            <ResponsiveContainer width="100%" height={230}>
+          <div className="flex-1 min-h-[240px] 2xl:min-h-[300px]">
+            <ResponsiveContainer width="100%" height={260}>
               <BarChart data={monthlyTrends.slice(0, 9)} barGap={4}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="month" tick={{ fontSize: 11 }} />

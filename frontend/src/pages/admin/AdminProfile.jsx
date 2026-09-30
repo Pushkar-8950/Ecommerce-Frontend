@@ -47,7 +47,7 @@ export const AdminProfile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl 2xl:max-w-6xl 3xl:max-w-7xl mx-auto space-y-6">
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-white p-4 sm:p-6 md:p-8 rounded-2xl border border-slate-800 shadow-lg">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

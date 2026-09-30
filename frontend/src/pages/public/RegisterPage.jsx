@@ -92,20 +92,20 @@ export const RegisterPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center py-8 sm:py-12 px-3 sm:px-8">
-      <div className="max-w-xl w-full">
+      <div className="max-w-xl 2xl:max-w-3xl 3xl:max-w-4xl w-full">
         <div className="text-center mb-6 sm:mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-900 text-amber-400 flex items-center justify-center mx-auto mb-3 shadow-lg">
-            <Scale className="w-6 h-6" />
+          <div className="w-12 h-12 2xl:w-14 2xl:h-14 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-900 text-amber-400 flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <Scale className="w-6 h-6 2xl:w-7 2xl:h-7" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl 2xl:text-3xl font-black text-slate-900 tracking-tight">
             Stakeholder Registration
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs 2xl:text-sm text-slate-500 mt-1">
             Register your commercial enterprise or facility on MetraVerify
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-8 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-8 2xl:p-10 shadow-sm">
           {error && (
             <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
               {error}

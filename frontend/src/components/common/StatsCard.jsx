@@ -42,30 +42,30 @@ export const StatsCard = ({
   return (
     <div
       onClick={onClick}
-      className={`bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow ${
+      className={`bg-white rounded-xl border border-slate-200 p-5 2xl:p-6 shadow-sm hover:shadow-md transition-shadow ${
         onClick ? 'cursor-pointer hover:border-slate-300' : ''
       }`}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <span className="text-xs 2xl:text-sm font-semibold text-slate-500 uppercase tracking-wider">
           {title}
         </span>
-        <div className={`p-2.5 rounded-lg ${scheme.bg} ${scheme.text}`}>
-          <Icon className="w-5 h-5" />
+        <div className={`p-2.5 2xl:p-3 rounded-lg ${scheme.bg} ${scheme.text}`}>
+          <Icon className="w-5 h-5 2xl:w-6 2xl:h-6" />
         </div>
       </div>
       <div className="mt-3 flex items-baseline gap-2">
-        <span className="text-2xl font-bold text-slate-900 tracking-tight">
+        <span className="text-2xl 2xl:text-3xl font-black text-slate-900 tracking-tight">
           {value !== undefined ? value : '--'}
         </span>
         {trend && (
-          <span className="text-xs font-medium text-emerald-600">
+          <span className="text-xs 2xl:text-sm font-medium text-emerald-600">
             {trend}
           </span>
         )}
       </div>
       {subtitle && (
-        <p className="mt-1 text-xs text-slate-500 font-medium">
+        <p className="mt-1 text-xs 2xl:text-sm text-slate-500 font-medium">
           {subtitle}
         </p>
       )}

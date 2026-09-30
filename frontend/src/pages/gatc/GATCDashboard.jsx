@@ -36,16 +36,16 @@ export const GATCDashboard = () => {
   const { metrics = {}, assignedApplications = [] } = data || {};
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
+    <div className="space-y-6 2xl:space-y-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 2xl:p-8 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
+          <span className="text-xs 2xl:text-sm font-semibold text-amber-600 uppercase tracking-wider">
             Government Approved Test Centre (GATC)
           </span>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl 2xl:text-3xl font-bold text-slate-900 mt-1">
             Verification & Testing Workstation
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-xs 2xl:text-sm text-slate-500 mt-0.5">
             Independent laboratory verification and accuracy testing under Legal Metrology accreditation.
           </p>
         </div>
@@ -59,7 +59,7 @@ export const GATCDashboard = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 2xl:gap-6">
         <StatsCard
           title="Assigned"
           value={metrics.assignedCases || 0}
