@@ -14,11 +14,30 @@ dotenv.config();
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/metraverify';
 
-const seedDatabase = async () => {
+export const seedDatabase = async (standalone = false) => {
+  let createdServer = null;
   try {
-    console.log('[Seed] Connecting to MongoDB...');
-    await mongoose.connect(MONGODB_URI);
-    console.log('[Seed] Connected.');
+    if (mongoose.connection.readyState !== 1) {
+      console.log('[Seed] Connecting to MongoDB...');
+      try {
+        await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 3000 });
+        console.log('[Seed] Connected to MongoDB.');
+      } catch (connErr) {
+        console.log('[Seed] Local MongoDB not running. Using embedded MongoMemoryServer...');
+        const { MongoMemoryServer } = await import('mongodb-memory-server');
+        const fs = await import('fs');
+        const path = await import('path');
+        const dbPath = path.resolve(process.cwd(), 'data/db');
+        if (!fs.existsSync(dbPath)) {
+          fs.mkdirSync(dbPath, { recursive: true });
+        }
+        createdServer = await MongoMemoryServer.create({ instance: { dbPath } });
+        await mongoose.connect(createdServer.getUri());
+        console.log('[Seed] Connected to embedded MongoDB.');
+      }
+    } else {
+      console.log('[Seed] Reusing existing MongoDB connection.');
+    }
 
     console.log('[Seed] Purging existing demo collections...');
     await Promise.all([
@@ -1456,12 +1475,24 @@ const seedDatabase = async () => {
     console.log('Public Verification route: /verify/CERT-2026-001001');
     console.log('===========================================================');
 
-    await mongoose.connection.close();
-    process.exit(0);
+    if (standalone) {
+      await mongoose.connection.close();
+      if (createdServer) {
+        await createdServer.stop();
+      }
+      process.exit(0);
+    }
+    return true;
   } catch (error) {
     console.error('[Seed Error]', error);
-    process.exit(1);
+    if (standalone) {
+      process.exit(1);
+    }
+    throw error;
   }
 };
 
-seedDatabase();
+const isDirectRun = process.argv[1] && process.argv[1].replace(/\\/g, '/').endsWith('seedData.js');
+if (isDirectRun) {
+  seedDatabase(true);
+}

@@ -41,3 +41,11 @@ Thumbs.db
 # Internal docs
 internal/
 
+# Embedded DB & uploads
+data/
+backend/data/
+uploads/
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+
