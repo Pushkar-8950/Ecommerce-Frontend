@@ -72,7 +72,7 @@ export const CreateApplication = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Back button */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <Link
           to="/business/applications"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
@@ -83,13 +83,13 @@ export const CreateApplication = () => {
         <span className="text-xs font-semibold text-slate-400">Rule 14 Verification Request</span>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm">
         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
-          <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
+          <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl shrink-0">
             <FileCheck className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-900">
+            <h1 className="text-lg sm:text-xl font-bold text-slate-900">
               Apply for Instrument Verification / Re-verification
             </h1>
             <p className="text-xs text-slate-500">
@@ -220,17 +220,17 @@ export const CreateApplication = () => {
             />
           </div>
 
-          <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+          <div className="pt-4 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-slate-100">
             <Link
               to="/business/applications"
-              className="px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition-colors"
+              className="w-full sm:w-auto px-4 py-2 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition-colors text-center"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={submitting || instruments.length === 0}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2"
             >
               {submitting ? 'Submitting Application...' : 'Submit Application'}
               <ArrowRight className="w-4 h-4" />

@@ -48,4 +48,6 @@ uploads/
 backend/uploads/*
 !backend/uploads/.gitkeep
 
-
+# Temporary screenshots & capture artifacts
+frontend/*.png
+*.qlpreview/

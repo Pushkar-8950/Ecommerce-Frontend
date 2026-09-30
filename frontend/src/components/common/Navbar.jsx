@@ -64,24 +64,25 @@ export const Navbar = ({ onToggleSidebar }) => {
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
       {/* Official Government Prototype Top Ribbon */}
-      <div className="bg-slate-900 text-slate-300 text-[11px] py-1 px-4 sm:px-8 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Legal Metrology Division | Department of Consumer Affairs</span>
+      <div className="bg-slate-900 text-slate-300 text-[10px] sm:text-[11px] py-1 px-3 sm:px-8 flex justify-between items-center">
+        <div className="flex items-center gap-2 truncate">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+          <span className="truncate">Legal Metrology Division | Department of Consumer Affairs</span>
         </div>
-        <div className="hidden sm:flex items-center gap-4 text-[11px]">
-          {/* Top navigation links removed as requested */}
+        <div className="hidden sm:flex items-center gap-4 text-[11px] shrink-0">
+          {/* Top navigation links */}
         </div>
       </div>
 
       {/* Main Navbar */}
-      <div className="px-4 sm:px-8 py-2.5 flex items-center justify-between gap-4">
+      <div className="px-3 sm:px-8 py-2 sm:py-2.5 flex items-center justify-between gap-2 sm:gap-4">
         {/* Logo and Brand */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
+              className="lg:hidden p-1.5 sm:p-2 text-slate-600 hover:bg-slate-100 rounded-lg shrink-0"
+              aria-label="Toggle Navigation Menu"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -89,20 +90,20 @@ export const Navbar = ({ onToggleSidebar }) => {
             </button>
           )}
 
-          <Link to={user ? (user.role === 'BUSINESS_USER' ? '/business/dashboard' : user.role === 'LMO_OFFICER' ? '/lmo/dashboard' : user.role === 'GATC' ? '/gatc/dashboard' : '/admin/dashboard') : '/'} className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 flex items-center justify-center text-amber-400 shadow-md">
-              <Scale className="w-5 h-5" />
+          <Link to={user ? (user.role === 'BUSINESS_USER' ? '/business/dashboard' : user.role === 'LMO_OFFICER' ? '/lmo/dashboard' : user.role === 'GATC' ? '/gatc/dashboard' : '/admin/dashboard') : '/'} className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900 flex items-center justify-center text-amber-400 shadow-md shrink-0">
+              <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-tight text-slate-900 font-sans">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 font-sans truncate">
                   Metra<span className="text-amber-600">Verify</span>
                 </span>
-                <span className="text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded">
+                <span className="hidden sm:inline-block text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded">
                   PORTAL
                 </span>
               </div>
-              <p className="text-[10px] font-medium text-slate-500 tracking-wide">
+              <p className="hidden md:block text-[10px] font-medium text-slate-500 tracking-wide truncate">
                 Digital Trust for Weights & Measures
               </p>
             </div>
@@ -151,7 +152,7 @@ export const Navbar = ({ onToggleSidebar }) => {
               {showNotifications && (
                 <div
                   id="nav-notifications-popover"
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute right-0 mt-2 w-80 sm:w-96 max-w-[calc(100vw-1.5rem)] bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                 >
                   <div className="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
                     <div>
@@ -249,7 +250,7 @@ export const Navbar = ({ onToggleSidebar }) => {
               {showProfileMenu && (
                 <div
                   id="nav-profile-menu"
-                  className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50"
+                  className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-1.5rem)] bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50"
                 >
                   <div
                     onClick={() => {

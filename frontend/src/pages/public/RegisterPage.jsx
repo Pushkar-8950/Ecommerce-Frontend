@@ -91,13 +91,13 @@ export const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-8">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-8 sm:py-12 px-3 sm:px-8">
       <div className="max-w-xl w-full">
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-900 text-amber-400 flex items-center justify-center mx-auto mb-3 shadow-lg">
             <Scale className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
             Stakeholder Registration
           </h2>
           <p className="text-xs text-slate-500 mt-1">
@@ -105,7 +105,7 @@ export const RegisterPage = () => {
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-8 shadow-sm">
           {error && (
             <div className="mb-4 p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
               {error}
@@ -207,13 +207,13 @@ export const RegisterPage = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-slate-100 pt-4 mt-2">
               <h3 className="text-xs font-bold text-slate-800">Location Details</h3>
               <button
                 type="button"
                 onClick={handleAutoDetectLocation}
                 disabled={detectingLoc}
-                className="text-[10px] font-bold bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg hover:bg-amber-200 transition-colors flex items-center gap-1.5"
+                className="self-start sm:self-auto text-[10px] font-bold bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg hover:bg-amber-200 transition-colors flex items-center gap-1.5 shrink-0"
               >
                 <MapPin className="w-3.5 h-3.5" />
                 {detectingLoc ? 'Detecting...' : 'Auto-Detect Location'}

@@ -37,12 +37,12 @@ export const GATCDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
             Government Approved Test Centre (GATC)
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
             Verification & Testing Workstation
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -52,14 +52,14 @@ export const GATCDashboard = () => {
 
         <Link
           to="/gatc/applications"
-          className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors shrink-0 w-full sm:w-auto text-center"
         >
           <ClipboardList className="w-4 h-4" />
           <span>Verification Queue</span>
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
         <StatsCard
           title="Assigned"
           value={metrics.assignedCases || 0}
@@ -113,7 +113,7 @@ export const GATCDashboard = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[650px]">
             <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
               <tr>
                 <th className="py-3 px-4">Case Ref</th>

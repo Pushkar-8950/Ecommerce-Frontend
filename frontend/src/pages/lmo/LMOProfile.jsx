@@ -14,10 +14,10 @@ export const LMOProfile = () => {
         </p>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
-        <div className="flex items-center gap-6 mb-8 pb-8 border-b border-slate-100">
-          <div className="w-20 h-20 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center shrink-0">
-            <ShieldCheck className="w-10 h-10" />
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6 md:p-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 mb-6 sm:mb-8 pb-6 sm:pb-8 border-b border-slate-100">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center shrink-0">
+            <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10" />
           </div>
           <div>
             <h2 className="text-xl font-bold text-slate-900">{user?.fullName}</h2>

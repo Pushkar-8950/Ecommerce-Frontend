@@ -74,7 +74,7 @@ export const InstrumentDetails = () => {
   return (
     <div className="space-y-6">
       {/* Top Navigation */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <Link
           to="/business/instruments"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
@@ -89,7 +89,7 @@ export const InstrumentDetails = () => {
             to={`/business/applications/new?instrumentId=${instrument._id}&type=${
               instrument.status === 'REGISTERED' ? 'NEW_VERIFICATION' : 'RE_VERIFICATION'
             }`}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors text-center"
           >
             <FileCheck className="w-4 h-4" />
             <span>Apply for Verification</span>
@@ -98,23 +98,23 @@ export const InstrumentDetails = () => {
       </div>
 
       {/* Main Overview Card */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-slate-900 text-amber-400 rounded-2xl shrink-0 shadow-md">
-              <Scale className="w-8 h-8" />
+              <Scale className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-mono text-sm font-bold text-blue-600">
                   {instrument.instrumentId}
                 </span>
                 <StatusBadge status={instrument.status} />
               </div>
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5 break-words">
                 {instrument.instrumentType}
               </h1>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 break-words">
                 {instrument.manufacturer} • Model: {instrument.model} • S/N: {instrument.serialNumber}
               </p>
             </div>
@@ -122,7 +122,7 @@ export const InstrumentDetails = () => {
 
           {/* Next Due Date Card */}
           {instrument.nextVerificationDueDate && (
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-right">
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-left md:text-right shrink-0">
               <span className="text-[11px] text-slate-500 block">Stamping Valid Until</span>
               <span className="text-sm font-extrabold text-slate-900 block mt-0.5">
                 {new Date(instrument.nextVerificationDueDate).toLocaleDateString('en-IN', {
@@ -149,22 +149,22 @@ export const InstrumentDetails = () => {
         </div>
 
         {/* Detailed Specs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 py-6 border-b border-slate-100 text-xs">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 py-6 border-b border-slate-100 text-xs">
           <div>
             <span className="text-slate-400 font-medium block">Category</span>
-            <span className="text-slate-800 font-semibold mt-0.5 block">{instrument.category}</span>
+            <span className="text-slate-800 font-semibold mt-0.5 block break-words">{instrument.category}</span>
           </div>
           <div>
             <span className="text-slate-400 font-medium block">Capacity / Interval</span>
-            <span className="text-slate-800 font-semibold mt-0.5 block">{instrument.capacity}</span>
+            <span className="text-slate-800 font-semibold mt-0.5 block break-words">{instrument.capacity}</span>
           </div>
           <div>
             <span className="text-slate-400 font-medium block">Accuracy Class</span>
-            <span className="text-slate-800 font-semibold mt-0.5 block">{instrument.accuracyClass}</span>
+            <span className="text-slate-800 font-semibold mt-0.5 block break-words">{instrument.accuracyClass}</span>
           </div>
           <div>
             <span className="text-slate-400 font-medium block">Location</span>
-            <span className="text-slate-800 font-semibold mt-0.5 block">
+            <span className="text-slate-800 font-semibold mt-0.5 block break-words">
               {instrument.district}, {instrument.state}
             </span>
           </div>
@@ -172,17 +172,17 @@ export const InstrumentDetails = () => {
 
         <div className="pt-4 text-xs">
           <span className="text-slate-400 font-medium block">Premises Address:</span>
-          <span className="text-slate-700 mt-0.5 block font-medium">{instrument.locationAddress}</span>
+          <span className="text-slate-700 mt-0.5 block font-medium break-words">{instrument.locationAddress}</span>
         </div>
       </div>
 
       {/* Active Certificate Card (if verified) */}
       {activeCert && (
-        <div className="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-2xl p-6 sm:p-8 shadow-lg">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-4">
+        <div className="bg-gradient-to-r from-slate-900 to-blue-950 text-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               {activeCert.qrCodeDataUrl && (
-                <div className="bg-white p-2 rounded-xl shrink-0 shadow-md">
+                <div className="bg-white p-2 rounded-xl shrink-0 shadow-md self-start sm:self-center">
                   <img
                     src={activeCert.qrCodeDataUrl}
                     alt="Certificate QR"
@@ -190,11 +190,11 @@ export const InstrumentDetails = () => {
                   />
                 </div>
               )}
-              <div>
+              <div className="min-w-0">
                 <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest block">
                   Active Legal Metrology Certificate
                 </span>
-                <h3 className="text-lg font-black font-mono mt-0.5">
+                <h3 className="text-lg font-black font-mono mt-0.5 break-all">
                   {activeCert.certificateNumber}
                 </h3>
                 <p className="text-xs text-slate-300 mt-1">
@@ -206,10 +206,10 @@ export const InstrumentDetails = () => {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full md:w-auto">
               <Link
                 to={`/verify/${activeCert.certificateNumber}`}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold border border-white/20 transition-colors flex items-center gap-1.5"
+                className="flex-1 sm:flex-initial px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold border border-white/20 transition-colors flex items-center justify-center gap-1.5 text-center"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>Public QR Page</span>
@@ -219,7 +219,7 @@ export const InstrumentDetails = () => {
                 href={`/api/certificates/${activeCert.certificateNumber}/pdf`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold shadow-md transition-colors flex items-center gap-1.5"
+                className="flex-1 sm:flex-initial px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-xl text-xs font-bold shadow-md transition-colors flex items-center justify-center gap-1.5 text-center"
               >
                 <Download className="w-3.5 h-3.5" />
                 <span>Download PDF</span>
@@ -230,7 +230,7 @@ export const InstrumentDetails = () => {
       )}
 
       {/* Verification History & Past Applications */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-6">
         <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
           <Clock className="w-4 h-4 text-blue-600" />
           Verification Lifecycle History
@@ -245,10 +245,10 @@ export const InstrumentDetails = () => {
             {applications.map((app) => (
               <div
                 key={app._id}
-                className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs hover:bg-slate-100/70 transition-colors"
+                className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-slate-100/70 transition-colors"
               >
-                <div>
-                  <div className="flex items-center gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-mono font-bold text-blue-600">{app.applicationId}</span>
                     <StatusBadge status={app.status} />
                   </div>
@@ -264,7 +264,7 @@ export const InstrumentDetails = () => {
 
                 <Link
                   to={`/business/applications/${app._id}`}
-                  className="px-3 py-1 bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition-colors flex items-center gap-1"
+                  className="w-full sm:w-auto px-3 py-1.5 bg-white hover:bg-slate-200 border border-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition-colors flex items-center justify-center gap-1 shrink-0 text-center"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span>View Case</span>

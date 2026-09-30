@@ -42,16 +42,16 @@ export const InstrumentManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">National Instrument Registry</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">National Instrument Registry</h1>
           <p className="text-xs text-slate-500 mt-0.5">
             Central repository of all commercial, industrial, and precision weighing and measuring devices.
           </p>
         </div>
       </div>
 
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         <form onSubmit={handleSearch} className="flex-1 w-full md:max-w-md relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -67,7 +67,7 @@ export const InstrumentManagement = () => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
+            className="flex-1 sm:flex-initial px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
           >
             <option value="">All Statuses</option>
             <option value="VERIFIED">Verified & Active</option>
@@ -82,7 +82,7 @@ export const InstrumentManagement = () => {
           <select
             value={stateFilter}
             onChange={(e) => setStateFilter(e.target.value)}
-            className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
+            className="flex-1 sm:flex-initial px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
           >
             <option value="">All States</option>
             <option value="Delhi">Delhi</option>
@@ -94,7 +94,7 @@ export const InstrumentManagement = () => {
           <select
             value={expiryFilter}
             onChange={(e) => setExpiryFilter(e.target.value)}
-            className="px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
+            className="flex-1 sm:flex-initial px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700"
           >
             <option value="">All Validity States</option>
             <option value="EXPIRING_SOON">Expiring Soon (&le; 30d)</option>
@@ -115,7 +115,7 @@ export const InstrumentManagement = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[720px]">
               <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
                 <tr>
                   <th className="py-3 px-4">Instrument ID</th>

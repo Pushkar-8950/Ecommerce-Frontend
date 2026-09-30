@@ -84,12 +84,12 @@ export const AdminDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
             National Executive Command Portal
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-1">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
             Legal Metrology Administration & Compliance Hub
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -97,18 +97,18 @@ export const AdminDashboard = () => {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
           <Link
             to="/admin/allocation"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors text-center"
           >
             <Clock className="w-4 h-4" />
-            <span>Officer & Inspection Allocation</span>
+            <span>Officer Allocation</span>
           </Link>
 
           <Link
             to="/admin/audit-logs"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors text-center"
           >
             <Shield className="w-4 h-4 text-amber-400" />
             <span>Audit Trail</span>
@@ -263,7 +263,7 @@ export const AdminDashboard = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[680px]">
             <thead className="bg-slate-50 text-slate-500 border-b border-slate-200 font-semibold">
               <tr>
                 <th className="py-3 px-4">Case ID</th>

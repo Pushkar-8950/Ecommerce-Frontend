@@ -265,13 +265,13 @@ export const InspectionPage = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Top Bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <Link
           to="/lmo/applications"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Case Queue</span>
+          <span>Back to Queue</span>
         </Link>
 
         {/* 1-Click Pass All for Demonstration */}
@@ -282,12 +282,12 @@ export const InspectionPage = () => {
           title="Auto-fill 7/7 Pass for Fast Demo"
         >
           <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-          <span>⚡ Demo Fast Pass (All 7 Checks)</span>
+          <span>⚡ Demo Fast Pass (7/7 Checks)</span>
         </button>
       </div>
 
       {/* Case Header Card */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2">
@@ -367,7 +367,7 @@ export const InspectionPage = () => {
             return (
               <div
                 key={item.key}
-                className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50/60 rounded-xl transition-colors"
+                className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 hover:bg-slate-50/60 rounded-xl transition-colors"
               >
                 <div className="max-w-xl">
                   <h4 className="text-xs font-bold text-slate-900">{item.title}</h4>
@@ -375,7 +375,7 @@ export const InspectionPage = () => {
                 </div>
 
                 {/* Pass / Fail Toggle Buttons */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto justify-end">
                   <button
                     type="button"
                     onClick={() => handleSetCheck(item.key, 'PASS')}

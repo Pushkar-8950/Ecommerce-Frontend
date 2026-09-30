@@ -65,7 +65,7 @@ export const ApplicationDetails = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <Link
           to="/business/applications"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800"
@@ -77,7 +77,7 @@ export const ApplicationDetails = () => {
         {app.certificate && (
           <Link
             to={`/business/certificates/${app.certificate._id || app.certificate}`}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-sm transition-colors text-center"
           >
             <Award className="w-4 h-4" />
             <span>View Issued Certificate</span>
@@ -86,16 +86,16 @@ export const ApplicationDetails = () => {
       </div>
 
       {/* Case Overview Card */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="font-mono text-sm font-bold text-blue-600">
                 {app.applicationId}
               </span>
               <StatusBadge status={app.status} />
             </div>
-            <h1 className="text-xl font-bold text-slate-900 mt-1">
+            <h1 className="text-lg sm:text-xl font-bold text-slate-900 mt-1 break-words">
               {app.applicationType === 'RE_VERIFICATION'
                 ? 'Re-verification & Stamping Case'
                 : 'New Verification & Stamping Case'}
@@ -110,7 +110,7 @@ export const ApplicationDetails = () => {
             </p>
           </div>
 
-          <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-right">
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-left sm:text-right shrink-0">
             <span className="text-[11px] text-slate-500 block">Inspection Date</span>
             <span className="text-sm font-bold text-slate-900 block mt-0.5">
               {new Date(app.scheduledDate || app.preferredDate).toLocaleDateString('en-IN', {
@@ -154,26 +154,26 @@ export const ApplicationDetails = () => {
               <Scale className="w-3.5 h-3.5 text-blue-600" />
               Target Instrument
             </h4>
-            <div className="space-y-1 text-xs">
-              <div className="flex justify-between">
+            <div className="space-y-1.5 text-xs">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                 <span className="text-slate-500">Type:</span>
-                <span className="font-semibold text-slate-800">{app.instrument?.instrumentType}</span>
+                <span className="font-semibold text-slate-800 break-words">{app.instrument?.instrumentType}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                 <span className="text-slate-500">Instrument ID:</span>
-                <span className="font-mono text-blue-600 font-semibold">{app.instrument?.instrumentId}</span>
+                <span className="font-mono text-blue-600 font-semibold break-all">{app.instrument?.instrumentId}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                 <span className="text-slate-500">Manufacturer & Model:</span>
-                <span className="text-slate-800">{app.instrument?.manufacturer} ({app.instrument?.model})</span>
+                <span className="text-slate-800 break-words">{app.instrument?.manufacturer} ({app.instrument?.model})</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                 <span className="text-slate-500">Serial Number:</span>
-                <span className="font-mono text-slate-800">{app.instrument?.serialNumber}</span>
+                <span className="font-mono text-slate-800 break-all">{app.instrument?.serialNumber}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                 <span className="text-slate-500">Capacity / Class:</span>
-                <span className="text-slate-800">{app.instrument?.capacity} ({app.instrument?.accuracyClass})</span>
+                <span className="text-slate-800 break-words">{app.instrument?.capacity} ({app.instrument?.accuracyClass})</span>
               </div>
             </div>
           </div>
@@ -185,26 +185,26 @@ export const ApplicationDetails = () => {
               Assigned Legal Metrology Authority
             </h4>
             {app.assignedOfficer ? (
-              <div className="space-y-1 text-xs">
-                <div className="flex justify-between">
+              <div className="space-y-1.5 text-xs">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                   <span className="text-slate-500">Inspecting Officer:</span>
-                  <span className="font-bold text-slate-900">{app.assignedOfficer.fullName}</span>
+                  <span className="font-bold text-slate-900 break-words">{app.assignedOfficer.fullName}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                   <span className="text-slate-500">Designation:</span>
-                  <span className="text-slate-700">{app.assignedOfficer.designation || 'Legal Metrology Officer'}</span>
+                  <span className="text-slate-700 break-words">{app.assignedOfficer.designation || 'Legal Metrology Officer'}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                   <span className="text-slate-500">Department:</span>
-                  <span className="text-slate-700">{app.assignedOfficer.department || 'Enforcement Wing'}</span>
+                  <span className="text-slate-700 break-words">{app.assignedOfficer.department || 'Enforcement Wing'}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                   <span className="text-slate-500">Contact Email:</span>
-                  <span className="text-slate-700">{app.assignedOfficer.email}</span>
+                  <span className="text-slate-700 break-all">{app.assignedOfficer.email}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col sm:flex-row sm:justify-between gap-0.5 sm:gap-2">
                   <span className="text-slate-500">Inspection Venue:</span>
-                  <span className="text-slate-800">{app.preferredLocation}</span>
+                  <span className="text-slate-800 break-words">{app.preferredLocation}</span>
                 </div>
               </div>
             ) : (
